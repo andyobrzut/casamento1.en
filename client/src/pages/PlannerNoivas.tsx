@@ -145,6 +145,8 @@ interface WeddingPlannerData {
   vendors?: WeddingVendor[];
   timeline?: TimelineEvent[];
   gifts?: WeddingGift[];
+  tabNotes?: Record<string, string>;
+  loveScore?: number;
 }
 
 const DEFAULT_WEDDING_DATA: WeddingPlannerData = {
@@ -205,7 +207,19 @@ const DEFAULT_WEDDING_DATA: WeddingPlannerData = {
     { id: "gft2", guestName: "Pedro Antunes", description: "Fritadeira Elétrica Airfryer Philips", received: true, thankYouSent: false },
     { id: "gft3", guestName: "Tio Jorge & Tia Marta", description: "Pix de Casamento R$ 500,00", received: true, thankYouSent: false },
     { id: "gft4", guestName: "Lucas Ramos", description: "Cafeteira Nespresso Vertuo Pop", received: false, thankYouSent: false }
-  ]
+  ],
+  tabNotes: {
+    dashboard: "Lembrete: Revisar a contagem regressiva toda semana! 🥰",
+    checklist: "Focar primeiro nas tarefas de 12-18 meses.",
+    budget: "Não esquecer da margem de segurança de 10% do orçamento.",
+    vendors: "Pedir indicação de assessoria para novos fornecedores.",
+    guests: "Enviar save the date com antecedência de 6 meses.",
+    tables: "Garantir que as famílias fiquem em mesas próximas.",
+    timeline: "Validar horários com o fotógrafo e cerimonialista.",
+    gifts: "Agradecer cada presente assim que for recebido.",
+    moodboard: "Adicionar referências de paleta de cores Boho e Rose Gold."
+  },
+  loveScore: 80
 };
 
 // Adesivos do Moodboard
@@ -233,6 +247,44 @@ export default function PlannerNoivas() {
 
   // Contagem regressiva
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+
+  // Cantinho do Cupido & Anotações Helpers
+  const [currentAdvice, setCurrentAdvice] = useState(
+    "Cupido diz: Um cafuné caprichado resolve 90% do estresse do planejamento! 💆‍♂️💆‍♀️"
+  );
+
+  const handleRollCupidAdvice = () => {
+    const advices = [
+      "Cupido diz: Hoje é dia de dar um beijo de 10 segundos sem falar sobre o orçamento do casamento! 😘",
+      "Dica do Cupido: O buffet é maravilhoso, mas lembrem-se de comer no grande dia! 🍽️",
+      "Cupido avisa: Decidam quem vai levar a culpa por esquecer as chaves antes do grande dia! 🔑",
+      "Dica de Ouro: Na dúvida sobre a cor dos guardanapos, escolha a que a noiva preferir (evita DRs!). 🎨",
+      "Conselho do Cupido: Façam uma noite de encontro esta semana e proíbam a palavra 'casamento'. 🤫",
+      "Cupido diz: Um cafuné caprichado resolve 90% do estresse do planejamento! 💆‍♂️💆‍♀️",
+      "Dica do Cupido: O casamento é apenas o início do felizes para sempre, aproveitem a jornada! 💖"
+    ];
+    const filtered = advices.filter(a => a !== currentAdvice);
+    const random = filtered[Math.floor(Math.random() * filtered.length)];
+    setCurrentAdvice(random);
+  };
+
+  const getLoveScoreVibeMessage = (score: number) => {
+    if (score <= 20) return "Planejamento inicial... calma, o cupido ainda está aquecendo! 🏹☕";
+    if (score <= 40) return "Frio na barriga de leve! Escolhendo as flores e sonhando acordados... 🌸✨";
+    if (score <= 60) return "Nível Assessora de Sucesso! Organização ativa e corações batendo forte! 📋💖";
+    if (score <= 80) return "Borboletas no estômago! A ansiedade está batendo, mas o amor é maior! 🦋💍";
+    return "ALERTA DE CASAMENTO! Contando os segundos, prontos para o SIM! 🎉👰🤵";
+  };
+
+  const currentNotes = plannerData.tabNotes || {};
+
+  const handleUpdateNotes = (tabId: string, text: string) => {
+    const currentNotes = plannerData.tabNotes || {};
+    updateField("tabNotes", {
+      ...currentNotes,
+      [tabId]: text
+    });
+  };
 
   useEffect(() => {
     const calculateCountdown = () => {
@@ -2519,6 +2571,130 @@ export default function PlannerNoivas() {
             </div>
           </div>
         )}
+
+        {/* ==================== SEÇÃO DE ANOTAÇÕES & WIDGET LÚDICO ==================== */}
+        <div
+          className="no-print"
+          style={{
+            marginTop: "2rem",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+            gap: "1.2rem"
+          }}
+        >
+          {/* Card 1: Campo de Anotações */}
+          <div
+            style={{
+              background: currentTheme.cardBg,
+              border: `1.5px solid ${currentTheme.border}`,
+              borderRadius: "1.2rem",
+              padding: "1.2rem",
+              boxShadow: "0 3px 15px rgba(0,0,0,0.02)"
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.6rem" }}>
+              <span style={{ fontSize: "1.2rem" }}>📝</span>
+              <h3 style={{ fontSize: "0.9rem", fontWeight: 900, color: currentTheme.text, margin: 0 }}>
+                Anotações da Aba {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
+              </h3>
+            </div>
+            <textarea
+              value={currentNotes[activeTab] || ""}
+              onChange={e => handleUpdateNotes(activeTab, e.target.value)}
+              placeholder="Escreva aqui ideias, lembretes ou observações importantes sobre esta aba..."
+              style={{
+                width: "100%",
+                height: "110px",
+                border: `1.5px solid ${currentTheme.border}`,
+                borderRadius: "0.8rem",
+                padding: "0.6rem",
+                fontSize: "0.8rem",
+                background: "#FFFBF8",
+                color: "#573E38",
+                resize: "none",
+                fontFamily: "'Nunito', sans-serif"
+              }}
+            />
+            <span style={{ fontSize: "0.65rem", color: "#8C8C8C", marginTop: "0.3rem", display: "block" }}>
+              * Suas anotações são salvas automaticamente no navegador.
+            </span>
+          </div>
+
+          {/* Card 2: Widget Lúdico - Cantinho do Cupido */}
+          <div
+            style={{
+              background: currentTheme.cardBg,
+              border: `1.5px solid ${currentTheme.border}`,
+              borderRadius: "1.2rem",
+              padding: "1.2rem",
+              boxShadow: "0 3px 15px rgba(0,0,0,0.02)",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between"
+            }}
+          >
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.6rem" }}>
+                <span style={{ fontSize: "1.2rem" }}>🏹</span>
+                <h3 style={{ fontSize: "0.9rem", fontWeight: 900, color: currentTheme.text, margin: 0 }}>
+                  Cantinho do Cupido & Medidor de Vibe
+                </h3>
+              </div>
+
+              {/* Love / Excitement Meter */}
+              <div style={{ marginBottom: "1rem" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.72rem", fontWeight: 800, color: "#777", marginBottom: "0.2rem" }}>
+                  <span>Nível de Vibe/Ansiedade:</span>
+                  <span style={{ color: currentTheme.primary }}>{plannerData.loveScore || 80}%</span>
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={plannerData.loveScore || 80}
+                  onChange={e => updateField("loveScore", parseInt(e.target.value))}
+                  style={{
+                    width: "100%",
+                    accentColor: currentTheme.primary,
+                    cursor: "pointer",
+                    height: "6px",
+                    borderRadius: "3px"
+                  }}
+                />
+                <div style={{ fontSize: "0.72rem", color: currentTheme.accent, fontWeight: 700, marginTop: "0.3rem", minHeight: "20px" }}>
+                  {getLoveScoreVibeMessage(plannerData.loveScore || 80)}
+                </div>
+              </div>
+            </div>
+
+            {/* Cupid Advice */}
+            <div style={{ borderTop: `1px dashed ${currentTheme.border}`, paddingTop: "0.8rem", marginTop: "0.2rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.4rem" }}>
+                <span style={{ fontSize: "0.68rem", fontWeight: 800, color: "#8C8C8C", textTransform: "uppercase" }}>
+                  Conselho do Cupido do Dia
+                </span>
+                <button
+                  onClick={handleRollCupidAdvice}
+                  style={{
+                    border: "none",
+                    background: currentTheme.badgeBg,
+                    color: currentTheme.badgeText,
+                    borderRadius: "0.4rem",
+                    padding: "0.2rem 0.5rem",
+                    fontSize: "0.68rem",
+                    fontWeight: 800,
+                    cursor: "pointer"
+                  }}
+                >
+                  Novo conselho
+                </button>
+              </div>
+              <p style={{ fontSize: "0.75rem", color: currentTheme.text, margin: 0, fontStyle: "italic", fontWeight: 700, minHeight: "35px" }}>
+                {currentAdvice}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Print Styles Sheet para imprimir somente o voucher ou o diário inteiro */}
