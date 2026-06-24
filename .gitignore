@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.vercel/
+*.log
+*.png
+!client/public/assets/**/*.png
+.DS_Store
+Thumbs.db
+.env
+.env.*
+!.env.example
+.vercel

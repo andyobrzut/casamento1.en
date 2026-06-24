@@ -1,0 +1,387 @@
+﻿/* =============================================================
+   PLANNER DIGITAL CAPIVARAS KAWAII
+   Design: Kawaii japonÃªs contemporÃ¢neo â€” "Capivara no Onsen"
+   Paleta: Creme papel, Caramelo capivara, Verde sÃ¡lvia, Rosa chÃ¡,
+           Azul lagoa, Amarelo manteiga, Marrom cacau
+   Tipografia: Nunito (ExtraBold tÃ­tulos, Regular corpo)
+   ============================================================= */
+
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Paleta Capivara */
+  --capivara-creme: #FFF5F7;
+  --capivara-caramelo: #FF8BA7;
+  --capivara-cacau: #594A4E;
+  --capivara-verde: #C3F0CA;
+  --capivara-rosa: #FFC2D1;
+  --capivara-azul: #BDE0FE;
+  --capivara-amarelo: #FFF4BD;
+  --capivara-verde-escuro: #A8E6B3;
+  --capivara-rosa-escuro: #FF9AA2;
+  --capivara-azul-escuro: #A2D2FF;
+}
+
+:root {
+  --radius: 1.25rem;
+  --background: #FFF5F7;
+  --foreground: #594A4E;
+  --card: #FFFFFF;
+  --card-foreground: #594A4E;
+  --popover: #FFFFFF;
+  --popover-foreground: #594A4E;
+  --primary: #FF8BA7;
+  --primary-foreground: #FFFFFF;
+  --secondary: #C3F0CA;
+  --secondary-foreground: #4A6D4C;
+  --muted: #FFE5EC;
+  --muted-foreground: #A08088;
+  --accent: #FFC2D1;
+  --accent-foreground: #7A4A55;
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: #FFD1DC;
+  --input: #FFF0F3;
+  --ring: #FF8BA7;
+  --chart-1: #FF8BA7;
+  --chart-2: #C3F0CA;
+  --chart-3: #FFC2D1;
+  --chart-4: #BDE0FE;
+  --chart-5: #FFF4BD;
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #594A4E;
+  --sidebar-primary: #FF8BA7;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #FFE5EC;
+  --sidebar-accent-foreground: #594A4E;
+  --sidebar-border: #FFD1DC;
+  --sidebar-ring: #FF8BA7;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Nunito', sans-serif;
+  }
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [type="button"]:not(:disabled),
+  [type="submit"]:not(:disabled),
+  [type="reset"]:not(:disabled),
+  a[href],
+  select:not(:disabled),
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled) {
+    @apply cursor-pointer;
+  }
+}
+
+@layer components {
+  .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .flex {
+    min-height: 0;
+    min-width: 0;
+  }
+
+  @media (min-width: 640px) {
+    .container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+      max-width: 1280px;
+    }
+  }
+
+  /* Planner page styles */
+  .planner-page {
+    background: #FFF7EA;
+    min-height: 100vh;
+    position: relative;
+  }
+
+  .planner-card {
+    background: #FFFBF3;
+    border: 2px solid #E8D5C0;
+    border-radius: 1.25rem;
+    box-shadow: 0 4px 16px rgba(169, 111, 69, 0.10);
+    transition: box-shadow 0.2s ease, transform 0.15s ease;
+  }
+
+  .planner-card:hover {
+    box-shadow: 0 8px 28px rgba(169, 111, 69, 0.18);
+    transform: translateY(-2px);
+  }
+
+  .tab-btn {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    padding: 0.75rem 0.35rem;
+    border-radius: 0.75rem 0 0 0.75rem;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    border: 2px solid transparent;
+    white-space: nowrap;
+  }
+
+  .tab-btn:hover {
+    filter: brightness(0.92);
+    transform: rotate(180deg) translateX(3px);
+  }
+
+  .tab-btn.active {
+    filter: brightness(0.88);
+    border-color: #5B3A29;
+  }
+
+  .dotted-line {
+    border-bottom: 1.5px dotted #D4B896;
+    margin: 0.5rem 0;
+  }
+
+  .ruled-line {
+    border-bottom: 1px solid #E8D5C0;
+    margin: 0.6rem 0;
+  }
+
+  .section-title {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    color: #5B3A29;
+    letter-spacing: -0.01em;
+  }
+
+  .field-label {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.78rem;
+    color: #8B6347;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .washi-tape {
+    height: 18px;
+    border-radius: 3px;
+    opacity: 0.75;
+    transform: rotate(-1.5deg);
+    display: inline-block;
+  }
+
+  .nav-btn {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.82rem;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    background: #A96F45;
+    color: #FFF7EA;
+    border: none;
+    cursor: pointer;
+    transition: background 0.18s ease, transform 0.12s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    text-decoration: none;
+  }
+
+  .nav-btn:hover {
+    background: #8B5A35;
+    transform: scale(1.04);
+  }
+
+  .nav-btn-outline {
+    background: transparent;
+    color: #A96F45;
+    border: 2px solid #A96F45;
+  }
+
+  .nav-btn-outline:hover {
+    background: #A96F45;
+    color: #FFF7EA;
+  }
+
+  .progress-bar {
+    height: 10px;
+    border-radius: 999px;
+    background: #E8D5C0;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #A96F45, #C4854A);
+    transition: width 0.4s ease;
+  }
+
+  .mood-btn {
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+    border: 2px solid #E8D5C0;
+    background: #FFFBF3;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .mood-btn:hover, .mood-btn.selected {
+    border-color: #A96F45;
+    background: #F5EDE0;
+    transform: scale(1.15);
+  }
+
+  .star-rating {
+    color: #F7D98B;
+    font-size: 1.1rem;
+  }
+
+  .habit-check {
+    width: 1.4rem;
+    height: 1.4rem;
+    border-radius: 0.35rem;
+    border: 2px solid #D4B896;
+    background: #FFFBF3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+  }
+
+  .habit-check.checked {
+    background: #A96F45;
+    border-color: #A96F45;
+    color: white;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-in {
+    animation: fadeIn 0.25s ease forwards;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-6px); }
+  }
+
+  .float-anim {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .planner-bottom-nav {
+    align-items: center;
+    display: flex;
+    gap: 0.75rem;
+    justify-content: space-between;
+    margin-top: 1.25rem;
+  }
+
+  @media (max-width: 768px) {
+    .planner-bottom-nav {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .planner-bottom-nav .nav-btn {
+      width: 100%;
+    }
+  }
+
+  /* Print / PDF styles */
+  @media print {
+    .no-print { display: none !important; }
+    .planner-page { min-height: auto; }
+    .tab-sidebar { display: none !important; }
+  }
+}
+
+/* License activation */
+.activation-page,.admin-page{min-height:100vh;padding:2rem;display:grid;place-items:center;background:#fff7ea}.activation-panel,.admin-shell{width:min(960px,100%);border:2px solid #e8d5c0;border-radius:1.25rem;background:#fffbf3;box-shadow:0 18px 42px rgba(91,58,41,.14);overflow:hidden}.activation-panel{display:grid;grid-template-columns:minmax(240px,.9fr) minmax(300px,1fr)}.activation-art{min-height:420px;background:url("/assets/cherry/cherry-banner.png") center/cover no-repeat}.activation-content,.admin-card{padding:2rem}.activation-badge{display:inline-flex;border-radius:999px;background:#fff0d8;color:#5b3a29;padding:.25rem .8rem;font:900 .75rem 'Nunito',sans-serif;letter-spacing:.08em}.activation-content h1,.admin-page h1{margin:.75rem 0 .5rem;color:#5b3a29;font:900 2rem 'Nunito',sans-serif}.activation-content p,.activation-content small,.admin-page p{color:#8b6347;font-weight:700}.activation-content form,.admin-card,.admin-form{display:grid;gap:.9rem}.activation-content label,.admin-card label{display:grid;gap:.35rem;color:#5b3a29;font-weight:900}.activation-content input,.admin-card input{width:100%;border:2px solid #e8d5c0;border-radius:.8rem;background:#fff7ea;color:#5b3a29;padding:.75rem .9rem;font:900 .95rem 'Nunito',sans-serif}.activation-content button,.admin-card button{border:0;border-radius:.8rem;background:#a96f45;color:#fffaf4;padding:.8rem 1rem;cursor:pointer;font:900 .95rem 'Nunito',sans-serif}.activation-message,.admin-message{border-radius:.75rem;padding:.75rem;background:#fff0d8;color:#5b3a29!important}@media(max-width:760px){.activation-page,.admin-page{padding:1rem}.activation-panel{grid-template-columns:1fr}.activation-art{min-height:180px}.activation-content,.admin-card{padding:1.25rem}}
+
+/* codex-activation-banner-start */
+.activation-page,.admin-page{min-height:100vh!important;padding:2rem!important;display:grid!important;place-items:center!important;background:#fff5f8!important;}
+.activation-panel,.admin-shell{width:min(980px,100%)!important;border:2px solid #ead1c2!important;border-radius:24px!important;background:#fffdf8!important;box-shadow:0 24px 60px rgba(42,32,22,.16)!important;overflow:hidden!important;}
+.activation-panel{display:grid!important;grid-template-columns:minmax(260px,.95fr) minmax(310px,1fr)!important;}
+.activation-art{display:block!important;min-height:430px!important;background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.08)), url("/assets/cherry/cherry-cover.png") center/cover no-repeat!important;}
+.activation-content,.admin-card{padding:2.25rem!important;}
+.activation-badge{display:inline-flex!important;border-radius:999px!important;background:#f8dde4!important;color:#653a32!important;padding:.3rem .9rem!important;font:900 .75rem Nunito,sans-serif!important;letter-spacing:.08em!important;}
+.activation-content h1,.admin-page h1{margin:.85rem 0 .55rem!important;color:#653a32!important;font:900 clamp(1.8rem,4vw,2.45rem) Nunito,sans-serif!important;line-height:1.05!important;}
+.activation-content p,.activation-content small,.admin-page p{color:#916052!important;font-weight:700!important;line-height:1.55!important;}
+.activation-content form,.admin-card,.admin-form{display:grid!important;gap:.9rem!important;margin-top:1rem!important;}
+.activation-content label,.admin-card label{display:grid!important;gap:.35rem!important;color:#653a32!important;font-weight:900!important;}
+.activation-content input,.admin-card input{width:100%!important;border:2px solid #ead1c2!important;border-radius:14px!important;background:#fff5f8!important;color:#653a32!important;padding:.85rem .95rem!important;font:900 1rem Nunito,sans-serif!important;}
+.activation-content button,.admin-card button{width:100%!important;border:0!important;border-radius:14px!important;background:#b5485d!important;color:#fffaf4!important;padding:.9rem 1rem!important;cursor:pointer!important;font:900 1rem Nunito,sans-serif!important;}
+.activation-message,.admin-message{border-radius:14px!important;padding:.85rem!important;background:#f8dde4!important;color:#653a32!important;}
+@media(max-width:760px){.activation-page,.admin-page{padding:1rem!important;}.activation-panel{grid-template-columns:1fr!important;}.activation-art{min-height:190px!important;}.activation-content,.admin-card{padding:1.25rem!important;}.activation-content h1,.admin-page h1{font-size:1.85rem!important;}}
+/* codex-activation-banner-end */
+
