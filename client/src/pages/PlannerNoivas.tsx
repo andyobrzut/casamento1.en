@@ -66,6 +66,13 @@ interface WeddingTask {
   completed: boolean;
 }
 
+interface ExpensePayment {
+  id: string;
+  amount: number;
+  date: string;
+  description: string;
+}
+
 interface BudgetExpense {
   id: string;
   category: string;
@@ -74,6 +81,7 @@ interface BudgetExpense {
   actual: number;
   paid: number;
   dueDate: string;
+  payments?: ExpensePayment[];
 }
 
 interface Guest {
@@ -245,6 +253,9 @@ export default function PlannerNoivas() {
   // Abas do APP
   const [activeTab, setActiveTab] = useState<"dashboard" | "checklist" | "budget" | "guests" | "tables" | "moodboard" | "vendors" | "timeline" | "gifts">("dashboard");
 
+  // Controle de linhas de despesa expandidas para pagamentos
+  const [expandedExpenses, setExpandedExpenses] = useState<Record<string, boolean>>({});
+
   // Contagem regressiva
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
@@ -349,14 +360,25 @@ export default function PlannerNoivas() {
     e.preventDefault();
     if (!newExpCategory.trim() || !newExpVendor.trim()) return;
 
+    const initialPaid = parseFloat(newExpPaid) || 0;
+    const initialPayments: ExpensePayment[] = initialPaid > 0 ? [
+      {
+        id: `payment-${Date.now()}`,
+        amount: initialPaid,
+        date: newExpDueDate || new Date().toISOString().split("T")[0],
+        description: "Valor Inicial Pago"
+      }
+    ] : [];
+
     const newExp: BudgetExpense = {
       id: `exp-${Date.now()}`,
       category: newExpCategory.trim(),
       vendor: newExpVendor.trim(),
       estimated: parseFloat(newExpEstimated) || 0,
       actual: parseFloat(newExpActual) || 0,
-      paid: parseFloat(newExpPaid) || 0,
-      dueDate: newExpDueDate || new Date().toISOString().split("T")[0]
+      paid: initialPaid,
+      dueDate: newExpDueDate || new Date().toISOString().split("T")[0],
+      payments: initialPayments
     };
 
     updateField("expenses", [...plannerData.expenses, newExp]);
@@ -372,10 +394,69 @@ export default function PlannerNoivas() {
     updateField("expenses", plannerData.expenses.filter(e => e.id !== id));
   };
 
+  const handleUpdateExpenseField = <K extends keyof BudgetExpense>(id: string, field: K, value: BudgetExpense[K]) => {
+    const updated = plannerData.expenses.map(e => {
+      if (e.id === id) {
+        const newExp = { ...e, [field]: value };
+        if (field === "payments") {
+          const paymentsList = (value as ExpensePayment[]) || [];
+          newExp.paid = paymentsList.reduce((sum, p) => sum + p.amount, 0);
+        }
+        return newExp;
+      }
+      return e;
+    });
+    updateField("expenses", updated);
+  };
+
+  const handleAddExpensePayment = (expenseId: string, amount: number, date: string, description: string) => {
+    const updated = plannerData.expenses.map(e => {
+      if (e.id === expenseId) {
+        const paymentsList = e.payments || [];
+        const newPayment: ExpensePayment = {
+          id: `payment-${Date.now()}`,
+          amount,
+          date: date || new Date().toISOString().split("T")[0],
+          description: description.trim() || `Parcela ${paymentsList.length + 1}`
+        };
+        const newPayments = [...paymentsList, newPayment];
+        const newPaid = newPayments.reduce((sum, p) => sum + p.amount, 0);
+        return {
+          ...e,
+          payments: newPayments,
+          paid: newPaid
+        };
+      }
+      return e;
+    });
+    updateField("expenses", updated);
+  };
+
+  const handleDeleteExpensePayment = (expenseId: string, paymentId: string) => {
+    const updated = plannerData.expenses.map(e => {
+      if (e.id === expenseId) {
+        const paymentsList = e.payments || [];
+        const newPayments = paymentsList.filter(p => p.id !== paymentId);
+        const newPaid = newPayments.reduce((sum, p) => sum + p.amount, 0);
+        return {
+          ...e,
+          payments: newPayments,
+          paid: newPaid
+        };
+      }
+      return e;
+    });
+    updateField("expenses", updated);
+  };
+
   // Cálculos do orçamento
   const totalEstimated = plannerData.expenses.reduce((sum, e) => sum + e.estimated, 0);
   const totalActual = plannerData.expenses.reduce((sum, e) => sum + e.actual, 0);
-  const totalPaid = plannerData.expenses.reduce((sum, e) => sum + e.paid, 0);
+  const totalPaid = plannerData.expenses.reduce((sum, e) => {
+    const paymentsList = e.payments || [];
+    const itemPaid = paymentsList.length > 0 ? paymentsList.reduce((s, p) => s + p.amount, 0) : e.paid;
+    return sum + itemPaid;
+  }, 0);
   const totalRemaining = Math.max(0, totalActual - totalPaid);
 
   // ==================== 3. GUESTS LOGIC ====================
@@ -1483,28 +1564,376 @@ export default function PlannerNoivas() {
                       </td>
                     </tr>
                   ) : (
-                    plannerData.expenses.map(exp => (
-                      <tr key={exp.id} style={{ borderBottom: `1px solid ${currentTheme.border}` }}>
-                        <td style={{ padding: "0.6rem 0.5rem", fontWeight: 800 }}>{exp.category}</td>
-                        <td style={{ padding: "0.6rem 0.5rem" }}>{exp.vendor}</td>
-                        <td style={{ padding: "0.6rem 0.5rem" }}>R$ {exp.estimated.toLocaleString("pt-BR")}</td>
-                        <td style={{ padding: "0.6rem 0.5rem", fontWeight: 800 }}>R$ {exp.actual.toLocaleString("pt-BR")}</td>
-                        <td style={{ padding: "0.6rem 0.5rem", color: exp.paid >= exp.actual ? "#2E7D32" : "#9B7E1A", fontWeight: 800 }}>
-                          R$ {exp.paid.toLocaleString("pt-BR")}
-                        </td>
-                        <td style={{ padding: "0.6rem 0.5rem" }}>
-                          {new Date(exp.dueDate + "T00:00:00").toLocaleDateString("pt-BR")}
-                        </td>
-                        <td style={{ padding: "0.6rem 0.5rem" }}>
-                          <button
-                            onClick={() => deleteExpense(exp.id)}
-                            style={{ border: "none", background: "none", cursor: "pointer", color: "#A85361" }}
-                          >
-                            <Trash2 size={12} />
-                          </button>
-                        </td>
-                      </tr>
-                    ))
+                    plannerData.expenses.map(exp => {
+                      const hasPayments = (exp.payments || []).length > 0;
+                      return (
+                        <React.Fragment key={exp.id}>
+                          <tr style={{ borderBottom: `1px solid ${currentTheme.border}` }}>
+                            {/* Categoria */}
+                            <td style={{ padding: "0.4rem 0.5rem" }}>
+                              <input
+                                type="text"
+                                className="budget-table-input"
+                                value={exp.category}
+                                onChange={e => handleUpdateExpenseField(exp.id, "category", e.target.value)}
+                                style={{
+                                  border: "1px solid transparent",
+                                  background: "transparent",
+                                  fontWeight: 800,
+                                  color: currentTheme.text,
+                                  width: "100%",
+                                  padding: "0.2rem",
+                                  borderRadius: "0.3rem",
+                                  fontSize: "0.78rem"
+                                }}
+                                onFocus={e => {
+                                  e.target.style.border = `1px solid ${currentTheme.border}`;
+                                  e.target.style.background = "#FFF";
+                                }}
+                                onBlur={e => {
+                                  e.target.style.border = "1px solid transparent";
+                                  e.target.style.background = "transparent";
+                                }}
+                              />
+                            </td>
+
+                            {/* Fornecedor */}
+                            <td style={{ padding: "0.4rem 0.5rem" }}>
+                              <input
+                                type="text"
+                                className="budget-table-input"
+                                value={exp.vendor}
+                                onChange={e => handleUpdateExpenseField(exp.id, "vendor", e.target.value)}
+                                style={{
+                                  border: "1px solid transparent",
+                                  background: "transparent",
+                                  color: currentTheme.text,
+                                  width: "100%",
+                                  padding: "0.2rem",
+                                  borderRadius: "0.3rem",
+                                  fontSize: "0.78rem"
+                                }}
+                                onFocus={e => {
+                                  e.target.style.border = `1px solid ${currentTheme.border}`;
+                                  e.target.style.background = "#FFF";
+                                }}
+                                onBlur={e => {
+                                  e.target.style.border = "1px solid transparent";
+                                  e.target.style.background = "transparent";
+                                }}
+                              />
+                            </td>
+
+                            {/* Estimado */}
+                            <td style={{ padding: "0.4rem 0.5rem" }}>
+                              <div style={{ display: "flex", alignItems: "center" }}>
+                                <span style={{ color: "#8C8C8C", marginRight: "0.15rem" }}>R$</span>
+                                <input
+                                  type="number"
+                                  className="budget-table-input"
+                                  value={exp.estimated === 0 ? "" : exp.estimated}
+                                  onChange={e => handleUpdateExpenseField(exp.id, "estimated", parseFloat(e.target.value) || 0)}
+                                  style={{
+                                    border: "1px solid transparent",
+                                    background: "transparent",
+                                    color: currentTheme.text,
+                                    width: "70px",
+                                    padding: "0.2rem",
+                                    borderRadius: "0.3rem",
+                                    fontSize: "0.78rem",
+                                    fontWeight: 700
+                                  }}
+                                  onFocus={e => {
+                                    e.target.style.border = `1px solid ${currentTheme.border}`;
+                                    e.target.style.background = "#FFF";
+                                  }}
+                                  onBlur={e => {
+                                    e.target.style.border = "1px solid transparent";
+                                    e.target.style.background = "transparent";
+                                  }}
+                                />
+                              </div>
+                            </td>
+
+                            {/* Valor Real */}
+                            <td style={{ padding: "0.4rem 0.5rem" }}>
+                              <div style={{ display: "flex", alignItems: "center" }}>
+                                <span style={{ color: "#8C8C8C", marginRight: "0.15rem" }}>R$</span>
+                                <input
+                                  type="number"
+                                  className="budget-table-input"
+                                  value={exp.actual === 0 ? "" : exp.actual}
+                                  onChange={e => handleUpdateExpenseField(exp.id, "actual", parseFloat(e.target.value) || 0)}
+                                  style={{
+                                    border: "1px solid transparent",
+                                    background: "transparent",
+                                    color: currentTheme.text,
+                                    width: "70px",
+                                    padding: "0.2rem",
+                                    borderRadius: "0.3rem",
+                                    fontSize: "0.78rem",
+                                    fontWeight: 800
+                                  }}
+                                  onFocus={e => {
+                                    e.target.style.border = `1px solid ${currentTheme.border}`;
+                                    e.target.style.background = "#FFF";
+                                  }}
+                                  onBlur={e => {
+                                    e.target.style.border = "1px solid transparent";
+                                    e.target.style.background = "transparent";
+                                  }}
+                                />
+                              </div>
+                            </td>
+
+                            {/* Valor Pago */}
+                            <td style={{ padding: "0.4rem 0.5rem" }}>
+                              <div style={{ display: "flex", alignItems: "center" }}>
+                                <span style={{ color: "#8C8C8C", marginRight: "0.15rem" }}>R$</span>
+                                {hasPayments ? (
+                                  <span
+                                    style={{
+                                      padding: "0.2rem",
+                                      fontWeight: 800,
+                                      color: exp.paid >= exp.actual ? "#2E7D32" : "#9B7E1A",
+                                      fontSize: "0.78rem",
+                                      display: "inline-block"
+                                    }}
+                                  >
+                                    {exp.paid.toLocaleString("pt-BR")}
+                                  </span>
+                                ) : (
+                                  <input
+                                    type="number"
+                                    className="budget-table-input"
+                                    value={exp.paid === 0 ? "" : exp.paid}
+                                    onChange={e => handleUpdateExpenseField(exp.id, "paid", parseFloat(e.target.value) || 0)}
+                                    style={{
+                                      border: "1px solid transparent",
+                                      background: "transparent",
+                                      color: exp.paid >= exp.actual ? "#2E7D32" : "#9B7E1A",
+                                      width: "70px",
+                                      padding: "0.2rem",
+                                      borderRadius: "0.3rem",
+                                      fontSize: "0.78rem",
+                                      fontWeight: 800
+                                    }}
+                                    onFocus={e => {
+                                      e.target.style.border = `1px solid ${currentTheme.border}`;
+                                      e.target.style.background = "#FFF";
+                                    }}
+                                    onBlur={e => {
+                                      e.target.style.border = "1px solid transparent";
+                                      e.target.style.background = "transparent";
+                                    }}
+                                  />
+                                )}
+                              </div>
+                            </td>
+
+                            {/* Devido em */}
+                            <td style={{ padding: "0.4rem 0.5rem" }}>
+                              <input
+                                type="date"
+                                className="budget-table-input"
+                                value={exp.dueDate}
+                                onChange={e => handleUpdateExpenseField(exp.id, "dueDate", e.target.value)}
+                                style={{
+                                  border: "1px solid transparent",
+                                  background: "transparent",
+                                  color: currentTheme.text,
+                                  width: "115px",
+                                  padding: "0.2rem",
+                                  borderRadius: "0.3rem",
+                                  fontSize: "0.78rem"
+                                }}
+                                onFocus={e => {
+                                  e.target.style.border = `1px solid ${currentTheme.border}`;
+                                  e.target.style.background = "#FFF";
+                                }}
+                                onBlur={e => {
+                                  e.target.style.border = "1px solid transparent";
+                                  e.target.style.background = "transparent";
+                                }}
+                              />
+                            </td>
+
+                            {/* Ações */}
+                            <td style={{ padding: "0.4rem 0.5rem" }}>
+                              <div style={{ display: "flex", gap: "0.4rem", alignItems: "center" }}>
+                                <button
+                                  type="button"
+                                  onClick={() => setExpandedExpenses(prev => ({ ...prev, [exp.id]: !prev[exp.id] }))}
+                                  style={{
+                                    border: "none",
+                                    background: expandedExpenses[exp.id] ? currentTheme.primary : currentTheme.badgeBg,
+                                    color: expandedExpenses[exp.id] ? "#FFF" : currentTheme.badgeText,
+                                    padding: "0.2rem 0.45rem",
+                                    borderRadius: "0.4rem",
+                                    fontSize: "0.68rem",
+                                    fontWeight: 800,
+                                    cursor: "pointer",
+                                    transition: "all 0.2s"
+                                  }}
+                                  title="Expandir parcelas / pagamentos"
+                                >
+                                  {expandedExpenses[exp.id] ? "Fechar" : `Parcelas (${(exp.payments || []).length})`}
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => deleteExpense(exp.id)}
+                                  style={{ border: "none", background: "none", cursor: "pointer", color: "#A85361" }}
+                                >
+                                  <Trash2 size={12} />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+
+                          {/* Seção expandida de pagamentos */}
+                          {expandedExpenses[exp.id] && (
+                            <tr style={{ background: "rgba(0,0,0,0.015)" }}>
+                              <td colSpan={7} style={{ padding: "0.8rem 1.2rem" }}>
+                                <div style={{ borderLeft: `3px solid ${currentTheme.accent}`, paddingLeft: "1rem" }}>
+                                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.6rem" }}>
+                                    <h4 style={{ fontSize: "0.75rem", fontWeight: 900, color: currentTheme.primary, margin: 0 }}>
+                                      💵 Histórico de Parcelas / Pagamentos para: {exp.vendor || "Este Fornecedor"}
+                                    </h4>
+                                    {hasPayments && (
+                                      <span style={{ fontSize: "0.68rem", fontWeight: 800, color: "#8C8C8C" }}>
+                                        Restante a Pagar: R$ {Math.max(0, exp.actual - exp.paid).toLocaleString("pt-BR")}
+                                      </span>
+                                    )}
+                                  </div>
+
+                                  {/* Form para adicionar nova parcela */}
+                                  <div className="no-print" style={{ display: "flex", gap: "0.4rem", alignItems: "center", marginBottom: "0.6rem", flexWrap: "wrap" }}>
+                                    <div style={{ display: "flex", alignItems: "center" }}>
+                                      <span style={{ fontSize: "0.72rem", color: "#8C8C8C", marginRight: "0.15rem" }}>R$</span>
+                                      <input
+                                        type="number"
+                                        id={`pay-amount-${exp.id}`}
+                                        className="budget-table-input"
+                                        placeholder="Valor R$"
+                                        style={{
+                                          width: "90px",
+                                          padding: "0.2rem 0.4rem",
+                                          borderRadius: "0.3rem",
+                                          border: `1px solid ${currentTheme.border}`,
+                                          fontSize: "0.75rem"
+                                        }}
+                                      />
+                                    </div>
+                                    <input
+                                      type="date"
+                                      id={`pay-date-${exp.id}`}
+                                      className="budget-table-input"
+                                      style={{
+                                        width: "115px",
+                                        padding: "0.2rem 0.4rem",
+                                        borderRadius: "0.3rem",
+                                        border: `1px solid ${currentTheme.border}`,
+                                        fontSize: "0.75rem"
+                                      }}
+                                    />
+                                    <input
+                                      type="text"
+                                      id={`pay-desc-${exp.id}`}
+                                      className="budget-table-input"
+                                      placeholder="Descrição (Ex: 1ª Parcela)"
+                                      style={{
+                                        flex: 1,
+                                        minWidth: "120px",
+                                        padding: "0.2rem 0.4rem",
+                                        borderRadius: "0.3rem",
+                                        border: `1px solid ${currentTheme.border}`,
+                                        fontSize: "0.75rem"
+                                      }}
+                                    />
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        const amountInput = document.getElementById(`pay-amount-${exp.id}`) as HTMLInputElement;
+                                        const dateInput = document.getElementById(`pay-date-${exp.id}`) as HTMLInputElement;
+                                        const descInput = document.getElementById(`pay-desc-${exp.id}`) as HTMLInputElement;
+
+                                        const amount = parseFloat(amountInput.value) || 0;
+                                        if (amount <= 0) return;
+
+                                        handleAddExpensePayment(exp.id, amount, dateInput.value, descInput.value);
+
+                                        // Limpar inputs
+                                        amountInput.value = "";
+                                        dateInput.value = "";
+                                        descInput.value = "";
+                                      }}
+                                      style={{
+                                        background: currentTheme.primary,
+                                        color: "#FFF",
+                                        border: "none",
+                                        borderRadius: "0.3rem",
+                                        padding: "0.25rem 0.6rem",
+                                        fontSize: "0.72rem",
+                                        fontWeight: 800,
+                                        cursor: "pointer"
+                                      }}
+                                    >
+                                      Adicionar Pagamento
+                                    </button>
+                                  </div>
+
+                                  {/* Lista de Parcelas */}
+                                  <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+                                    {(exp.payments || []).length === 0 ? (
+                                      <div style={{ fontSize: "0.72rem", color: "#8C8C8C", padding: "0.3rem 0" }}>
+                                        Nenhum pagamento registrado. Use o formulário acima para cadastrar parcelas ou pagamentos.
+                                      </div>
+                                    ) : (
+                                      (exp.payments || []).map((pay) => (
+                                        <div
+                                          key={pay.id}
+                                          style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "space-between",
+                                            background: "#FFF",
+                                            border: `1px solid ${currentTheme.border}`,
+                                            padding: "0.35rem 0.75rem",
+                                            borderRadius: "0.4rem",
+                                            fontSize: "0.75rem"
+                                          }}
+                                        >
+                                          <div>
+                                            <span style={{ fontWeight: 800, color: currentTheme.text }}>{pay.description}</span>
+                                            <span style={{ color: "#8C8C8C", marginLeft: "0.8rem" }}>
+                                              Pago em: {new Date(pay.date + "T00:00:00").toLocaleDateString("pt-BR")}
+                                            </span>
+                                          </div>
+                                          <div style={{ display: "flex", alignItems: "center", gap: "0.8rem" }}>
+                                            <span style={{ fontWeight: 900, color: "#2E7D32" }}>
+                                              R$ {pay.amount.toLocaleString("pt-BR")}
+                                            </span>
+                                            <button
+                                              type="button"
+                                              onClick={() => handleDeleteExpensePayment(exp.id, pay.id)}
+                                              style={{ border: "none", background: "none", color: "#C62828", cursor: "pointer", padding: 0 }}
+                                              className="no-print"
+                                              title="Excluir pagamento"
+                                            >
+                                              ✕
+                                            </button>
+                                          </div>
+                                        </div>
+                                      ))
+                                    )}
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          )}
+                        </React.Fragment>
+                      );
+                    })
                   )}
                 </tbody>
               </table>

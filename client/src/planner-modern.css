@@ -328,3 +328,11 @@ body { font-size: 16px; }
 @media(max-width:760px){.activation-page,.admin-page{padding:1rem!important;}.activation-panel{grid-template-columns:1fr!important;}.activation-art{min-height:190px!important;}.activation-content,.admin-card{padding:1.25rem!important;}.activation-content h1,.admin-page h1{font-size:1.85rem!important;}}
 /* codex-activation-banner-end */
 
+/* Table input overrides for compact editable cells */
+.planner-page .budget-table-input {
+  min-height: 28px !important;
+  height: 28px !important;
+  font-size: 0.78rem !important;
+  border-radius: 0.3rem !important;
+  padding: 0.2rem 0.4rem !important;
+}
