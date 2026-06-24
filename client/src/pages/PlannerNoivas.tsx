@@ -10,7 +10,7 @@ import { useLocalStorage } from "../hooks/useLocalStorage";
 const WEDDING_THEMES = [
   {
     id: "classic_gold",
-    label: "Clássico Dourado & Branco ⚜️",
+    label: "Classic Gold & White ⚜️",
     primary: "#D4AF37",
     accent: "#C5A028",
     bg: "linear-gradient(135deg, #FCFBF7 0%, #FAF8F2 50%, #F5F1E5 100%)",
@@ -22,7 +22,7 @@ const WEDDING_THEMES = [
   },
   {
     id: "romantic_rose",
-    label: "Romântico Rose Gold & Floral 🌸",
+    label: "Romantic Rose Gold & Floral 🌸",
     primary: "#B76E79",
     accent: "#E29578",
     bg: "linear-gradient(135deg, #FFF6F6 0%, #FFF0F1 50%, #FFE3E5 100%)",
@@ -34,7 +34,7 @@ const WEDDING_THEMES = [
   },
   {
     id: "cozy_rustic",
-    label: "Rústico Cozy & Madeira 🪵",
+    label: "Cozy Rustic & Wood 🪵",
     primary: "#8B5E3C",
     accent: "#A67B5B",
     bg: "linear-gradient(135deg, #F8F5F2 0%, #F1ECE6 50%, #E2D7C5 100%)",
@@ -46,7 +46,7 @@ const WEDDING_THEMES = [
   },
   {
     id: "boho_chic",
-    label: "Boho Chic & Terracota 🌾",
+    label: "Boho Chic & Terracotta 🌾",
     primary: "#E76F51",
     accent: "#F4A261",
     bg: "linear-gradient(135deg, #FAF2EE 0%, #F7E7DF 50%, #ECD0C2 100%)",
@@ -158,88 +158,88 @@ interface WeddingPlannerData {
 }
 
 const DEFAULT_WEDDING_DATA: WeddingPlannerData = {
-  coupleNames: "Maria & João",
+  coupleNames: "Emily & John",
   weddingDate: "2027-06-12",
-  weddingLocation: "Espaço Jardins do Amor, São Paulo - SP",
+  weddingLocation: "Garden of Love Venue, New York - NY",
   totalBudgetLimit: 60000,
   theme: "classic_gold",
   tasks: [
-    { id: "t1", title: "Definir o orçamento geral do casamento", category: "12-18", completed: true },
-    { id: "t2", title: "Escolher a data do casamento e reservar o local", category: "12-18", completed: true },
-    { id: "t3", title: "Definir a lista preliminar de convidados", category: "12-18", completed: false },
-    { id: "t4", title: "Contratar o buffet e serviço de gastronomia", category: "6-9", completed: false },
-    { id: "t5", title: "Escolher o vestido de noiva e traje do noivo", category: "6-9", completed: false },
-    { id: "t6", title: "Enviar os convites e configurar o site de casamento", category: "3", completed: false },
-    { id: "t7", title: "Fazer o teste de cabelo e maquiagem", category: "1", completed: false },
-    { id: "t8", title: "Definir o mapa de assentos finais", category: "1", completed: false },
-    { id: "t9", title: "Aproveitar e celebrar o dia mais feliz da sua vida! 💖", category: "day", completed: false }
+    { id: "t1", title: "Determine the overall wedding budget", category: "12-18", completed: true },
+    { id: "t2", title: "Choose the wedding date and book the venue", category: "12-18", completed: true },
+    { id: "t3", title: "Create a preliminary guest list", category: "12-18", completed: false },
+    { id: "t4", title: "Hire the caterer and food service", category: "6-9", completed: false },
+    { id: "t5", title: "Choose the wedding dress and groom's suit", category: "6-9", completed: false },
+    { id: "t6", title: "Send invitations and set up the wedding website", category: "3", completed: false },
+    { id: "t7", title: "Do the hair and makeup trial", category: "1", completed: false },
+    { id: "t8", title: "Define the final seating chart", category: "1", completed: false },
+    { id: "t9", title: "Enjoy and celebrate the happiest day of your life! 💖", category: "day", completed: false }
   ],
   expenses: [
-    { id: "e1", category: "Espaço & Buffet", vendor: "Espaço Jardins", estimated: 25000, actual: 24000, paid: 12000, dueDate: "2026-12-15" },
-    { id: "e2", category: "Decoração Floral", vendor: "Flores do Campo", estimated: 8000, actual: 7500, paid: 3000, dueDate: "2027-02-10" },
-    { id: "e3", category: "Fotografia & Filme", vendor: "Lente de Amor", estimated: 6000, actual: 6000, paid: 6000, dueDate: "2026-10-01" },
-    { id: "e4", category: "Vestido & Acessórios", vendor: "Ateliê Bouquet", estimated: 5000, actual: 4800, paid: 4800, dueDate: "2026-11-20" }
+    { id: "e1", category: "Venue & Catering", vendor: "Garden Hall", estimated: 25000, actual: 24000, paid: 12000, dueDate: "2026-12-15" },
+    { id: "e2", category: "Floral Decoration", vendor: "Wildflowers Decor", estimated: 8000, actual: 7500, paid: 3000, dueDate: "2027-02-10" },
+    { id: "e3", category: "Photography & Film", vendor: "Love Lens", estimated: 6000, actual: 6000, paid: 6000, dueDate: "2026-10-01" },
+    { id: "e4", category: "Dress & Accessories", vendor: "Bouquet Atelier", estimated: 5000, actual: 4800, paid: 4800, dueDate: "2026-11-20" }
   ],
   guests: [
-    { id: "g1", name: "Ana Maria (Mãe da Noiva)", side: "noiva", diet: "normal", rsvp: "confirmado", tableId: null, seatIndex: null },
-    { id: "g2", name: "Roberto Silva (Pai da Noiva)", side: "noiva", diet: "normal", rsvp: "confirmado", tableId: null, seatIndex: null },
-    { id: "g3", name: "Juliana Costa (Madrinha)", side: "noiva", diet: "vegano", rsvp: "confirmado", tableId: null, seatIndex: null },
-    { id: "g4", name: "Pedro Antunes (Padrinho)", side: "noiva", diet: "normal", rsvp: "confirmado", tableId: null, seatIndex: null },
-    { id: "g5", name: "Tereza Ramos (Mãe do Noivo)", side: "noivo", diet: "normal", rsvp: "confirmado", tableId: null, seatIndex: null },
-    { id: "g6", name: "Carlos Ramos (Pai do Noivo)", side: "noivo", diet: "normal", rsvp: "confirmado", tableId: null, seatIndex: null },
-    { id: "g7", name: "Lucas Ramos (Irmão do Noivo)", side: "noivo", diet: "normal", rsvp: "confirmado", tableId: null, seatIndex: null },
-    { id: "g8", name: "Fernanda Lima (Madrinha)", side: "noivo", diet: "sem_gluten", rsvp: "confirmado", tableId: null, seatIndex: null },
-    { id: "g9", name: "Tio Jorge", side: "noivo", diet: "normal", rsvp: "pendente", tableId: null, seatIndex: null },
-    { id: "g10", name: "Tia Marta", side: "noivo", diet: "normal", rsvp: "pendente", tableId: null, seatIndex: null }
+    { id: "g1", name: "Anna Marie (Mother of the Bride)", side: "noiva", diet: "normal", rsvp: "confirmado", tableId: null, seatIndex: null },
+    { id: "g2", name: "Robert Silva (Father of the Bride)", side: "noiva", diet: "normal", rsvp: "confirmado", tableId: null, seatIndex: null },
+    { id: "g3", name: "Julia Costa (Maid of Honor)", side: "noiva", diet: "vegano", rsvp: "confirmado", tableId: null, seatIndex: null },
+    { id: "g4", name: "Peter Antunes (Best Man)", side: "noiva", diet: "normal", rsvp: "confirmado", tableId: null, seatIndex: null },
+    { id: "g5", name: "Theresa Ramos (Mother of the Groom)", side: "noivo", diet: "normal", rsvp: "confirmado", tableId: null, seatIndex: null },
+    { id: "g6", name: "Charles Ramos (Father of the Groom)", side: "noivo", diet: "normal", rsvp: "confirmado", tableId: null, seatIndex: null },
+    { id: "g7", name: "Luke Ramos (Brother of the Groom)", side: "noivo", diet: "normal", rsvp: "confirmado", tableId: null, seatIndex: null },
+    { id: "g8", name: "Fernanda Lima (Bridesmaid)", side: "noivo", diet: "sem_gluten", rsvp: "confirmado", tableId: null, seatIndex: null },
+    { id: "g9", name: "Uncle George", side: "noivo", diet: "normal", rsvp: "pendente", tableId: null, seatIndex: null },
+    { id: "g10", name: "Aunt Martha", side: "noivo", diet: "normal", rsvp: "pendente", tableId: null, seatIndex: null }
   ],
   tables: [
-    { id: "tab1", name: "Mesa Família Noiva", shape: "circle", seatsCount: 6 },
-    { id: "tab2", name: "Mesa Família Noivo", shape: "circle", seatsCount: 6 },
-    { id: "tab3", name: "Mesa Madrinhas & Padrinhos", shape: "rectangle", seatsCount: 8 }
+    { id: "tab1", name: "Bride's Family Table", shape: "circle", seatsCount: 6 },
+    { id: "tab2", name: "Groom's Family Table", shape: "circle", seatsCount: 6 },
+    { id: "tab3", name: "Wedding Party Table", shape: "rectangle", seatsCount: 8 }
   ],
   moodboard: [],
   vendors: [
-    { id: "v1", name: "Buffet Delícia & Cia", category: "Buffet & Gastronomia", contact: "buffet@delicia.com", cost: 18000, paid: 9000, status: "contratado", notes: "Inclui jantar completo e mesa de frios." },
-    { id: "v2", name: "Flores da Estação", category: "Decoração & Flores", contact: "(11) 98888-7777", cost: 6500, paid: 6500, status: "finalizado", notes: "Decoração em tons pastéis e rústicos." },
-    { id: "v3", name: "Foto&Filme Amor Eterno", category: "Fotografia & Vídeo", contact: "contato@amoreterno.com", cost: 7500, paid: 2000, status: "contratado", notes: "Dois fotógrafos e gravação com drone." }
+    { id: "v1", name: "Delish Catering & Co", category: "Catering & Food Service", contact: "buffet@delicia.com", cost: 18000, paid: 9000, status: "contratado", notes: "Includes full dinner and charcuterie table." },
+    { id: "v2", name: "Seasonal Flowers", category: "Decoration & Flowers", contact: "(11) 98888-7777", cost: 6500, paid: 6500, status: "finalizado", notes: "Decor in pastel and rustic tones." },
+    { id: "v3", name: "Eternal Love Photo & Film", category: "Photography & Video", contact: "contato@amoreterno.com", cost: 7500, paid: 2000, status: "contratado", notes: "Two photographers and drone footage." }
   ],
   timeline: [
-    { id: "ev1", time: "16:00", activity: "Chegada dos Convidados & Recepção", responsible: "Assessoria / Recepção", notes: "Música instrumental suave ao fundo.", completed: false },
-    { id: "ev2", time: "16:30", activity: "Entrada do Noivo & Padrinhos", responsible: "Assessoria / DJ", notes: "Música: Escolha do noivo.", completed: false },
-    { id: "ev3", time: "17:00", activity: "Entrada da Noiva", responsible: "Assessoria / Músicos", notes: "Marcha nupcial tradicional.", completed: false },
-    { id: "ev4", time: "18:00", activity: "Coquetel & Início do Buffet", responsible: "Garçons / Buffet", notes: "Serviço volante na área externa.", completed: false },
-    { id: "ev5", time: "20:00", activity: "Brinde com Espumante & Corte do Bolo", responsible: "Noivos / Buffet", notes: "Mesa de doces liberada para fotos.", completed: false }
+    { id: "ev1", time: "16:00", activity: "Guest Arrival & Reception", responsible: "Coordination / Reception", notes: "Soft instrumental background music.", completed: false },
+    { id: "ev2", time: "16:30", activity: "Groom & Groomsmen Processional", responsible: "DJ / Coordinator", notes: "Music: Groom's choice.", completed: false },
+    { id: "ev3", time: "17:00", activity: "Bride Processional", responsible: "Coordinator / Musicians", notes: "Traditional bridal march.", completed: false },
+    { id: "ev4", time: "18:00", activity: "Cocktail Hour & Buffet Start", responsible: "Servers / Buffet", notes: "Passed hors d'oeuvres in the outdoor area.", completed: false },
+    { id: "ev5", time: "20:00", activity: "Champagne Toast & Cake Cutting", responsible: "Couple / Buffet", notes: "Dessert table open for photos.", completed: false }
   ],
   gifts: [
-    { id: "gft1", guestName: "Juliana Costa", description: "Jogo de Jantar 42 peças Oxford", received: true, thankYouSent: true },
-    { id: "gft2", guestName: "Pedro Antunes", description: "Fritadeira Elétrica Airfryer Philips", received: true, thankYouSent: false },
-    { id: "gft3", guestName: "Tio Jorge & Tia Marta", description: "Pix de Casamento R$ 500,00", received: true, thankYouSent: false },
-    { id: "gft4", guestName: "Lucas Ramos", description: "Cafeteira Nespresso Vertuo Pop", received: false, thankYouSent: false }
+    { id: "gft1", guestName: "Julia Costa", description: "Oxford 42-Piece Dinnerware Set", received: true, thankYouSent: true },
+    { id: "gft2", guestName: "Peter Antunes", description: "Philips Airfryer", received: true, thankYouSent: false },
+    { id: "gft3", guestName: "Uncle George & Aunt Martha", description: "Cash Wedding Gift $100.00", received: true, thankYouSent: false },
+    { id: "gft4", guestName: "Luke Ramos", description: "Nespresso Vertuo Pop Coffee Maker", received: false, thankYouSent: false }
   ],
   tabNotes: {
-    dashboard: "Lembrete: Revisar a contagem regressiva toda semana! 🥰",
-    checklist: "Focar primeiro nas tarefas de 12-18 meses.",
-    budget: "Não esquecer da margem de segurança de 10% do orçamento.",
-    vendors: "Pedir indicação de assessoria para novos fornecedores.",
-    guests: "Enviar save the date com antecedência de 6 meses.",
-    tables: "Garantir que as famílias fiquem em mesas próximas.",
-    timeline: "Validar horários com o fotógrafo e cerimonialista.",
-    gifts: "Agradecer cada presente assim que for recebido.",
-    moodboard: "Adicionar referências de paleta de cores Boho e Rose Gold."
+    dashboard: "Reminder: Review the countdown every week! 🥰",
+    checklist: "Focus first on the 12-18 months tasks.",
+    budget: "Don't forget the 10% safety margin in the budget.",
+    vendors: "Ask the coordinator for vendor recommendations.",
+    guests: "Send save the dates 6 months in advance.",
+    tables: "Make sure families are seated at nearby tables.",
+    timeline: "Confirm timings with the photographer and coordinator.",
+    gifts: "Thank guests for each gift as soon as it's received.",
+    moodboard: "Add Boho and Rose Gold color palette references."
   },
   loveScore: 80
 };
 
 // Adesivos do Moodboard
 const WEDDING_STICKERS = [
-  { id: "rings", label: "Alianças 💍" },
-  { id: "cheers", label: "Champagne 🥂" },
-  { id: "cake", label: "Bolo 🎂" },
-  { id: "hearts", label: "Corações 💕" },
-  { id: "flowers", label: "Flores 💐" },
-  { id: "dress", label: "Vestido 👗" },
-  { id: "bell", label: "Sinos 🔔" },
-  { id: "camera", label: "Fotos 📸" }
+  { id: "rings", label: "Rings 💍" },
+  { id: "cheers", label: "Cheers 🥂" },
+  { id: "cake", label: "Cake 🎂" },
+  { id: "hearts", label: "Hearts 💕" },
+  { id: "flowers", label: "Flowers 💐" },
+  { id: "dress", label: "Dress 👗" },
+  { id: "bell", label: "Bells 🔔" },
+  { id: "camera", label: "Photos 📸" }
 ];
 
 export default function PlannerNoivas() {
@@ -261,18 +261,18 @@ export default function PlannerNoivas() {
 
   // Cantinho do Cupido & Anotações Helpers
   const [currentAdvice, setCurrentAdvice] = useState(
-    "Cupido diz: Um cafuné caprichado resolve 90% do estresse do planejamento! 💆‍♂️💆‍♀️"
+    "Cupid says: A good head massage solves 90% of planning stress! 💆‍♂️💆‍♀️"
   );
 
   const handleRollCupidAdvice = () => {
     const advices = [
-      "Cupido diz: Hoje é dia de dar um beijo de 10 segundos sem falar sobre o orçamento do casamento! 😘",
-      "Dica do Cupido: O buffet é maravilhoso, mas lembrem-se de comer no grande dia! 🍽️",
-      "Cupido avisa: Decidam quem vai levar a culpa por esquecer as chaves antes do grande dia! 🔑",
-      "Dica de Ouro: Na dúvida sobre a cor dos guardanapos, escolha a que a noiva preferir (evita DRs!). 🎨",
-      "Conselho do Cupido: Façam uma noite de encontro esta semana e proíbam a palavra 'casamento'. 🤫",
-      "Cupido diz: Um cafuné caprichado resolve 90% do estresse do planejamento! 💆‍♂️💆‍♀️",
-      "Dica do Cupido: O casamento é apenas o início do felizes para sempre, aproveitem a jornada! 💖"
+      "Cupid says: Today is the day for a 10-second kiss without talking about the wedding budget! 😘",
+      "Cupid's Tip: The buffet is amazing, but remember to eat on the big day! 🍽️",
+      "Cupid warns: Decide who takes the blame for forgetting the keys before the big day! 🔑",
+      "Golden Tip: When in doubt about napkin colors, choose what the bride prefers! 🎨",
+      "Cupid's Advice: Have a date night this week and ban the word 'wedding'. 🤫",
+      "Cupid says: A good head massage solves 90% of planning stress! 💆‍♂️💆‍♀️",
+      "Cupid's Tip: The wedding is just the beginning of happily ever after, enjoy the journey! 💖"
     ];
     const filtered = advices.filter(a => a !== currentAdvice);
     const random = filtered[Math.floor(Math.random() * filtered.length)];
@@ -280,11 +280,11 @@ export default function PlannerNoivas() {
   };
 
   const getLoveScoreVibeMessage = (score: number) => {
-    if (score <= 20) return "Planejamento inicial... calma, o cupido ainda está aquecendo! 🏹☕";
-    if (score <= 40) return "Frio na barriga de leve! Escolhendo as flores e sonhando acordados... 🌸✨";
-    if (score <= 60) return "Nível Assessora de Sucesso! Organização ativa e corações batendo forte! 📋💖";
-    if (score <= 80) return "Borboletas no estômago! A ansiedade está batendo, mas o amor é maior! 🦋💍";
-    return "ALERTA DE CASAMENTO! Contando os segundos, prontos para o SIM! 🎉👰🤵";
+    if (score <= 20) return "Initial planning... calm down, Cupid is still warming up! 🏹☕";
+    if (score <= 40) return "Light butterflies in the stomach! Choosing flowers and daydreaming... 🌸✨";
+    if (score <= 60) return "Successful Coordinator Level! Active planning and racing hearts! 📋💖";
+    if (score <= 80) return "Butterflies in the stomach! Anxiety is kicking in, but love is bigger! 🦋💍";
+    return "WEDDING ALERT! Counting down the seconds, ready for the 'I DO'! 🎉👰🤵";
   };
 
   const currentNotes = plannerData.tabNotes || {};
@@ -366,7 +366,7 @@ export default function PlannerNoivas() {
         id: `payment-${Date.now()}`,
         amount: initialPaid,
         date: newExpDueDate || new Date().toISOString().split("T")[0],
-        description: "Valor Inicial Pago"
+        description: "Initial Paid Amount"
       }
     ] : [];
 
@@ -522,7 +522,7 @@ export default function PlannerNoivas() {
   };
 
   const deleteTable = (id: string) => {
-    // Liberar todos os convidados sentados nessa mesa
+    // Liberar todos os guests sentados nessa mesa
     const freedGuests = plannerData.guests.map(g => 
       g.tableId === id ? { ...g, tableId: null, seatIndex: null } : g
     );
@@ -781,23 +781,23 @@ export default function PlannerNoivas() {
             ...DEFAULT_WEDDING_DATA,
             ...imported
           });
-          alert("Planner de Casamento Carregado com Sucesso! 🌸");
+          alert("Wedding Planner Loaded Successfully! 📂");
         } else {
-          alert("Arquivo inválido ou corrompido.");
+          alert("Invalid or corrupted file.");
         }
       } catch (err) {
-        alert("Erro ao ler o arquivo.");
+        alert("Error reading file.");
       }
     };
     reader.readAsText(file);
   };
 
   const handleResetData = () => {
-    if (window.confirm("Deseja mesmo redefinir TODO o seu Planner de Casamento? Isso apagará orçamentos, lista de convidados, assentos e fotos.")) {
+    if (window.confirm("Are you sure you want to reset your ENTIRE Wedding Planner? This will erase all budgets, tasks, and guests!")) {
       setPlannerData(DEFAULT_WEDDING_DATA);
       setSelectedTableForZoom(null);
       setSelectedMoodId(null);
-      alert("Planner de Casamento redefinido com sucesso! Comece a planejar o seu sonho 🌸");
+      alert("Wedding Planner reset successfully! Start planning your dream ✨");
     }
   };
 
@@ -833,7 +833,7 @@ export default function PlannerNoivas() {
           <span style={{ fontSize: "1.8rem" }}>👰</span>
           <div>
             <h1 style={{ fontWeight: 900, color: currentTheme.text, fontSize: "1.1rem", margin: 0 }}>
-              Planner de Noivas Premium
+              Premium Wedding Planner
             </h1>
             <span style={{ fontSize: "0.68rem", fontWeight: 700, color: currentTheme.accent, textTransform: "uppercase" }}>
               Wedding Organizer & Seating Planner
@@ -925,13 +925,13 @@ export default function PlannerNoivas() {
             {[
               { id: "dashboard", label: "⚜️ Dashboard" },
               { id: "checklist", label: "📋 Checklist" },
-              { id: "budget", label: "💰 Orçamento" },
-              { id: "vendors", label: "🤝 Fornecedores" },
-              { id: "guests", label: "👥 Convidados" },
-              { id: "tables", label: "🍽️ Mesa de Assentos" },
-              { id: "timeline", label: "⏱️ Roteiro" },
-              { id: "gifts", label: "🎁 Presentes" },
-              { id: "moodboard", label: "🌸 Inspirações" }
+              { id: "budget", label: "💰 Budget" },
+              { id: "vendors", label: "🤝 Vendors" },
+              { id: "guests", label: "👥 Guest List" },
+              { id: "tables", label: "🍽️ Seating Chart" },
+              { id: "timeline", label: "⏱️ Timeline" },
+              { id: "gifts", label: "🎁 Gifts" },
+              { id: "moodboard", label: "🌸 Moodboard" }
             ].map(tab => (
               <button
                 key={tab.id}
@@ -986,7 +986,7 @@ export default function PlannerNoivas() {
         {/* ==================== TAB 1: DASHBOARD ==================== */}
         {activeTab === "dashboard" && (
           <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-            {/* Bloco de Contagem Regressiva e Local */}
+            {/* Bloco de Countdown e Local */}
             <div
               style={{
                 background: currentTheme.cardBg,
@@ -998,14 +998,14 @@ export default function PlannerNoivas() {
               }}
             >
               <span style={{ fontSize: "0.72rem", fontWeight: 800, color: currentTheme.accent, textTransform: "uppercase", letterSpacing: "1.5px" }}>
-                Contagem Regressiva para o Grande Dia
+                Countdown to the Big Day
               </span>
               
               <div style={{ display: "flex", gap: "0.4rem", justifyContent: "center", width: "100%" }}>
                 <input
                   value={plannerData.coupleNames}
                   onChange={e => updateField("coupleNames", e.target.value)}
-                  placeholder="Nome da Noiva & Nome do Noivo"
+                  placeholder="Bride's Name & Groom's Name"
                   style={{
                     border: "none",
                     background: "transparent",
@@ -1022,10 +1022,10 @@ export default function PlannerNoivas() {
                 <input
                   value={plannerData.coupleNames.split("&")[1] || ""}
                   onChange={e => {
-                    const firstPart = plannerData.coupleNames.split("&")[0] || "Noiva";
+                    const firstPart = plannerData.coupleNames.split("&")[0] || "Bride";
                     updateField("coupleNames", `${firstPart.trim()} & ${e.target.value.trim()}`);
                   }}
-                  placeholder="Parceiro(a)"
+                  placeholder="Partner"
                   style={{
                     border: "none",
                     background: "transparent",
@@ -1043,10 +1043,10 @@ export default function PlannerNoivas() {
               {/* Timer de contagem */}
               <div style={{ display: "flex", justifyContent: "center", gap: "1.5rem", margin: "1.5rem 0" }}>
                 {[
-                  { value: timeLeft.days, label: "Dias" },
-                  { value: timeLeft.hours, label: "Horas" },
-                  { value: timeLeft.minutes, label: "Minutos" },
-                  { value: timeLeft.seconds, label: "Segundos" }
+                  { value: timeLeft.days, label: "Days" },
+                  { value: timeLeft.hours, label: "Hours" },
+                  { value: timeLeft.minutes, label: "Minutes" },
+                  { value: timeLeft.seconds, label: "Seconds" }
                 ].map((item, idx) => (
                   <div key={idx} style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                     <div
@@ -1092,7 +1092,7 @@ export default function PlannerNoivas() {
                   <input
                     value={plannerData.weddingLocation}
                     onChange={e => updateField("weddingLocation", e.target.value)}
-                    placeholder="Local do casamento..."
+                    placeholder="Wedding venue..."
                     style={{
                       border: "none",
                       background: "transparent",
@@ -1110,7 +1110,7 @@ export default function PlannerNoivas() {
             {/* Três Cards de Resumo Rápido */}
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.2rem" }}>
               
-              {/* Card 1: Orçamento Geral */}
+              {/* Card 1: Quoted Geral */}
               <div
                 style={{
                   background: currentTheme.cardBg,
@@ -1143,13 +1143,13 @@ export default function PlannerNoivas() {
                   </span>
                   <div style={{ display: "flex", alignItems: "baseline", gap: "0.3rem" }}>
                     <span style={{ fontSize: "1.3rem", fontWeight: 900, color: currentTheme.text }}>
-                      R$ {totalActual.toLocaleString("pt-BR")}
+                      $ {totalActual.toLocaleString("en-US")}
                     </span>
                     <span style={{ fontSize: "0.75rem", fontWeight: 800, color: "#8C8C8C" }}>
-                      / R$ {totalEstimated.toLocaleString("pt-BR")}
+                      / $ {totalEstimated.toLocaleString("en-US")}
                     </span>
                   </div>
-                  {/* Barra de Progresso do Orçamento */}
+                  {/* Barra de Progresso do Quoted */}
                   <div style={{ background: "#F0F0F0", height: "6px", borderRadius: "3px", marginTop: "0.5rem", position: "relative", overflow: "hidden" }}>
                     <div 
                       style={{ 
@@ -1161,12 +1161,12 @@ export default function PlannerNoivas() {
                     />
                   </div>
                   <span style={{ fontSize: "0.65rem", fontWeight: 700, color: "#8C8C8C", marginTop: "0.2rem", display: "block" }}>
-                    Limite estipulado: R$ {plannerData.totalBudgetLimit.toLocaleString("pt-BR")}
+                    Budget Limit: $ {plannerData.totalBudgetLimit.toLocaleString("en-US")}
                   </span>
                 </div>
               </div>
 
-              {/* Card 2: Lista de Convidados & RSVP */}
+              {/* Card 2: Guest List & RSVP */}
               <div
                 style={{
                   background: currentTheme.cardBg,
@@ -1195,11 +1195,11 @@ export default function PlannerNoivas() {
                 </div>
                 <div style={{ flex: 1 }}>
                   <span style={{ fontSize: "0.72rem", fontWeight: 800, color: "#8C8C8C", display: "block" }}>
-                    RSVPS / TOTAL CONVIDADOS
+                    RSVPS / TOTAL GUESTS
                   </span>
                   <div style={{ display: "flex", alignItems: "baseline", gap: "0.3rem" }}>
                     <span style={{ fontSize: "1.3rem", fontWeight: 900, color: currentTheme.text }}>
-                      {plannerData.guests.filter(g => g.rsvp === "confirmado").length} CONFIRMADOS
+                      {plannerData.guests.filter(g => g.rsvp === "confirmado").length} CONFIRMED
                     </span>
                     <span style={{ fontSize: "0.75rem", fontWeight: 800, color: "#8C8C8C" }}>
                       / {plannerData.guests.length} total
@@ -1216,7 +1216,7 @@ export default function PlannerNoivas() {
                     />
                   </div>
                   <span style={{ fontSize: "0.65rem", fontWeight: 700, color: "#8C8C8C", marginTop: "0.2rem", display: "block" }}>
-                    Pendentes: {plannerData.guests.filter(g => g.rsvp === "pendente").length} convidados
+                    Pendings: {plannerData.guests.filter(g => g.rsvp === "pendente").length} guests
                   </span>
                 </div>
               </div>
@@ -1250,14 +1250,14 @@ export default function PlannerNoivas() {
                 </div>
                 <div style={{ flex: 1 }}>
                   <span style={{ fontSize: "0.72rem", fontWeight: 800, color: "#8C8C8C", display: "block" }}>
-                    TAREFAS CONCLUÍDAS
+                    COMPLETED TASKS
                   </span>
                   <div style={{ display: "flex", alignItems: "baseline", gap: "0.3rem" }}>
                     <span style={{ fontSize: "1.3rem", fontWeight: 900, color: currentTheme.text }}>
-                      {plannerData.tasks.filter(t => t.completed).length} CONCLUÍDAS
+                      {plannerData.tasks.filter(t => t.completed).length} COMPLETED
                     </span>
                     <span style={{ fontSize: "0.75rem", fontWeight: 800, color: "#8C8C8C" }}>
-                      / {plannerData.tasks.length} tarefas
+                      / {plannerData.tasks.length} tasks
                     </span>
                   </div>
                   <div style={{ background: "#F0F0F0", height: "6px", borderRadius: "3px", marginTop: "0.5rem", position: "relative", overflow: "hidden" }}>
@@ -1271,7 +1271,7 @@ export default function PlannerNoivas() {
                     />
                   </div>
                   <span style={{ fontSize: "0.65rem", fontWeight: 700, color: "#8C8C8C", marginTop: "0.2rem", display: "block" }}>
-                    Restante: {plannerData.tasks.filter(t => !t.completed).length} tarefas pendentes
+                    Remaining: {plannerData.tasks.filter(t => !t.completed).length} pending tasks
                   </span>
                 </div>
               </div>
@@ -1308,7 +1308,7 @@ export default function PlannerNoivas() {
                   { id: "6-9", label: "6 a 9 meses antes" },
                   { id: "3", label: "3 meses antes" },
                   { id: "1", label: "1 mês antes" },
-                  { id: "day", label: "No dia do casamento!" }
+                  { id: "day", label: "On the wedding day!" }
                 ].map(phase => (
                   <button
                     key={phase.id}
@@ -1337,7 +1337,7 @@ export default function PlannerNoivas() {
               </div>
             </div>
 
-            {/* Listagem das tarefas */}
+            {/* Listagem das tasks */}
             <div>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
                 <h3 style={{ fontSize: "0.95rem", fontWeight: 900, color: currentTheme.text }}>
@@ -1345,12 +1345,12 @@ export default function PlannerNoivas() {
                 </h3>
               </div>
 
-              {/* Form para Adicionar Tarefa */}
+              {/* Form para Add Tarefa */}
               <form onSubmit={handleAddTask} style={{ display: "flex", gap: "0.5rem", marginBottom: "1rem" }}>
                 <input
                   value={newChecklistTitle}
                   onChange={e => setNewChecklistTitle(e.target.value)}
-                  placeholder="Adicionar nova tarefa para esta fase..."
+                  placeholder="Add nova tarefa para esta fase..."
                   style={{
                     flex: 1,
                     background: "#FFF",
@@ -1375,7 +1375,7 @@ export default function PlannerNoivas() {
                     cursor: "pointer"
                   }}
                 >
-                  Adicionar
+                  Add
                 </button>
               </form>
 
@@ -1466,7 +1466,7 @@ export default function PlannerNoivas() {
           >
             <div>
               <span style={{ fontSize: "0.7rem", fontWeight: 800, color: currentTheme.accent, textTransform: "uppercase", display: "block", marginBottom: "0.5rem" }}>
-                Gestão Financeira do Casamento
+                Wedding Financial Management
               </span>
               <h2 style={{ fontSize: "1.2rem", fontWeight: 900, color: currentTheme.text, margin: 0 }}>
                 Gastos & Pagamentos 💰
@@ -1476,56 +1476,56 @@ export default function PlannerNoivas() {
             {/* Barra de Totais em Destaque */}
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "1rem", background: "#FAF8F2", padding: "1.2rem", borderRadius: "1.2rem", border: `1px solid ${currentTheme.border}` }}>
               <div>
-                <span style={{ fontSize: "0.65rem", fontWeight: 800, color: "#8C8C8C" }}>TOTAL ESTIMADO</span>
-                <div style={{ fontSize: "1.1rem", fontWeight: 900, color: currentTheme.text }}>R$ {totalEstimated.toLocaleString("pt-BR")}</div>
+                <span style={{ fontSize: "0.65rem", fontWeight: 800, color: "#8C8C8C" }}>TOTAL ESTIMATED</span>
+                <div style={{ fontSize: "1.1rem", fontWeight: 900, color: currentTheme.text }}>$ {totalEstimated.toLocaleString("en-US")}</div>
               </div>
               <div>
-                <span style={{ fontSize: "0.65rem", fontWeight: 800, color: "#8C8C8C" }}>VALOR CONTRATADO</span>
-                <div style={{ fontSize: "1.1rem", fontWeight: 900, color: currentTheme.text }}>R$ {totalActual.toLocaleString("pt-BR")}</div>
+                <span style={{ fontSize: "0.65rem", fontWeight: 800, color: "#8C8C8C" }}>CONTRACTED VALUE</span>
+                <div style={{ fontSize: "1.1rem", fontWeight: 900, color: currentTheme.text }}>$ {totalActual.toLocaleString("en-US")}</div>
               </div>
               <div>
-                <span style={{ fontSize: "0.65rem", fontWeight: 800, color: "#8C8C8C" }}>VALOR PAGO</span>
-                <div style={{ fontSize: "1.1rem", fontWeight: 900, color: "#9B7E1A" }}>R$ {totalPaid.toLocaleString("pt-BR")}</div>
+                <span style={{ fontSize: "0.65rem", fontWeight: 800, color: "#8C8C8C" }}>PAID AMOUNT</span>
+                <div style={{ fontSize: "1.1rem", fontWeight: 900, color: "#9B7E1A" }}>$ {totalPaid.toLocaleString("en-US")}</div>
               </div>
               <div>
-                <span style={{ fontSize: "0.65rem", fontWeight: 800, color: "#8C8C8C" }}>RESTANTE A PAGAR</span>
-                <div style={{ fontSize: "1.1rem", fontWeight: 900, color: "#A85361" }}>R$ {totalRemaining.toLocaleString("pt-BR")}</div>
+                <span style={{ fontSize: "0.65rem", fontWeight: 800, color: "#8C8C8C" }}>REMAINING BALANCE</span>
+                <div style={{ fontSize: "1.1rem", fontWeight: 900, color: "#A85361" }}>$ {totalRemaining.toLocaleString("en-US")}</div>
               </div>
             </div>
 
-            {/* Form para Adicionar Despesa */}
+            {/* Form para Add Despesa */}
             <form onSubmit={handleAddExpense} style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap", background: "#FFFBF2", padding: "1rem", borderRadius: "1rem", border: `1.5px dashed ${currentTheme.border}` }}>
               <input
                 value={newExpCategory}
                 onChange={e => setNewExpCategory(e.target.value)}
-                placeholder="Categoria (Ex: Decoração)"
+                placeholder="Category (e.g. Decoration)"
                 style={{ flex: "1 1 180px", background: "#FFF", border: `1.5px solid ${currentTheme.border}`, borderRadius: "0.5rem", padding: "0.4rem 0.6rem", fontSize: "0.78rem", outline: "none" }}
               />
               <input
                 value={newExpVendor}
                 onChange={e => setNewExpVendor(e.target.value)}
-                placeholder="Fornecedor"
+                placeholder="Vendor"
                 style={{ flex: "1 1 180px", background: "#FFF", border: `1.5px solid ${currentTheme.border}`, borderRadius: "0.5rem", padding: "0.4rem 0.6rem", fontSize: "0.78rem", outline: "none" }}
               />
               <input
                 type="number"
                 value={newExpEstimated}
                 onChange={e => setNewExpEstimated(e.target.value)}
-                placeholder="Est. R$"
+                placeholder="Est. $"
                 style={{ width: "85px", background: "#FFF", border: `1.5px solid ${currentTheme.border}`, borderRadius: "0.5rem", padding: "0.4rem 0.6rem", fontSize: "0.78rem", outline: "none" }}
               />
               <input
                 type="number"
                 value={newExpActual}
                 onChange={e => setNewExpActual(e.target.value)}
-                placeholder="Real R$"
+                placeholder="Actual $"
                 style={{ width: "85px", background: "#FFF", border: `1.5px solid ${currentTheme.border}`, borderRadius: "0.5rem", padding: "0.4rem 0.6rem", fontSize: "0.78rem", outline: "none" }}
               />
               <input
                 type="number"
                 value={newExpPaid}
                 onChange={e => setNewExpPaid(e.target.value)}
-                placeholder="Pago R$"
+                placeholder="Paid $"
                 style={{ width: "85px", background: "#FFF", border: `1.5px solid ${currentTheme.border}`, borderRadius: "0.5rem", padding: "0.4rem 0.6rem", fontSize: "0.78rem", outline: "none" }}
               />
               <input
@@ -1538,7 +1538,7 @@ export default function PlannerNoivas() {
                 type="submit"
                 style={{ background: currentTheme.primary, color: "#FFF", border: "none", borderRadius: "0.5rem", padding: "0.4rem 0.9rem", fontSize: "0.78rem", fontWeight: 800, cursor: "pointer" }}
               >
-                + Despesa
+                + Expense
               </button>
             </form>
 
@@ -1547,20 +1547,20 @@ export default function PlannerNoivas() {
               <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.78rem", textAlign: "left" }}>
                 <thead>
                   <tr style={{ borderBottom: `2px solid ${currentTheme.border}`, color: "#8C8C8C" }}>
-                    <th style={{ padding: "0.5rem" }}>Categoria</th>
-                    <th style={{ padding: "0.5rem" }}>Fornecedor</th>
-                    <th style={{ padding: "0.5rem" }}>Estimado</th>
-                    <th style={{ padding: "0.5rem" }}>Valor Real</th>
-                    <th style={{ padding: "0.5rem" }}>Valor Pago</th>
-                    <th style={{ padding: "0.5rem" }}>Devido em</th>
-                    <th style={{ padding: "0.5rem" }}>Ação</th>
+                    <th style={{ padding: "0.5rem" }}>Category</th>
+                    <th style={{ padding: "0.5rem" }}>Vendor</th>
+                    <th style={{ padding: "0.5rem" }}>Estimated</th>
+                    <th style={{ padding: "0.5rem" }}>Actual Value</th>
+                    <th style={{ padding: "0.5rem" }}>Paid Amount</th>
+                    <th style={{ padding: "0.5rem" }}>Due Date</th>
+                    <th style={{ padding: "0.5rem" }}>Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {plannerData.expenses.length === 0 ? (
                     <tr>
                       <td colSpan={7} style={{ textAlign: "center", padding: "2rem", color: "#8C8C8C" }}>
-                        Nenhuma despesa lançada. Adicione uma despesa acima! ✨
+                        No expenses added. Add an expense above! ✨
                       </td>
                     </tr>
                   ) : (
@@ -1700,7 +1700,7 @@ export default function PlannerNoivas() {
                                       display: "inline-block"
                                     }}
                                   >
-                                    {exp.paid.toLocaleString("pt-BR")}
+                                    {exp.paid.toLocaleString("en-US")}
                                   </span>
                                 ) : (
                                   <input
@@ -1777,7 +1777,7 @@ export default function PlannerNoivas() {
                                   }}
                                   title="Expandir parcelas / pagamentos"
                                 >
-                                  {expandedExpenses[exp.id] ? "Fechar" : `Parcelas (${(exp.payments || []).length})`}
+                                  {expandedExpenses[exp.id] ? "Close" : `Installments (${(exp.payments || []).length})`}
                                 </button>
                                 <button
                                   type="button"
@@ -1797,11 +1797,11 @@ export default function PlannerNoivas() {
                                 <div style={{ borderLeft: `3px solid ${currentTheme.accent}`, paddingLeft: "1rem" }}>
                                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.6rem" }}>
                                     <h4 style={{ fontSize: "0.75rem", fontWeight: 900, color: currentTheme.primary, margin: 0 }}>
-                                      💵 Histórico de Parcelas / Pagamentos para: {exp.vendor || "Este Fornecedor"}
+                                      💵 Installment / Payment History for: {exp.vendor || "Este Fornecedor"}
                                     </h4>
                                     {hasPayments && (
                                       <span style={{ fontSize: "0.68rem", fontWeight: 800, color: "#8C8C8C" }}>
-                                        Restante a Pagar: R$ {Math.max(0, exp.actual - exp.paid).toLocaleString("pt-BR")}
+                                        Remaining Balance: $ {Math.max(0, exp.actual - exp.paid).toLocaleString("en-US")}
                                       </span>
                                     )}
                                   </div>
@@ -1814,7 +1814,7 @@ export default function PlannerNoivas() {
                                         type="number"
                                         id={`pay-amount-${exp.id}`}
                                         className="budget-table-input"
-                                        placeholder="Valor R$"
+                                        placeholder="Amount $"
                                         style={{
                                           width: "90px",
                                           padding: "0.2rem 0.4rem",
@@ -1840,7 +1840,7 @@ export default function PlannerNoivas() {
                                       type="text"
                                       id={`pay-desc-${exp.id}`}
                                       className="budget-table-input"
-                                      placeholder="Descrição (Ex: 1ª Parcela)"
+                                      placeholder="Description (e.g. 1st Installment)"
                                       style={{
                                         flex: 1,
                                         minWidth: "120px",
@@ -1878,15 +1878,15 @@ export default function PlannerNoivas() {
                                         cursor: "pointer"
                                       }}
                                     >
-                                      Adicionar Pagamento
+                                      Add Pagamento
                                     </button>
                                   </div>
 
-                                  {/* Lista de Parcelas */}
+                                  {/* Lista de Installments */}
                                   <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
                                     {(exp.payments || []).length === 0 ? (
                                       <div style={{ fontSize: "0.72rem", color: "#8C8C8C", padding: "0.3rem 0" }}>
-                                        Nenhum pagamento registrado. Use o formulário acima para cadastrar parcelas ou pagamentos.
+                                        No payments registered. Use the form above to register installments or payments.
                                       </div>
                                     ) : (
                                       (exp.payments || []).map((pay) => (
@@ -1906,19 +1906,19 @@ export default function PlannerNoivas() {
                                           <div>
                                             <span style={{ fontWeight: 800, color: currentTheme.text }}>{pay.description}</span>
                                             <span style={{ color: "#8C8C8C", marginLeft: "0.8rem" }}>
-                                              Pago em: {new Date(pay.date + "T00:00:00").toLocaleDateString("pt-BR")}
+                                              Paid on: {new Date(pay.date + "T00:00:00").toLocaleDateString("en-US")}
                                             </span>
                                           </div>
                                           <div style={{ display: "flex", alignItems: "center", gap: "0.8rem" }}>
                                             <span style={{ fontWeight: 900, color: "#2E7D32" }}>
-                                              R$ {pay.amount.toLocaleString("pt-BR")}
+                                              $ {pay.amount.toLocaleString("en-US")}
                                             </span>
                                             <button
                                               type="button"
                                               onClick={() => handleDeleteExpensePayment(exp.id, pay.id)}
                                               style={{ border: "none", background: "none", color: "#C62828", cursor: "pointer", padding: 0 }}
                                               className="no-print"
-                                              title="Excluir pagamento"
+                                              title="Delete payment"
                                             >
                                               ✕
                                             </button>
@@ -1970,7 +1970,7 @@ export default function PlannerNoivas() {
                 <input
                   value={guestSearch}
                   onChange={e => setGuestSearch(e.target.value)}
-                  placeholder="Buscar convidado..."
+                  placeholder="Search guest..."
                   style={{
                     background: "#FFF",
                     border: `1.5px solid ${currentTheme.border}`,
@@ -1994,10 +1994,10 @@ export default function PlannerNoivas() {
                     cursor: "pointer"
                   }}
                 >
-                  <option value="todos">Todos RSVPs</option>
-                  <option value="confirmado">Confirmados</option>
-                  <option value="pendente">Pendentes</option>
-                  <option value="recusado">Recusados</option>
+                  <option value="todos">All RSVPs</option>
+                  <option value="confirmado">Confirmed</option>
+                  <option value="pendente">Pending</option>
+                  <option value="recusado">Declined</option>
                 </select>
               </div>
             </div>
@@ -2007,7 +2007,7 @@ export default function PlannerNoivas() {
               <input
                 value={newGuestName}
                 onChange={e => setNewGuestName(e.target.value)}
-                placeholder="Nome do Convidado"
+                placeholder="Guest Name"
                 style={{ flex: 1, minWidth: "180px", background: "#FFF", border: `1.5px solid ${currentTheme.border}`, borderRadius: "0.5rem", padding: "0.4rem 0.6rem", fontSize: "0.78rem", outline: "none" }}
               />
               <select
@@ -2015,9 +2015,9 @@ export default function PlannerNoivas() {
                 onChange={e => setNewGuestSide(e.target.value as any)}
                 style={{ background: "#FFF", border: `1.5px solid ${currentTheme.border}`, borderRadius: "0.5rem", padding: "0.4rem 0.6rem", fontSize: "0.78rem", outline: "none" }}
               >
-                <option value="noiva">Família Noiva</option>
-                <option value="noivo">Família Noivo</option>
-                <option value="outro">Amigos / Comum</option>
+                <option value="noiva">Bride's Family</option>
+                <option value="noivo">Groom's Family</option>
+                <option value="outro">Friends / Others</option>
               </select>
               <select
                 value={newGuestDiet}
@@ -2025,24 +2025,24 @@ export default function PlannerNoivas() {
                 style={{ background: "#FFF", border: `1.5px solid ${currentTheme.border}`, borderRadius: "0.5rem", padding: "0.4rem 0.6rem", fontSize: "0.78rem", outline: "none" }}
               >
                 <option value="normal">Dieta Normal</option>
-                <option value="vegano">Vegano</option>
-                <option value="vegetariano">Vegetariano</option>
-                <option value="sem_gluten">Sem Glúten</option>
+                <option value="vegano">Vegan</option>
+                <option value="vegetariano">Vegetarian</option>
+                <option value="sem_gluten">Gluten-Free</option>
               </select>
               <select
                 value={newGuestRsvp}
                 onChange={e => setNewGuestRsvp(e.target.value as any)}
                 style={{ background: "#FFF", border: `1.5px solid ${currentTheme.border}`, borderRadius: "0.5rem", padding: "0.4rem 0.6rem", fontSize: "0.78rem", outline: "none" }}
               >
-                <option value="confirmado">Confirmado</option>
-                <option value="pendente">Pendente</option>
-                <option value="recusado">Recusado</option>
+                <option value="confirmado">Confirmed</option>
+                <option value="pendente">Pending</option>
+                <option value="recusado">Declined</option>
               </select>
               <button
                 type="submit"
                 style={{ background: currentTheme.primary, color: "#FFF", border: "none", borderRadius: "0.5rem", padding: "0.4rem 0.9rem", fontSize: "0.78rem", fontWeight: 800, cursor: "pointer" }}
               >
-                + Convidado
+                + Guest
               </button>
             </form>
 
@@ -2051,18 +2051,18 @@ export default function PlannerNoivas() {
               <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.78rem", textAlign: "left" }}>
                 <thead>
                   <tr style={{ borderBottom: `2px solid ${currentTheme.border}`, color: "#8C8C8C" }}>
-                    <th style={{ padding: "0.5rem" }}>Nome</th>
-                    <th style={{ padding: "0.5rem" }}>Lado</th>
+                    <th style={{ padding: "0.5rem" }}>Name</th>
+                    <th style={{ padding: "0.5rem" }}>Side</th>
                     <th style={{ padding: "0.5rem" }}>Restrição Alimentar</th>
                     <th style={{ padding: "0.5rem" }}>Status RSVP</th>
-                    <th style={{ padding: "0.5rem" }}>Ação</th>
+                    <th style={{ padding: "0.5rem" }}>Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredGuests.length === 0 ? (
                     <tr>
                       <td colSpan={5} style={{ textAlign: "center", padding: "2rem", color: "#8C8C8C" }}>
-                        Nenhum convidado encontrado.
+                        No guests found.
                       </td>
                     </tr>
                   ) : (
@@ -2086,9 +2086,9 @@ export default function PlannerNoivas() {
                               cursor: "pointer"
                             }}
                           >
-                            <option value="confirmado">Confirmado</option>
-                            <option value="pendente">Pendente</option>
-                            <option value="recusado">Recusado</option>
+                            <option value="confirmado">Confirmed</option>
+                            <option value="pendente">Pending</option>
+                            <option value="recusado">Declined</option>
                           </select>
                         </td>
                         <td style={{ padding: "0.6rem 0.5rem" }}>
@@ -2122,27 +2122,27 @@ export default function PlannerNoivas() {
               gap: "2rem"
             }}
           >
-            {/* Sidebar com convidados confirmados não assentados */}
+            {/* Sidebar com guests confirmados não assentados */}
             <div className="no-print">
               <span style={{ fontSize: "0.7rem", fontWeight: 800, color: currentTheme.accent, textTransform: "uppercase", display: "block", marginBottom: "0.5rem" }}>
-                Organizador de Assentos
+                Organizador de Seats
               </span>
               <h2 style={{ fontSize: "1.2rem", fontWeight: 900, color: currentTheme.text, margin: "0 0 1rem" }}>
-                Lista de Convidados 🍽️
+                Guest List 🍽️
               </h2>
               <p style={{ fontSize: "0.75rem", color: "#8C8C8C", margin: "0 0 1rem", lineHeight: 1.4 }}>
-                Arraste os convidados confirmados abaixo e solte-os em uma cadeira de qualquer mesa no salão!
+                Drag the confirmed guests below and drop them onto a seat of any table!
               </p>
 
               {/* Listagem lateral */}
               <div style={{ background: "#FAF8F2", padding: "1rem", borderRadius: "1rem", border: `1.5px solid ${currentTheme.border}` }}>
                 <span style={{ fontSize: "0.7rem", fontWeight: 800, color: currentTheme.primary, display: "block", marginBottom: "0.5rem" }}>
-                  Confirmados Sem Mesa ({plannerData.guests.filter(g => g.rsvp === "confirmado" && !g.tableId).length})
+                  Confirmed Unseated Guests ({plannerData.guests.filter(g => g.rsvp === "confirmado" && !g.tableId).length})
                 </span>
                 <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem", maxHeight: "250px", overflowY: "auto", padding: "0.2rem" }}>
                   {plannerData.guests.filter(g => g.rsvp === "confirmado" && !g.tableId).length === 0 ? (
                     <div style={{ fontSize: "0.7rem", color: "#8C8C8C", textAlign: "center", padding: "1.5rem" }}>
-                      Nenhum convidado pendente de assento! 🎉
+                      No guests pending a seat! 🎉
                     </div>
                   ) : (
                     plannerData.guests
@@ -2180,13 +2180,13 @@ export default function PlannerNoivas() {
                 </div>
               </div>
 
-              {/* Criador de Mesas */}
+              {/* Criador de Tables */}
               <form onSubmit={handleAddTable} style={{ display: "flex", flexDirection: "column", gap: "0.5rem", marginTop: "1rem", background: "#FFF", padding: "1rem", borderRadius: "1rem", border: `1.5px dashed ${currentTheme.border}` }}>
-                <span style={{ fontSize: "0.7rem", fontWeight: 800, color: currentTheme.accent }}>Criar Nova Mesa</span>
+                <span style={{ fontSize: "0.7rem", fontWeight: 800, color: currentTheme.accent }}>Criar Nova Table</span>
                 <input
                   value={newTableName}
                   onChange={e => setNewTableName(e.target.value)}
-                  placeholder="Nome da Mesa (Ex: Mesa 1)"
+                  placeholder="Nome da Table (Ex: Table 1)"
                   style={{ background: "#FFF", border: `1.5px solid ${currentTheme.border}`, borderRadius: "0.5rem", padding: "0.4rem 0.6rem", fontSize: "0.78rem", outline: "none" }}
                 />
                 <div style={{ display: "flex", gap: "0.3rem" }}>
@@ -2195,14 +2195,14 @@ export default function PlannerNoivas() {
                     onChange={e => setNewTableShape(e.target.value as any)}
                     style={{ flex: 1, background: "#FFF", border: `1.5px solid ${currentTheme.border}`, borderRadius: "0.5rem", padding: "0.4rem", fontSize: "0.78rem", outline: "none" }}
                   >
-                    <option value="circle">Redonda</option>
-                    <option value="rectangle">Retangular</option>
+                    <option value="circle">Round</option>
+                    <option value="rectangle">Rectangular</option>
                   </select>
                   <input
                     type="number"
                     value={newTableSeats}
                     onChange={e => setNewTableSeats(parseInt(e.target.value) || 4)}
-                    placeholder="Assentos"
+                    placeholder="Seats"
                     style={{ width: "70px", background: "#FFF", border: `1.5px solid ${currentTheme.border}`, borderRadius: "0.5rem", padding: "0.4rem", fontSize: "0.78rem", outline: "none" }}
                   />
                 </div>
@@ -2210,7 +2210,7 @@ export default function PlannerNoivas() {
                   type="submit"
                   style={{ background: currentTheme.primary, color: "#FFF", border: "none", borderRadius: "0.5rem", padding: "0.4rem", fontSize: "0.78rem", fontWeight: 800, cursor: "pointer" }}
                 >
-                  Adicionar Mesa
+                  Add Table
                 </button>
               </form>
             </div>
@@ -2234,7 +2234,7 @@ export default function PlannerNoivas() {
                     gap: "0.2rem"
                   }}
                 >
-                  Imprimir Mapa de Assentos 🖨️
+                  Imprimir Mapa de Seats 🖨️
                 </button>
               </div>
 
@@ -2285,7 +2285,7 @@ export default function PlannerNoivas() {
                         </button>
                       </div>
 
-                      {/* Desenho da Mesa */}
+                      {/* Desenho da Table */}
                       <div
                         style={{
                           width: 140,
@@ -2297,7 +2297,7 @@ export default function PlannerNoivas() {
                           margin: "1rem 0"
                         }}
                       >
-                        {/* Tampo da Mesa Principal */}
+                        {/* Tampo da Table Principal */}
                         <div
                           style={{
                             width: 80,
@@ -2316,7 +2316,7 @@ export default function PlannerNoivas() {
                           }}
                         >
                           <span>{tableGuests.length} / {table.seatsCount}</span>
-                          <span>Assentos</span>
+                          <span>Seats</span>
                         </div>
 
                         {/* Renderizar as cadeiras ao redor */}
@@ -2333,7 +2333,7 @@ export default function PlannerNoivas() {
                             x = 70 + radius * Math.cos(angle) - 14;
                             y = 70 + radius * Math.sin(angle) - 14;
                           } else {
-                            // Retangular: Divide os assentos entre cima (top) e baixo (bottom)
+                            // Rectangular: Divide os assentos entre cima (top) e baixo (bottom)
                             const half = Math.ceil(table.seatsCount / 2);
                             const top = seatIdx < half;
                             const colIdx = top ? seatIdx : seatIdx - half;
@@ -2464,7 +2464,7 @@ export default function PlannerNoivas() {
               {/* Painel de Adesivos */}
               <div style={{ background: "#FAF8F2", padding: "1rem", borderRadius: "1rem", border: `1.5px solid ${currentTheme.border}` }}>
                 <span style={{ fontSize: "0.7rem", fontWeight: 800, color: currentTheme.primary, display: "block", marginBottom: "0.5rem" }}>
-                  Adesivos de Casamento
+                  Wedding Stickers
                 </span>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
                   {WEDDING_STICKERS.map(st => (
@@ -2620,10 +2620,10 @@ export default function PlannerNoivas() {
               }}
             >
               <h2 style={{ fontSize: "1.3rem", fontWeight: 900, color: currentTheme.primary, fontFamily: "'Playfair Display', serif", marginBottom: "0.5rem" }}>
-                🤝 Registro de Fornecedores
+                🤝 Vendor Registry
               </h2>
               <p style={{ fontSize: "0.82rem", color: "#6A6A6A", marginBottom: "1.5rem" }}>
-                Cadastre e gerencie os contatos, contratos e valores negociados com cada profissional do seu casamento.
+                Register and manage contacts, contracts, and negotiated amounts with each professional for your wedding.
               </p>
 
               {/* Form de Cadastro */}
@@ -2633,44 +2633,44 @@ export default function PlannerNoivas() {
                   <input type="text" value={newVendorName} onChange={e => setNewVendorName(e.target.value)} placeholder="Ex: Buffet Fino Sabor" required style={{ border: `1.5px solid ${currentTheme.border}`, padding: "0.5rem", borderRadius: "0.5rem", fontSize: "0.8rem" }} />
                 </label>
                 <label style={{ display: "flex", flexDirection: "column", gap: "0.3rem", fontSize: "0.78rem", fontWeight: 800 }}>
-                  Categoria
+                  Category
                   <select value={newVendorCategory} onChange={e => setNewVendorCategory(e.target.value)} style={{ border: `1.5px solid ${currentTheme.border}`, padding: "0.5rem", borderRadius: "0.5rem", fontSize: "0.8rem", background: "#FFF" }}>
-                    <option value="Buffet & Gastronomia">Buffet & Gastronomia 🍽️</option>
-                    <option value="Decoração & Flores">Decoração & Flores 🌸</option>
-                    <option value="Fotografia & Vídeo">Fotografia & Vídeo 📸</option>
-                    <option value="Música & Dj">Música & Dj 🎵</option>
-                    <option value="Vestido & Noiva">Vestido & Noiva 👗</option>
-                    <option value="Assessoria & Cerimonial">Assessoria & Cerimonial 📋</option>
-                    <option value="Convites & Papelaria">Convites & Papelaria ✉️</option>
-                    <option value="Outros">Outros ✨</option>
+                    <option value="Buffet & Gastronomia">Catering & Buffet 🍽️</option>
+                    <option value="Decoração & Flores">Decoration & Flowers 🌸</option>
+                    <option value="Fotografia & Vídeo">Photography & Video 📸</option>
+                    <option value="Música & Dj">Music & DJ 🎵</option>
+                    <option value="Vestido & Noiva">Dress & Bridal 👗</option>
+                    <option value="Assessoria & Cerimonial">Wedding Planner 📋</option>
+                    <option value="Convites & Papelaria">Invitations & Stationery ✉️</option>
+                    <option value="Others">Others ✨</option>
                   </select>
                 </label>
                 <label style={{ display: "flex", flexDirection: "column", gap: "0.3rem", fontSize: "0.78rem", fontWeight: 800 }}>
-                  Contato (Email/Tel)
-                  <input type="text" value={newVendorContact} onChange={e => setNewVendorContact(e.target.value)} placeholder="Ex: contato@buffet.com" style={{ border: `1.5px solid ${currentTheme.border}`, padding: "0.5rem", borderRadius: "0.5rem", fontSize: "0.8rem" }} />
+                  Contact (Email/Phone)
+                  <input type="text" value={newVendorContact} onChange={e => setNewVendorContact(e.target.value)} placeholder="e.g. contact@buffet.com" style={{ border: `1.5px solid ${currentTheme.border}`, padding: "0.5rem", borderRadius: "0.5rem", fontSize: "0.8rem" }} />
                 </label>
                 <label style={{ display: "flex", flexDirection: "column", gap: "0.3rem", fontSize: "0.78rem", fontWeight: 800 }}>
-                  Valor do Contrato (R$)
-                  <input type="number" value={newVendorCost} onChange={e => setNewVendorCost(e.target.value)} placeholder="Ex: 5000" style={{ border: `1.5px solid ${currentTheme.border}`, padding: "0.5rem", borderRadius: "0.5rem", fontSize: "0.8rem" }} />
+                  Contract Cost ($)
+                  <input type="number" value={newVendorCost} onChange={e => setNewVendorCost(e.target.value)} placeholder="e.g. 5000" style={{ border: `1.5px solid ${currentTheme.border}`, padding: "0.5rem", borderRadius: "0.5rem", fontSize: "0.8rem" }} />
                 </label>
                 <label style={{ display: "flex", flexDirection: "column", gap: "0.3rem", fontSize: "0.78rem", fontWeight: 800 }}>
-                  Valor Pago (R$)
-                  <input type="number" value={newVendorPaid} onChange={e => setNewVendorPaid(e.target.value)} placeholder="Ex: 2500" style={{ border: `1.5px solid ${currentTheme.border}`, padding: "0.5rem", borderRadius: "0.5rem", fontSize: "0.8rem" }} />
+                  Paid Amount ($)
+                  <input type="number" value={newVendorPaid} onChange={e => setNewVendorPaid(e.target.value)} placeholder="e.g. 2500" style={{ border: `1.5px solid ${currentTheme.border}`, padding: "0.5rem", borderRadius: "0.5rem", fontSize: "0.8rem" }} />
                 </label>
                 <label style={{ display: "flex", flexDirection: "column", gap: "0.3rem", fontSize: "0.78rem", fontWeight: 800 }}>
-                  Status do Contrato
+                  Contract Status
                   <select value={newVendorStatus} onChange={e => setNewVendorStatus(e.target.value as any)} style={{ border: `1.5px solid ${currentTheme.border}`, padding: "0.5rem", borderRadius: "0.5rem", fontSize: "0.8rem", background: "#FFF" }}>
-                    <option value="cotacao">Em Cotação 💬</option>
-                    <option value="contratado">Contratado ✍️</option>
-                    <option value="finalizado">Pago/Finalizado ✔️</option>
+                    <option value="cotacao">Quoted 💬</option>
+                    <option value="contratado">Contracted ✍️</option>
+                    <option value="finalizado">Paid/Completed ✔️</option>
                   </select>
                 </label>
                 <label style={{ display: "flex", flexDirection: "column", gap: "0.3rem", fontSize: "0.78rem", fontWeight: 800, gridColumn: "1 / -1" }}>
-                  Observações Rápidas
-                  <input type="text" value={newVendorNotes} onChange={e => setNewVendorNotes(e.target.value)} placeholder="Ex: Entrada parcelada em 3x. Jantar de degustação agendado." style={{ border: `1.5px solid ${currentTheme.border}`, padding: "0.5rem", borderRadius: "0.5rem", fontSize: "0.8rem" }} />
+                  Quick Notes
+                  <input type="text" value={newVendorNotes} onChange={e => setNewVendorNotes(e.target.value)} placeholder="e.g. Installments in 3x. Food tasting scheduled." style={{ border: `1.5px solid ${currentTheme.border}`, padding: "0.5rem", borderRadius: "0.5rem", fontSize: "0.8rem" }} />
                 </label>
                 <button type="submit" style={{ gridColumn: "1 / -1", background: currentTheme.primary, color: "#FFF", border: "none", borderRadius: "0.5rem", padding: "0.6rem", fontWeight: 800, fontSize: "0.8rem", cursor: "pointer", transition: "filter 0.2s" }}>
-                  Adicionar Fornecedor
+                  Add Vendor
                 </button>
               </form>
 
@@ -2679,14 +2679,14 @@ export default function PlannerNoivas() {
                 <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.8rem", textAlign: "left" }}>
                   <thead>
                     <tr style={{ borderBottom: `2px solid ${currentTheme.border}`, color: currentTheme.accent, fontWeight: 900 }}>
-                      <th style={{ padding: "0.6rem" }}>Fornecedor</th>
-                      <th style={{ padding: "0.6rem" }}>Categoria</th>
-                      <th style={{ padding: "0.6rem" }}>Contato</th>
+                      <th style={{ padding: "0.6rem" }}>Vendor</th>
+                      <th style={{ padding: "0.6rem" }}>Category</th>
+                      <th style={{ padding: "0.6rem" }}>Contact</th>
                       <th style={{ padding: "0.6rem" }}>Custo Total</th>
-                      <th style={{ padding: "0.6rem" }}>Pago</th>
-                      <th style={{ padding: "0.6rem" }}>Pendente</th>
+                      <th style={{ padding: "0.6rem" }}>Paid</th>
+                      <th style={{ padding: "0.6rem" }}>Pending</th>
                       <th style={{ padding: "0.6rem" }}>Status</th>
-                      <th style={{ padding: "0.6rem" }}>Notas</th>
+                      <th style={{ padding: "0.6rem" }}>Notes</th>
                       <th style={{ padding: "0.6rem", textAlign: "center" }} className="no-print">Ações</th>
                     </tr>
                   </thead>
@@ -2705,10 +2705,10 @@ export default function PlannerNoivas() {
                             <td style={{ padding: "0.6rem", fontWeight: 800 }}>{v.name}</td>
                             <td style={{ padding: "0.6rem" }}>{v.category}</td>
                             <td style={{ padding: "0.6rem" }}>{v.contact || "-"}</td>
-                            <td style={{ padding: "0.6rem", fontWeight: 700 }}>R$ {v.cost.toLocaleString("pt-BR")}</td>
-                            <td style={{ padding: "0.6rem", color: "#2E7D32", fontWeight: 700 }}>R$ {v.paid.toLocaleString("pt-BR")}</td>
+                            <td style={{ padding: "0.6rem", fontWeight: 700 }}>$ {v.cost.toLocaleString("en-US")}</td>
+                            <td style={{ padding: "0.6rem", color: "#2E7D32", fontWeight: 700 }}>$ {v.paid.toLocaleString("en-US")}</td>
                             <td style={{ padding: "0.6rem", color: pendente > 0 ? "#C62828" : "#2E7D32", fontWeight: 700 }}>
-                              {pendente === 0 ? "Quitado ✔️" : `R$ ${pendente.toLocaleString("pt-BR")}`}
+                              {pendente === 0 ? "Paid ✔️" : `$ ${pendente.toLocaleString("en-US")}`}
                             </td>
                             <td style={{ padding: "0.6rem" }}>
                               <select
@@ -2722,9 +2722,9 @@ export default function PlannerNoivas() {
                                   background: "#FFF"
                                 }}
                               >
-                                <option value="cotacao">Em Cotação 💬</option>
-                                <option value="contratado">Contratado ✍️</option>
-                                <option value="finalizado">Pago/Finalizado ✔️</option>
+                                <option value="cotacao">Quoted 💬</option>
+                                <option value="contratado">Contracted ✍️</option>
+                                <option value="finalizado">Paid/Completed ✔️</option>
                               </select>
                             </td>
                             <td style={{ padding: "0.6rem", color: "#555" }}>{v.notes || "-"}</td>
@@ -2757,7 +2757,7 @@ export default function PlannerNoivas() {
               }}
             >
               <h2 style={{ fontSize: "1.3rem", fontWeight: 900, color: currentTheme.primary, fontFamily: "'Playfair Display', serif", marginBottom: "0.5rem" }}>
-                ⏱️ Roteiro do Casamento (Timeline)
+                ⏱️ Wedding Timeline
               </h2>
               <p style={{ fontSize: "0.82rem", color: "#6A6A6A", marginBottom: "1.5rem" }}>
                 Planeje o horário de cada evento para o grande dia, definindo os responsáveis e mantendo o dia impecavelmente organizado.
@@ -2782,7 +2782,7 @@ export default function PlannerNoivas() {
                   <input type="text" value={newTimelineNotes} onChange={e => setNewTimelineNotes(e.target.value)} placeholder="Ex: Música - Marcha Nupcial" style={{ border: `1.5px solid ${currentTheme.border}`, padding: "0.5rem", borderRadius: "0.5rem", fontSize: "0.8rem" }} />
                 </label>
                 <button type="submit" style={{ background: currentTheme.primary, color: "#FFF", border: "none", borderRadius: "0.5rem", padding: "0.6rem 1.2rem", fontWeight: 800, fontSize: "0.8rem", cursor: "pointer", height: "42px" }}>
-                  Adicionar
+                  Add
                 </button>
               </form>
 
@@ -2902,7 +2902,7 @@ export default function PlannerNoivas() {
               }}
             >
               <h2 style={{ fontSize: "1.3rem", fontWeight: 900, color: currentTheme.primary, fontFamily: "'Playfair Display', serif", marginBottom: "0.5rem" }}>
-                🎁 Registro de Presentes & Agradecimentos
+                🎁 Gift Registry & Thank You Tracker
               </h2>
               <p style={{ fontSize: "0.82rem", color: "#6A6A6A", marginBottom: "1.5rem" }}>
                 Acompanhe quem deu cada presente e marque se o cartão ou mensagem de agradecimento já foi enviado.
@@ -2915,11 +2915,11 @@ export default function PlannerNoivas() {
                   <input type="text" value={newGiftGuestName} onChange={e => setNewGiftGuestName(e.target.value)} placeholder="Ex: Juliana Costa" required style={{ border: `1.5px solid ${currentTheme.border}`, padding: "0.5rem", borderRadius: "0.5rem", fontSize: "0.8rem" }} />
                 </label>
                 <label style={{ display: "flex", flexDirection: "column", gap: "0.3rem", fontSize: "0.78rem", fontWeight: 800 }}>
-                  Presente Recebido *
+                  Presente Received *
                   <input type="text" value={newGiftDescription} onChange={e => setNewGiftDescription(e.target.value)} placeholder="Ex: Jogo de Taças de Cristal" required style={{ border: `1.5px solid ${currentTheme.border}`, padding: "0.5rem", borderRadius: "0.5rem", fontSize: "0.8rem" }} />
                 </label>
                 <button type="submit" style={{ background: currentTheme.primary, color: "#FFF", border: "none", borderRadius: "0.5rem", padding: "0.6rem 1.2rem", fontWeight: 800, fontSize: "0.8rem", cursor: "pointer", height: "42px" }}>
-                  Adicionar Presente
+                  Add Presente
                 </button>
               </form>
 
@@ -2930,7 +2930,7 @@ export default function PlannerNoivas() {
                     <tr style={{ borderBottom: `2px solid ${currentTheme.border}`, color: currentTheme.accent, fontWeight: 900 }}>
                       <th style={{ padding: "0.6rem" }}>Convidado</th>
                       <th style={{ padding: "0.6rem" }}>Presente</th>
-                      <th style={{ padding: "0.6rem", textAlign: "center" }}>Recebido?</th>
+                      <th style={{ padding: "0.6rem", textAlign: "center" }}>Received?</th>
                       <th style={{ padding: "0.6rem", textAlign: "center" }}>Agradecido?</th>
                       <th style={{ padding: "0.6rem", textAlign: "center" }} className="no-print">Ações</th>
                     </tr>
@@ -2948,7 +2948,7 @@ export default function PlannerNoivas() {
                           <td style={{ padding: "0.6rem", fontWeight: 800 }}>{g.guestName}</td>
                           <td style={{ padding: "0.6rem" }}>{g.description}</td>
                           
-                          {/* Botão Recebido */}
+                          {/* Botão Received */}
                           <td style={{ padding: "0.6rem", textAlign: "center" }}>
                             <button
                               onClick={() => toggleGiftField(g.id, "received")}
@@ -2963,7 +2963,7 @@ export default function PlannerNoivas() {
                                 cursor: "pointer"
                               }}
                             >
-                              {g.received ? "Entregue ✔️" : "Pendente 📦"}
+                              {g.received ? "Entregue ✔️" : "Pending 📦"}
                             </button>
                           </td>
 
@@ -3066,7 +3066,7 @@ export default function PlannerNoivas() {
               <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.6rem" }}>
                 <span style={{ fontSize: "1.2rem" }}>🏹</span>
                 <h3 style={{ fontSize: "0.9rem", fontWeight: 900, color: currentTheme.text, margin: 0 }}>
-                  Cantinho do Cupido & Medidor de Vibe
+                  Cupid's Corner & Vibe Meter
                 </h3>
               </div>
 
@@ -3100,7 +3100,7 @@ export default function PlannerNoivas() {
             <div style={{ borderTop: `1px dashed ${currentTheme.border}`, paddingTop: "0.8rem", marginTop: "0.2rem" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.4rem" }}>
                 <span style={{ fontSize: "0.68rem", fontWeight: 800, color: "#8C8C8C", textTransform: "uppercase" }}>
-                  Conselho do Cupido do Dia
+                  Cupid's Advice of the Day
                 </span>
                 <button
                   onClick={handleRollCupidAdvice}

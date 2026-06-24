@@ -9,10 +9,10 @@ import {
 } from "@/lib/licenseAdmin";
 
 const messages: Record<string, string> = {
-  invalid_admin_password: "Senha administrativa incorreta.",
-  duplicate_code: "Este código já existe. Gere outro código e tente novamente.",
-  missing_configuration: "As variáveis do Supabase ainda não foram configuradas.",
-  connection_error: "Não foi possível conectar ao Supabase agora.",
+  invalid_admin_password: "Incorrect administrative password.",
+  duplicate_code: "This code already exists. Generate another code and try again.",
+  missing_configuration: "Supabase variables have not been configured yet.",
+  connection_error: "Could not connect to Supabase right now.",
 };
 
 export default function AdminCodigos() {
@@ -38,7 +38,7 @@ export default function AdminCodigos() {
       setLicenses(result.licenses || []);
       return;
     }
-    setMessage(messages[result.reason || ""] || "Não foi possível carregar os códigos.");
+    setMessage(messages[result.reason || ""] || "Could not load access codes.");
   }
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export default function AdminCodigos() {
     setLoading(false);
 
     if (!result.ok) {
-      setMessage(messages[result.reason || ""] || "Não foi possível criar o código.");
+      setMessage(messages[result.reason || ""] || "Could not create access code.");
       return;
     }
 
@@ -80,7 +80,7 @@ export default function AdminCodigos() {
     const result = await setAdminLicenseStatus(adminPassword, item.id, !item.active);
     setLoading(false);
     if (!result.ok) {
-      setMessage(messages[result.reason || ""] || "Não foi possível atualizar o código.");
+      setMessage(messages[result.reason || ""] || "Could not update access code.");
       return;
     }
     await refresh();
@@ -89,44 +89,44 @@ export default function AdminCodigos() {
   return (
     <main className="admin-page">
       <section className="admin-hero">
-        <span>PLANNER KAWAII</span>
-        <h1>Painel de códigos</h1>
-        <p>Crie e acompanhe códigos de acesso para clientes sem abrir o SQL do Supabase.</p>
+        <span>KAWAII PLANNER</span>
+        <h1>License Key Panel</h1>
+        <p>Create and track customer access codes without opening Supabase SQL.</p>
       </section>
 
       <section className="admin-grid">
         <form className="admin-card" onSubmit={submit}>
-          <h2>Novo código</h2>
+          <h2>New License Key</h2>
           <label>
-            Senha administrativa
+            Administrative Password
             <input
               type="password"
               value={adminPassword}
               onChange={event => setAdminPassword(event.target.value)}
-              placeholder="Sua senha do painel"
+              placeholder="Your panel password"
             />
           </label>
           <label>
-            Produto
+            Product
             <input value={productSlug} onChange={event => setProductSlug(event.target.value)} />
           </label>
           <label>
-            Código para a cliente
+            Customer Access Code
             <div className="admin-inline">
               <input value={code} onChange={event => setCode(event.target.value.toUpperCase())} />
-              <button type="button" onClick={() => setCode(generateLicenseCode())}>Gerar</button>
+              <button type="button" onClick={() => setCode(generateLicenseCode())}>Generate</button>
             </div>
           </label>
           <label>
-            Pedido / cliente
+            Order / Customer Note
             <input
               value={customerNote}
               onChange={event => setCustomerNote(event.target.value)}
-              placeholder="Ex.: Pedido Etsy 1024 - Maria"
+              placeholder="e.g. Etsy Order 1024 - Emily"
             />
           </label>
           <label>
-            Dispositivos liberados
+            Allowed Devices
             <input
               type="number"
               min={1}
@@ -136,16 +136,16 @@ export default function AdminCodigos() {
             />
           </label>
           <button className="admin-primary" type="submit" disabled={loading}>
-            {loading ? "Salvando..." : "Criar código"}
+            {loading ? "Saving..." : "Create Code"}
           </button>
           <button className="admin-secondary" type="button" onClick={refresh} disabled={loading || !adminPassword.trim()}>
-            Atualizar lista
+            Update List
           </button>
           {createdCode && (
             <div className="admin-success">
-              Código criado:
+              Key created:
               <strong>{createdCode}</strong>
-              <button type="button" onClick={() => navigator.clipboard.writeText(createdCode)}>Copiar</button>
+              <button type="button" onClick={() => navigator.clipboard.writeText(createdCode)}>Copy</button>
             </div>
           )}
           {message && <p className="admin-error">{message}</p>}
@@ -154,28 +154,28 @@ export default function AdminCodigos() {
         <div className="admin-card admin-list">
           <div className="admin-list-head">
             <div>
-              <h2>Códigos criados</h2>
-              <p>{licenses.length} no total, {activeCount} ativos</p>
+              <h2>Generated Keys</h2>
+              <p>{licenses.length} in total, {activeCount} active</p>
             </div>
-            <button type="button" onClick={refresh} disabled={loading || !adminPassword.trim()}>Recarregar</button>
+            <button type="button" onClick={refresh} disabled={loading || !adminPassword.trim()}>Reload</button>
           </div>
 
           <div className="admin-table">
             {licenses.length === 0 ? (
-              <div className="admin-empty">Digite a senha e clique em atualizar para ver os códigos.</div>
+              <div className="admin-empty">Enter password and click reload/update list to view keys.</div>
             ) : (
               licenses.map(item => (
                 <article key={item.id} className="admin-row">
                   <div>
-                    <strong>{item.customer_note || "Sem anotação"}</strong>
+                    <strong>{item.customer_note || "No description"}</strong>
                     <span>{item.product_slug}</span>
-                    <small>Criado em {new Date(item.created_at).toLocaleDateString("pt-BR")}</small>
+                    <small>Created on {new Date(item.created_at).toLocaleDateString("en-US")}</small>
                   </div>
                   <div className="admin-metrics">
-                    <span>{item.activation_count}/{item.max_devices} usos</span>
-                    <span className={item.active ? "active" : "inactive"}>{item.active ? "Ativo" : "Desativado"}</span>
+                    <span>{item.activation_count}/{item.max_devices} uses</span>
+                    <span className={item.active ? "active" : "inactive"}>{item.active ? "Active" : "Disabled"}</span>
                     <button type="button" onClick={() => toggleLicense(item)}>
-                      {item.active ? "Desativar" : "Ativar"}
+                      {item.active ? "Disable" : "Enable"}
                     </button>
                   </div>
                 </article>
