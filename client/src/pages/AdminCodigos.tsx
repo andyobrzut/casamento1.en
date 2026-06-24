@@ -89,7 +89,7 @@ export default function AdminCodigos() {
   return (
     <main className="admin-page">
       <section className="admin-hero">
-        <span>PLANNER CEREJA</span>
+        <span>PLANNER KAWAII</span>
         <h1>Painel de códigos</h1>
         <p>Crie e acompanhe códigos de acesso para clientes sem abrir o SQL do Supabase.</p>
       </section>

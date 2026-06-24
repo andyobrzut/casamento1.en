@@ -40,7 +40,7 @@ async function callAdminRpc<T>(name: string, body: Record<string, unknown>): Pro
   return response.json();
 }
 
-export function generateLicenseCode(prefix = "CHERRY") {
+export function generateLicenseCode(prefix = "KAWAII") {
   const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   const part = (size: number) =>
     Array.from({ length: size }, () => alphabet[Math.floor(Math.random() * alphabet.length)]).join("");

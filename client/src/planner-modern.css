@@ -1,22 +1,22 @@
-﻿/* Modern responsive structure shared by the themed planners */
+/* Modern responsive structure shared by the themed planners */
 html, body, #root, .planner-page { max-width: 100%; overflow-x: hidden; }
 body { font-size: 16px; }
 .planner-page { min-height: 100vh; padding-left: 130px !important; }
 .planner-page::before { opacity: .035 !important; }
 .planner-page > div:not(.tab-sidebar) { max-width: 100%; }
 .planner-page {
-  background-color: #fff8f2 !important;
+  background-color: #fffafb !important;
   background-image:
-    linear-gradient(rgba(255,248,242,.88), rgba(255,248,242,.88)),
-    url("/assets/cherry/cherry-stickers.png") !important;
-  background-size: auto, 720px auto !important;
+    linear-gradient(rgba(255,250,251,.85), rgba(255,250,251,.85)),
+    url("/assets/kawaii/kawaii-bg.png") !important;
+  background-size: auto, 520px auto !important;
   background-position: center, center top !important;
   background-repeat: repeat, repeat !important;
   background-attachment: scroll, fixed !important;
 }
 .planner-card { border-radius: 18px !important; box-shadow: 0 8px 24px rgba(89,74,78,.10) !important; transition: transform .2s, box-shadow .2s; }
-.planner-card { border-color: #e5cfc8 !important; background: rgba(255,253,248,.97) !important; position: relative; overflow: hidden; }
-.planner-card::after { content: "ðŸ’"; position: absolute; right: -7px; bottom: -14px; font-size: 44px; opacity: .045; pointer-events: none; }
+.planner-card { border-color: #ead1c2 !important; background: rgba(255,253,248,.97) !important; position: relative; overflow: hidden; }
+.planner-card::after { content: "💖"; position: absolute; right: -7px; bottom: -14px; font-size: 44px; opacity: .045; pointer-events: none; }
 .planner-card:hover { transform: translateY(-3px); box-shadow: 0 13px 30px rgba(89,74,78,.16) !important; }
 .section-title { font-size: clamp(1.65rem, 3vw, 2.35rem) !important; line-height: 1.15 !important; }
 .field-label, label { font-size: .88rem !important; line-height: 1.4; }
@@ -315,7 +315,7 @@ body { font-size: 16px; }
 .activation-page,.admin-page{min-height:100vh!important;padding:2rem!important;display:grid!important;place-items:center!important;background:#fff5f8!important;}
 .activation-panel,.admin-shell{width:min(980px,100%)!important;border:2px solid #ead1c2!important;border-radius:24px!important;background:#fffdf8!important;box-shadow:0 24px 60px rgba(42,32,22,.16)!important;overflow:hidden!important;}
 .activation-panel{display:grid!important;grid-template-columns:minmax(260px,.95fr) minmax(310px,1fr)!important;}
-.activation-art{display:block!important;min-height:430px!important;background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.08)), url("/assets/cherry/cherry-cover.png") center/cover no-repeat!important;}
+.activation-art{display:block!important;min-height:430px!important;background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.08)), url("/assets/kawaii/kawaii-cover.png") center/cover no-repeat!important;}
 .activation-content,.admin-card{padding:2.25rem!important;}
 .activation-badge{display:inline-flex!important;border-radius:999px!important;background:#f8dde4!important;color:#653a32!important;padding:.3rem .9rem!important;font:900 .75rem Nunito,sans-serif!important;letter-spacing:.08em!important;}
 .activation-content h1,.admin-page h1{margin:.85rem 0 .55rem!important;color:#653a32!important;font:900 clamp(1.8rem,4vw,2.45rem) Nunito,sans-serif!important;line-height:1.05!important;}

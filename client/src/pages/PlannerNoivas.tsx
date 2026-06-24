@@ -103,6 +103,34 @@ interface MoodboardItem {
   rotation: number;
 }
 
+interface WeddingVendor {
+  id: string;
+  name: string;
+  category: string;
+  contact: string;
+  cost: number;
+  paid: number;
+  status: "cotacao" | "contratado" | "finalizado";
+  notes: string;
+}
+
+interface TimelineEvent {
+  id: string;
+  time: string;
+  activity: string;
+  responsible: string;
+  notes: string;
+  completed: boolean;
+}
+
+interface WeddingGift {
+  id: string;
+  guestName: string;
+  description: string;
+  received: boolean;
+  thankYouSent: boolean;
+}
+
 interface WeddingPlannerData {
   coupleNames: string;
   weddingDate: string;
@@ -114,6 +142,9 @@ interface WeddingPlannerData {
   guests: Guest[];
   tables: Table[];
   moodboard: MoodboardItem[];
+  vendors?: WeddingVendor[];
+  timeline?: TimelineEvent[];
+  gifts?: WeddingGift[];
 }
 
 const DEFAULT_WEDDING_DATA: WeddingPlannerData = {
@@ -156,7 +187,25 @@ const DEFAULT_WEDDING_DATA: WeddingPlannerData = {
     { id: "tab2", name: "Mesa Família Noivo", shape: "circle", seatsCount: 6 },
     { id: "tab3", name: "Mesa Madrinhas & Padrinhos", shape: "rectangle", seatsCount: 8 }
   ],
-  moodboard: []
+  moodboard: [],
+  vendors: [
+    { id: "v1", name: "Buffet Delícia & Cia", category: "Buffet & Gastronomia", contact: "buffet@delicia.com", cost: 18000, paid: 9000, status: "contratado", notes: "Inclui jantar completo e mesa de frios." },
+    { id: "v2", name: "Flores da Estação", category: "Decoração & Flores", contact: "(11) 98888-7777", cost: 6500, paid: 6500, status: "finalizado", notes: "Decoração em tons pastéis e rústicos." },
+    { id: "v3", name: "Foto&Filme Amor Eterno", category: "Fotografia & Vídeo", contact: "contato@amoreterno.com", cost: 7500, paid: 2000, status: "contratado", notes: "Dois fotógrafos e gravação com drone." }
+  ],
+  timeline: [
+    { id: "ev1", time: "16:00", activity: "Chegada dos Convidados & Recepção", responsible: "Assessoria / Recepção", notes: "Música instrumental suave ao fundo.", completed: false },
+    { id: "ev2", time: "16:30", activity: "Entrada do Noivo & Padrinhos", responsible: "Assessoria / DJ", notes: "Música: Escolha do noivo.", completed: false },
+    { id: "ev3", time: "17:00", activity: "Entrada da Noiva", responsible: "Assessoria / Músicos", notes: "Marcha nupcial tradicional.", completed: false },
+    { id: "ev4", time: "18:00", activity: "Coquetel & Início do Buffet", responsible: "Garçons / Buffet", notes: "Serviço volante na área externa.", completed: false },
+    { id: "ev5", time: "20:00", activity: "Brinde com Espumante & Corte do Bolo", responsible: "Noivos / Buffet", notes: "Mesa de doces liberada para fotos.", completed: false }
+  ],
+  gifts: [
+    { id: "gft1", guestName: "Juliana Costa", description: "Jogo de Jantar 42 peças Oxford", received: true, thankYouSent: true },
+    { id: "gft2", guestName: "Pedro Antunes", description: "Fritadeira Elétrica Airfryer Philips", received: true, thankYouSent: false },
+    { id: "gft3", guestName: "Tio Jorge & Tia Marta", description: "Pix de Casamento R$ 500,00", received: true, thankYouSent: false },
+    { id: "gft4", guestName: "Lucas Ramos", description: "Cafeteira Nespresso Vertuo Pop", received: false, thankYouSent: false }
+  ]
 };
 
 // Adesivos do Moodboard
@@ -180,7 +229,7 @@ export default function PlannerNoivas() {
   const currentTheme = WEDDING_THEMES.find(t => t.id === plannerData.theme) || WEDDING_THEMES[0];
 
   // Abas do APP
-  const [activeTab, setActiveTab] = useState<"dashboard" | "checklist" | "budget" | "guests" | "tables" | "moodboard">("dashboard");
+  const [activeTab, setActiveTab] = useState<"dashboard" | "checklist" | "budget" | "guests" | "tables" | "moodboard" | "vendors" | "timeline" | "gifts">("dashboard");
 
   // Contagem regressiva
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -459,6 +508,123 @@ export default function PlannerNoivas() {
     setDraggedMoodItem(null);
   };
 
+  // ==================== 7. VENDORS STATE & LOGIC ====================
+  const [newVendorName, setNewVendorName] = useState("");
+  const [newVendorCategory, setNewVendorCategory] = useState("Buffet & Gastronomia");
+  const [newVendorContact, setNewVendorContact] = useState("");
+  const [newVendorCost, setNewVendorCost] = useState("");
+  const [newVendorPaid, setNewVendorPaid] = useState("");
+  const [newVendorStatus, setNewVendorStatus] = useState<"cotacao" | "contratado" | "finalizado">("cotacao");
+  const [newVendorNotes, setNewVendorNotes] = useState("");
+
+  const handleAddVendor = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newVendorName.trim()) return;
+    const newVendor: WeddingVendor = {
+      id: `vendor-${Date.now()}`,
+      name: newVendorName.trim(),
+      category: newVendorCategory,
+      contact: newVendorContact.trim(),
+      cost: parseFloat(newVendorCost) || 0,
+      paid: parseFloat(newVendorPaid) || 0,
+      status: newVendorStatus,
+      notes: newVendorNotes.trim()
+    };
+    const currentVendors = plannerData.vendors || [];
+    updateField("vendors", [...currentVendors, newVendor]);
+    
+    // Reset form
+    setNewVendorName("");
+    setNewVendorContact("");
+    setNewVendorCost("");
+    setNewVendorPaid("");
+    setNewVendorStatus("cotacao");
+    setNewVendorNotes("");
+  };
+
+  const handleDeleteVendor = (id: string) => {
+    const currentVendors = plannerData.vendors || [];
+    updateField("vendors", currentVendors.filter(v => v.id !== id));
+  };
+
+  const handleUpdateVendorField = <K extends keyof WeddingVendor>(id: string, field: K, value: WeddingVendor[K]) => {
+    const currentVendors = plannerData.vendors || [];
+    const updated = currentVendors.map(v => v.id === id ? { ...v, [field]: value } : v);
+    updateField("vendors", updated);
+  };
+
+  // ==================== 8. TIMELINE STATE & LOGIC ====================
+  const [newTimelineTime, setNewTimelineTime] = useState("");
+  const [newTimelineActivity, setNewTimelineActivity] = useState("");
+  const [newTimelineResponsible, setNewTimelineResponsible] = useState("");
+  const [newTimelineNotes, setNewTimelineNotes] = useState("");
+
+  const handleAddTimelineEvent = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newTimelineTime.trim() || !newTimelineActivity.trim()) return;
+    const newEvent: TimelineEvent = {
+      id: `timeline-${Date.now()}`,
+      time: newTimelineTime.trim(),
+      activity: newTimelineActivity.trim(),
+      responsible: newTimelineResponsible.trim(),
+      notes: newTimelineNotes.trim(),
+      completed: false
+    };
+    const currentTimeline = plannerData.timeline || [];
+    const updatedTimeline = [...currentTimeline, newEvent].sort((a, b) => a.time.localeCompare(b.time));
+    updateField("timeline", updatedTimeline);
+
+    // Reset form
+    setNewTimelineTime("");
+    setNewTimelineActivity("");
+    setNewTimelineResponsible("");
+    setNewTimelineNotes("");
+  };
+
+  const handleDeleteTimelineEvent = (id: string) => {
+    const currentTimeline = plannerData.timeline || [];
+    updateField("timeline", currentTimeline.filter(e => e.id !== id));
+  };
+
+  const toggleTimelineEvent = (id: string) => {
+    const currentTimeline = plannerData.timeline || [];
+    const updated = currentTimeline.map(e => e.id === id ? { ...e, completed: !e.completed } : e);
+    updateField("timeline", updated);
+  };
+
+  // ==================== 9. GIFTS STATE & LOGIC ====================
+  const [newGiftGuestName, setNewGiftGuestName] = useState("");
+  const [newGiftDescription, setNewGiftDescription] = useState("");
+
+  const handleAddGift = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newGiftGuestName.trim() || !newGiftDescription.trim()) return;
+    const newGift: WeddingGift = {
+      id: `gift-${Date.now()}`,
+      guestName: newGiftGuestName.trim(),
+      description: newGiftDescription.trim(),
+      received: false,
+      thankYouSent: false
+    };
+    const currentGifts = plannerData.gifts || [];
+    updateField("gifts", [...currentGifts, newGift]);
+
+    // Reset form
+    setNewGiftGuestName("");
+    setNewGiftDescription("");
+  };
+
+  const handleDeleteGift = (id: string) => {
+    const currentGifts = plannerData.gifts || [];
+    updateField("gifts", currentGifts.filter(g => g.id !== id));
+  };
+
+  const toggleGiftField = (id: string, field: "received" | "thankYouSent") => {
+    const currentGifts = plannerData.gifts || [];
+    const updated = currentGifts.map(g => g.id === id ? { ...g, [field]: !g[field] } : g);
+    updateField("gifts", updated);
+  };
+
   // ==================== 6. IMPORT/EXPORT DATA ====================
   const handleExportData = () => {
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(plannerData, null, 2));
@@ -627,8 +793,11 @@ export default function PlannerNoivas() {
               { id: "dashboard", label: "⚜️ Dashboard" },
               { id: "checklist", label: "📋 Checklist" },
               { id: "budget", label: "💰 Orçamento" },
+              { id: "vendors", label: "🤝 Fornecedores" },
               { id: "guests", label: "👥 Convidados" },
               { id: "tables", label: "🍽️ Mesa de Assentos" },
+              { id: "timeline", label: "⏱️ Roteiro" },
+              { id: "gifts", label: "🎁 Presentes" },
               { id: "moodboard", label: "🌸 Inspirações" }
             ].map(tab => (
               <button
@@ -1952,6 +2121,400 @@ export default function PlannerNoivas() {
                     );
                   })
                 )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ==================== TAB: FORNECECEDORES ==================== */}
+        {activeTab === "vendors" && (
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+            <div
+              style={{
+                background: currentTheme.cardBg,
+                border: `1.5px solid ${currentTheme.border}`,
+                borderRadius: "1.5rem",
+                padding: "1.6rem",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.02)"
+              }}
+            >
+              <h2 style={{ fontSize: "1.3rem", fontWeight: 900, color: currentTheme.primary, fontFamily: "'Playfair Display', serif", marginBottom: "0.5rem" }}>
+                🤝 Registro de Fornecedores
+              </h2>
+              <p style={{ fontSize: "0.82rem", color: "#6A6A6A", marginBottom: "1.5rem" }}>
+                Cadastre e gerencie os contatos, contratos e valores negociados com cada profissional do seu casamento.
+              </p>
+
+              {/* Form de Cadastro */}
+              <form onSubmit={handleAddVendor} className="no-print" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "0.8rem", background: "rgba(0,0,0,0.01)", padding: "1.2rem", borderRadius: "1rem", border: `1px solid ${currentTheme.border}`, marginBottom: "1.5rem" }}>
+                <label style={{ display: "flex", flexDirection: "column", gap: "0.3rem", fontSize: "0.78rem", fontWeight: 800 }}>
+                  Nome do Fornecedor *
+                  <input type="text" value={newVendorName} onChange={e => setNewVendorName(e.target.value)} placeholder="Ex: Buffet Fino Sabor" required style={{ border: `1.5px solid ${currentTheme.border}`, padding: "0.5rem", borderRadius: "0.5rem", fontSize: "0.8rem" }} />
+                </label>
+                <label style={{ display: "flex", flexDirection: "column", gap: "0.3rem", fontSize: "0.78rem", fontWeight: 800 }}>
+                  Categoria
+                  <select value={newVendorCategory} onChange={e => setNewVendorCategory(e.target.value)} style={{ border: `1.5px solid ${currentTheme.border}`, padding: "0.5rem", borderRadius: "0.5rem", fontSize: "0.8rem", background: "#FFF" }}>
+                    <option value="Buffet & Gastronomia">Buffet & Gastronomia 🍽️</option>
+                    <option value="Decoração & Flores">Decoração & Flores 🌸</option>
+                    <option value="Fotografia & Vídeo">Fotografia & Vídeo 📸</option>
+                    <option value="Música & Dj">Música & Dj 🎵</option>
+                    <option value="Vestido & Noiva">Vestido & Noiva 👗</option>
+                    <option value="Assessoria & Cerimonial">Assessoria & Cerimonial 📋</option>
+                    <option value="Convites & Papelaria">Convites & Papelaria ✉️</option>
+                    <option value="Outros">Outros ✨</option>
+                  </select>
+                </label>
+                <label style={{ display: "flex", flexDirection: "column", gap: "0.3rem", fontSize: "0.78rem", fontWeight: 800 }}>
+                  Contato (Email/Tel)
+                  <input type="text" value={newVendorContact} onChange={e => setNewVendorContact(e.target.value)} placeholder="Ex: contato@buffet.com" style={{ border: `1.5px solid ${currentTheme.border}`, padding: "0.5rem", borderRadius: "0.5rem", fontSize: "0.8rem" }} />
+                </label>
+                <label style={{ display: "flex", flexDirection: "column", gap: "0.3rem", fontSize: "0.78rem", fontWeight: 800 }}>
+                  Valor do Contrato (R$)
+                  <input type="number" value={newVendorCost} onChange={e => setNewVendorCost(e.target.value)} placeholder="Ex: 5000" style={{ border: `1.5px solid ${currentTheme.border}`, padding: "0.5rem", borderRadius: "0.5rem", fontSize: "0.8rem" }} />
+                </label>
+                <label style={{ display: "flex", flexDirection: "column", gap: "0.3rem", fontSize: "0.78rem", fontWeight: 800 }}>
+                  Valor Pago (R$)
+                  <input type="number" value={newVendorPaid} onChange={e => setNewVendorPaid(e.target.value)} placeholder="Ex: 2500" style={{ border: `1.5px solid ${currentTheme.border}`, padding: "0.5rem", borderRadius: "0.5rem", fontSize: "0.8rem" }} />
+                </label>
+                <label style={{ display: "flex", flexDirection: "column", gap: "0.3rem", fontSize: "0.78rem", fontWeight: 800 }}>
+                  Status do Contrato
+                  <select value={newVendorStatus} onChange={e => setNewVendorStatus(e.target.value as any)} style={{ border: `1.5px solid ${currentTheme.border}`, padding: "0.5rem", borderRadius: "0.5rem", fontSize: "0.8rem", background: "#FFF" }}>
+                    <option value="cotacao">Em Cotação 💬</option>
+                    <option value="contratado">Contratado ✍️</option>
+                    <option value="finalizado">Pago/Finalizado ✔️</option>
+                  </select>
+                </label>
+                <label style={{ display: "flex", flexDirection: "column", gap: "0.3rem", fontSize: "0.78rem", fontWeight: 800, gridColumn: "1 / -1" }}>
+                  Observações Rápidas
+                  <input type="text" value={newVendorNotes} onChange={e => setNewVendorNotes(e.target.value)} placeholder="Ex: Entrada parcelada em 3x. Jantar de degustação agendado." style={{ border: `1.5px solid ${currentTheme.border}`, padding: "0.5rem", borderRadius: "0.5rem", fontSize: "0.8rem" }} />
+                </label>
+                <button type="submit" style={{ gridColumn: "1 / -1", background: currentTheme.primary, color: "#FFF", border: "none", borderRadius: "0.5rem", padding: "0.6rem", fontWeight: 800, fontSize: "0.8rem", cursor: "pointer", transition: "filter 0.2s" }}>
+                  Adicionar Fornecedor
+                </button>
+              </form>
+
+              {/* Tabela de Fornecedores */}
+              <div style={{ overflowX: "auto" }}>
+                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.8rem", textAlign: "left" }}>
+                  <thead>
+                    <tr style={{ borderBottom: `2px solid ${currentTheme.border}`, color: currentTheme.accent, fontWeight: 900 }}>
+                      <th style={{ padding: "0.6rem" }}>Fornecedor</th>
+                      <th style={{ padding: "0.6rem" }}>Categoria</th>
+                      <th style={{ padding: "0.6rem" }}>Contato</th>
+                      <th style={{ padding: "0.6rem" }}>Custo Total</th>
+                      <th style={{ padding: "0.6rem" }}>Pago</th>
+                      <th style={{ padding: "0.6rem" }}>Pendente</th>
+                      <th style={{ padding: "0.6rem" }}>Status</th>
+                      <th style={{ padding: "0.6rem" }}>Notas</th>
+                      <th style={{ padding: "0.6rem", textAlign: "center" }} className="no-print">Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(plannerData.vendors || []).length === 0 ? (
+                      <tr>
+                        <td colSpan={9} style={{ padding: "1.5rem", textAlign: "center", color: "#8C8C8C" }}>
+                          Nenhum fornecedor cadastrado.
+                        </td>
+                      </tr>
+                    ) : (
+                      (plannerData.vendors || []).map(v => {
+                        const pendente = Math.max(0, v.cost - v.paid);
+                        return (
+                          <tr key={v.id} style={{ borderBottom: `1px solid ${currentTheme.border}` }}>
+                            <td style={{ padding: "0.6rem", fontWeight: 800 }}>{v.name}</td>
+                            <td style={{ padding: "0.6rem" }}>{v.category}</td>
+                            <td style={{ padding: "0.6rem" }}>{v.contact || "-"}</td>
+                            <td style={{ padding: "0.6rem", fontWeight: 700 }}>R$ {v.cost.toLocaleString("pt-BR")}</td>
+                            <td style={{ padding: "0.6rem", color: "#2E7D32", fontWeight: 700 }}>R$ {v.paid.toLocaleString("pt-BR")}</td>
+                            <td style={{ padding: "0.6rem", color: pendente > 0 ? "#C62828" : "#2E7D32", fontWeight: 700 }}>
+                              {pendente === 0 ? "Quitado ✔️" : `R$ ${pendente.toLocaleString("pt-BR")}`}
+                            </td>
+                            <td style={{ padding: "0.6rem" }}>
+                              <select
+                                value={v.status}
+                                onChange={e => handleUpdateVendorField(v.id, "status", e.target.value as any)}
+                                style={{
+                                  border: "1px solid #CCC",
+                                  borderRadius: "0.3rem",
+                                  padding: "0.2rem",
+                                  fontSize: "0.75rem",
+                                  background: "#FFF"
+                                }}
+                              >
+                                <option value="cotacao">Em Cotação 💬</option>
+                                <option value="contratado">Contratado ✍️</option>
+                                <option value="finalizado">Pago/Finalizado ✔️</option>
+                              </select>
+                            </td>
+                            <td style={{ padding: "0.6rem", color: "#555" }}>{v.notes || "-"}</td>
+                            <td style={{ padding: "0.6rem", textAlign: "center" }} className="no-print">
+                              <button onClick={() => handleDeleteVendor(v.id)} style={{ border: "none", background: "none", color: "#C62828", cursor: "pointer" }}>
+                                <Trash2 size={14} />
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ==================== TAB: CRONOGRAMA DO DIA ==================== */}
+        {activeTab === "timeline" && (
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+            <div
+              style={{
+                background: currentTheme.cardBg,
+                border: `1.5px solid ${currentTheme.border}`,
+                borderRadius: "1.5rem",
+                padding: "1.6rem",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.02)"
+              }}
+            >
+              <h2 style={{ fontSize: "1.3rem", fontWeight: 900, color: currentTheme.primary, fontFamily: "'Playfair Display', serif", marginBottom: "0.5rem" }}>
+                ⏱️ Roteiro do Casamento (Timeline)
+              </h2>
+              <p style={{ fontSize: "0.82rem", color: "#6A6A6A", marginBottom: "1.5rem" }}>
+                Planeje o horário de cada evento para o grande dia, definindo os responsáveis e mantendo o dia impecavelmente organizado.
+              </p>
+
+              {/* Form de Cadastro */}
+              <form onSubmit={handleAddTimelineEvent} className="no-print" style={{ display: "grid", gridTemplateColumns: "100px 1fr 1fr 1fr auto", gap: "0.8rem", background: "rgba(0,0,0,0.01)", padding: "1.2rem", borderRadius: "1rem", border: `1px solid ${currentTheme.border}`, alignItems: "flex-end", marginBottom: "1.5rem" }}>
+                <label style={{ display: "flex", flexDirection: "column", gap: "0.3rem", fontSize: "0.78rem", fontWeight: 800 }}>
+                  Horário *
+                  <input type="text" value={newTimelineTime} onChange={e => setNewTimelineTime(e.target.value)} placeholder="Ex: 16:30" required style={{ border: `1.5px solid ${currentTheme.border}`, padding: "0.5rem", borderRadius: "0.5rem", fontSize: "0.8rem" }} />
+                </label>
+                <label style={{ display: "flex", flexDirection: "column", gap: "0.3rem", fontSize: "0.78rem", fontWeight: 800 }}>
+                  Atividade *
+                  <input type="text" value={newTimelineActivity} onChange={e => setNewTimelineActivity(e.target.value)} placeholder="Ex: Entrada da Noiva" required style={{ border: `1.5px solid ${currentTheme.border}`, padding: "0.5rem", borderRadius: "0.5rem", fontSize: "0.8rem" }} />
+                </label>
+                <label style={{ display: "flex", flexDirection: "column", gap: "0.3rem", fontSize: "0.78rem", fontWeight: 800 }}>
+                  Responsável
+                  <input type="text" value={newTimelineResponsible} onChange={e => setNewTimelineResponsible(e.target.value)} placeholder="Ex: Coral / Cerimonial" style={{ border: `1.5px solid ${currentTheme.border}`, padding: "0.5rem", borderRadius: "0.5rem", fontSize: "0.8rem" }} />
+                </label>
+                <label style={{ display: "flex", flexDirection: "column", gap: "0.3rem", fontSize: "0.78rem", fontWeight: 800 }}>
+                  Notas / Música
+                  <input type="text" value={newTimelineNotes} onChange={e => setNewTimelineNotes(e.target.value)} placeholder="Ex: Música - Marcha Nupcial" style={{ border: `1.5px solid ${currentTheme.border}`, padding: "0.5rem", borderRadius: "0.5rem", fontSize: "0.8rem" }} />
+                </label>
+                <button type="submit" style={{ background: currentTheme.primary, color: "#FFF", border: "none", borderRadius: "0.5rem", padding: "0.6rem 1.2rem", fontWeight: 800, fontSize: "0.8rem", cursor: "pointer", height: "42px" }}>
+                  Adicionar
+                </button>
+              </form>
+
+              {/* Lista Vertical da Timeline */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem", position: "relative" }}>
+                {(plannerData.timeline || []).length === 0 ? (
+                  <div style={{ padding: "1.5rem", textAlign: "center", color: "#8C8C8C" }}>
+                    Nenhuma atividade agendada.
+                  </div>
+                ) : (
+                  (plannerData.timeline || []).map((e, idx) => (
+                    <div
+                      key={e.id}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "1.2rem",
+                        padding: "1rem",
+                        borderRadius: "1rem",
+                        border: `1.5px solid ${e.completed ? currentTheme.border : "transparent"}`,
+                        background: e.completed ? "rgba(0,0,0,0.02)" : currentTheme.cardBg,
+                        boxShadow: "0 2px 8px rgba(0,0,0,0.02)",
+                        transition: "all 0.2s"
+                      }}
+                    >
+                      {/* Horário Redondo */}
+                      <div
+                        style={{
+                          background: e.completed ? "#D9D9D9" : currentTheme.badgeBg,
+                          color: e.completed ? "#666" : currentTheme.badgeText,
+                          fontWeight: 900,
+                          fontSize: "0.95rem",
+                          width: "70px",
+                          height: "40px",
+                          borderRadius: "0.6rem",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center"
+                        }}
+                      >
+                        {e.time}
+                      </div>
+
+                      {/* Conteúdo */}
+                      <div style={{ flex: 1 }}>
+                        <span
+                          style={{
+                            fontWeight: 800,
+                            fontSize: "0.9rem",
+                            textDecoration: e.completed ? "line-through" : "none",
+                            color: e.completed ? "#8C8C8C" : currentTheme.text,
+                            display: "block"
+                          }}
+                        >
+                          {e.activity}
+                        </span>
+                        <div style={{ display: "flex", gap: "1rem", fontSize: "0.72rem", color: "#777", marginTop: "0.2rem" }}>
+                          {e.responsible && <span>👥 Responsável: <b>{e.responsible}</b></span>}
+                          {e.notes && <span>📝 Notas: <i>{e.notes}</i></span>}
+                        </div>
+                      </div>
+
+                      {/* Botões */}
+                      <div className="no-print" style={{ display: "flex", gap: "0.4rem" }}>
+                        <button
+                          onClick={() => toggleTimelineEvent(e.id)}
+                          style={{
+                            background: e.completed ? "#C5E1A5" : "rgba(0,0,0,0.03)",
+                            border: "none",
+                            borderRadius: "50%",
+                            width: "30px",
+                            height: "30px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            cursor: "pointer",
+                            color: e.completed ? "#33691E" : "#8C8C8C"
+                          }}
+                        >
+                          <Check size={14} />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteTimelineEvent(e.id)}
+                          style={{
+                            background: "none",
+                            border: "none",
+                            color: "#C62828",
+                            cursor: "pointer",
+                            width: "30px",
+                            height: "30px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center"
+                          }}
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ==================== TAB: LISTA DE PRESENTES ==================== */}
+        {activeTab === "gifts" && (
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+            <div
+              style={{
+                background: currentTheme.cardBg,
+                border: `1.5px solid ${currentTheme.border}`,
+                borderRadius: "1.5rem",
+                padding: "1.6rem",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.02)"
+              }}
+            >
+              <h2 style={{ fontSize: "1.3rem", fontWeight: 900, color: currentTheme.primary, fontFamily: "'Playfair Display', serif", marginBottom: "0.5rem" }}>
+                🎁 Registro de Presentes & Agradecimentos
+              </h2>
+              <p style={{ fontSize: "0.82rem", color: "#6A6A6A", marginBottom: "1.5rem" }}>
+                Acompanhe quem deu cada presente e marque se o cartão ou mensagem de agradecimento já foi enviado.
+              </p>
+
+              {/* Form de Cadastro */}
+              <form onSubmit={handleAddGift} className="no-print" style={{ display: "grid", gridTemplateColumns: "1fr 1fr auto", gap: "0.8rem", background: "rgba(0,0,0,0.01)", padding: "1.2rem", borderRadius: "1rem", border: `1px solid ${currentTheme.border}`, alignItems: "flex-end", marginBottom: "1.5rem" }}>
+                <label style={{ display: "flex", flexDirection: "column", gap: "0.3rem", fontSize: "0.78rem", fontWeight: 800 }}>
+                  Nome do Convidado *
+                  <input type="text" value={newGiftGuestName} onChange={e => setNewGiftGuestName(e.target.value)} placeholder="Ex: Juliana Costa" required style={{ border: `1.5px solid ${currentTheme.border}`, padding: "0.5rem", borderRadius: "0.5rem", fontSize: "0.8rem" }} />
+                </label>
+                <label style={{ display: "flex", flexDirection: "column", gap: "0.3rem", fontSize: "0.78rem", fontWeight: 800 }}>
+                  Presente Recebido *
+                  <input type="text" value={newGiftDescription} onChange={e => setNewGiftDescription(e.target.value)} placeholder="Ex: Jogo de Taças de Cristal" required style={{ border: `1.5px solid ${currentTheme.border}`, padding: "0.5rem", borderRadius: "0.5rem", fontSize: "0.8rem" }} />
+                </label>
+                <button type="submit" style={{ background: currentTheme.primary, color: "#FFF", border: "none", borderRadius: "0.5rem", padding: "0.6rem 1.2rem", fontWeight: 800, fontSize: "0.8rem", cursor: "pointer", height: "42px" }}>
+                  Adicionar Presente
+                </button>
+              </form>
+
+              {/* Tabela de Presentes */}
+              <div style={{ overflowX: "auto" }}>
+                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.8rem", textAlign: "left" }}>
+                  <thead>
+                    <tr style={{ borderBottom: `2px solid ${currentTheme.border}`, color: currentTheme.accent, fontWeight: 900 }}>
+                      <th style={{ padding: "0.6rem" }}>Convidado</th>
+                      <th style={{ padding: "0.6rem" }}>Presente</th>
+                      <th style={{ padding: "0.6rem", textAlign: "center" }}>Recebido?</th>
+                      <th style={{ padding: "0.6rem", textAlign: "center" }}>Agradecido?</th>
+                      <th style={{ padding: "0.6rem", textAlign: "center" }} className="no-print">Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(plannerData.gifts || []).length === 0 ? (
+                      <tr>
+                        <td colSpan={5} style={{ padding: "1.5rem", textAlign: "center", color: "#8C8C8C" }}>
+                          Nenhum presente registrado ainda.
+                        </td>
+                      </tr>
+                    ) : (
+                      (plannerData.gifts || []).map(g => (
+                        <tr key={g.id} style={{ borderBottom: `1px solid ${currentTheme.border}` }}>
+                          <td style={{ padding: "0.6rem", fontWeight: 800 }}>{g.guestName}</td>
+                          <td style={{ padding: "0.6rem" }}>{g.description}</td>
+                          
+                          {/* Botão Recebido */}
+                          <td style={{ padding: "0.6rem", textAlign: "center" }}>
+                            <button
+                              onClick={() => toggleGiftField(g.id, "received")}
+                              style={{
+                                background: g.received ? "#C5E1A5" : "#FFE0B2",
+                                color: g.received ? "#33691E" : "#E65100",
+                                border: "none",
+                                borderRadius: "0.4rem",
+                                padding: "0.3rem 0.6rem",
+                                fontSize: "0.72rem",
+                                fontWeight: 800,
+                                cursor: "pointer"
+                              }}
+                            >
+                              {g.received ? "Entregue ✔️" : "Pendente 📦"}
+                            </button>
+                          </td>
+
+                          {/* Botão Agradecido */}
+                          <td style={{ padding: "0.6rem", textAlign: "center" }}>
+                            <button
+                              onClick={() => toggleGiftField(g.id, "thankYouSent")}
+                              style={{
+                                background: g.thankYouSent ? "#B3E5FC" : "#F5F5F5",
+                                color: g.thankYouSent ? "#01579B" : "#616161",
+                                border: "none",
+                                borderRadius: "0.4rem",
+                                padding: "0.3rem 0.6rem",
+                                fontSize: "0.72rem",
+                                fontWeight: 800,
+                                cursor: "pointer"
+                              }}
+                            >
+                              {g.thankYouSent ? "Agradecido 💌" : "Enviar Cartão 📝"}
+                            </button>
+                          </td>
+
+                          <td style={{ padding: "0.6rem", textAlign: "center" }} className="no-print">
+                            <button onClick={() => handleDeleteGift(g.id)} style={{ border: "none", background: "none", color: "#C62828", cursor: "pointer" }}>
+                              <Trash2 size={14} />
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
