@@ -505,6 +505,7 @@ export default function PlannerNoivas() {
   const [newTableShape, setNewTableShape] = useState<"circle" | "rectangle">("circle");
   const [newTableSeats, setNewTableSeats] = useState(6);
   const [selectedTableForZoom, setSelectedTableForZoom] = useState<string | null>(null);
+  const [selectedGuestToSeat, setSelectedGuestToSeat] = useState<string | null>(null);
 
   const handleAddTable = (e: React.FormEvent) => {
     e.preventDefault();
@@ -1001,15 +1002,18 @@ export default function PlannerNoivas() {
                 Countdown to the Big Day
               </span>
               
-              <div style={{ display: "flex", gap: "0.4rem", justifyContent: "center", width: "100%" }}>
+              <div style={{ display: "flex", gap: "0.4rem", justifyContent: "center", width: "100%", alignItems: "center" }}>
                 <input
-                  value={plannerData.coupleNames}
-                  onChange={e => updateField("coupleNames", e.target.value)}
-                  placeholder="Bride's Name & Groom's Name"
+                  value={plannerData.coupleNames.split("&")[0]?.trim() || ""}
+                  onChange={e => {
+                    const secondPart = plannerData.coupleNames.split("&")[1] || "Groom";
+                    updateField("coupleNames", `${e.target.value.trim()} & ${secondPart.trim()}`);
+                  }}
+                  placeholder="Bride"
                   style={{
                     border: "none",
                     background: "transparent",
-                    fontSize: "2rem",
+                    fontSize: "clamp(1.1rem, 4.5vw, 2rem)",
                     fontWeight: 900,
                     textAlign: "right",
                     color: currentTheme.primary,
@@ -1018,9 +1022,9 @@ export default function PlannerNoivas() {
                     fontFamily: "'Playfair Display', serif"
                   }}
                 />
-                <span style={{ fontSize: "2rem", fontWeight: 900, color: currentTheme.primary, fontFamily: "'Playfair Display', serif" }}>&</span>
+                <span style={{ fontSize: "clamp(1.1rem, 4.5vw, 2rem)", fontWeight: 900, color: currentTheme.primary, fontFamily: "'Playfair Display', serif" }}>&</span>
                 <input
-                  value={plannerData.coupleNames.split("&")[1] || ""}
+                  value={plannerData.coupleNames.split("&")[1]?.trim() || ""}
                   onChange={e => {
                     const firstPart = plannerData.coupleNames.split("&")[0] || "Bride";
                     updateField("coupleNames", `${firstPart.trim()} & ${e.target.value.trim()}`);
@@ -1029,7 +1033,7 @@ export default function PlannerNoivas() {
                   style={{
                     border: "none",
                     background: "transparent",
-                    fontSize: "2rem",
+                    fontSize: "clamp(1.1rem, 4.5vw, 2rem)",
                     fontWeight: 900,
                     textAlign: "left",
                     color: currentTheme.primary,
@@ -1087,7 +1091,7 @@ export default function PlannerNoivas() {
                     }}
                   />
                 </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", width: "350px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", maxWidth: "350px", width: "100%" }}>
                   <MapPin size={16} style={{ color: currentTheme.accent }} />
                   <input
                     value={plannerData.weddingLocation}
@@ -1139,7 +1143,7 @@ export default function PlannerNoivas() {
                 </div>
                 <div style={{ flex: 1 }}>
                   <span style={{ fontSize: "0.72rem", fontWeight: 800, color: "#8C8C8C", display: "block" }}>
-                    ORÇAMENTO REAL / ESTIMADO
+                    ACTUAL / ESTIMATED BUDGET
                   </span>
                   <div style={{ display: "flex", alignItems: "baseline", gap: "0.3rem" }}>
                     <span style={{ fontSize: "1.3rem", fontWeight: 900, color: currentTheme.text }}>
@@ -1797,7 +1801,7 @@ export default function PlannerNoivas() {
                                 <div style={{ borderLeft: `3px solid ${currentTheme.accent}`, paddingLeft: "1rem" }}>
                                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.6rem" }}>
                                     <h4 style={{ fontSize: "0.75rem", fontWeight: 900, color: currentTheme.primary, margin: 0 }}>
-                                      💵 Installment / Payment History for: {exp.vendor || "Este Fornecedor"}
+                                      💵 Installment / Payment History for: {exp.vendor || "This Vendor"}
                                     </h4>
                                     {hasPayments && (
                                       <span style={{ fontSize: "0.68rem", fontWeight: 800, color: "#8C8C8C" }}>
@@ -1809,7 +1813,7 @@ export default function PlannerNoivas() {
                                   {/* Form para adicionar nova parcela */}
                                   <div className="no-print" style={{ display: "flex", gap: "0.4rem", alignItems: "center", marginBottom: "0.6rem", flexWrap: "wrap" }}>
                                     <div style={{ display: "flex", alignItems: "center" }}>
-                                      <span style={{ fontSize: "0.72rem", color: "#8C8C8C", marginRight: "0.15rem" }}>R$</span>
+                                      <span style={{ fontSize: "0.72rem", color: "#8C8C8C", marginRight: "0.15rem" }}>$</span>
                                       <input
                                         type="number"
                                         id={`pay-amount-${exp.id}`}
@@ -2053,7 +2057,7 @@ export default function PlannerNoivas() {
                   <tr style={{ borderBottom: `2px solid ${currentTheme.border}`, color: "#8C8C8C" }}>
                     <th style={{ padding: "0.5rem" }}>Name</th>
                     <th style={{ padding: "0.5rem" }}>Side</th>
-                    <th style={{ padding: "0.5rem" }}>Restrição Alimentar</th>
+                    <th style={{ padding: "0.5rem" }}>Dietary Restrictions</th>
                     <th style={{ padding: "0.5rem" }}>Status RSVP</th>
                     <th style={{ padding: "0.5rem" }}>Action</th>
                   </tr>
@@ -2069,7 +2073,7 @@ export default function PlannerNoivas() {
                     filteredGuests.map(g => (
                       <tr key={g.id} style={{ borderBottom: `1px solid ${currentTheme.border}` }}>
                         <td style={{ padding: "0.6rem 0.5rem", fontWeight: 800 }}>{g.name}</td>
-                        <td style={{ padding: "0.6rem 0.5rem", textTransform: "capitalize" }}>{g.side === "outro" ? "Amigos" : `Família ${g.side}`}</td>
+                        <td style={{ padding: "0.6rem 0.5rem", textTransform: "capitalize" }}>{g.side === "outro" ? "Friends" : g.side === "noiva" ? "Bride's Family" : "Groom's Family"}</td>
                         <td style={{ padding: "0.6rem 0.5rem", textTransform: "capitalize" }}>{g.diet.replace("_", " ")}</td>
                         <td style={{ padding: "0.6rem 0.5rem" }}>
                           <select
@@ -2154,21 +2158,25 @@ export default function PlannerNoivas() {
                           onDragStart={e => {
                             e.dataTransfer.setData("guestId", guest.id);
                           }}
+                          onClick={() => {
+                            setSelectedGuestToSeat(prev => prev === guest.id ? null : guest.id);
+                          }}
                           style={{
-                            background: "#FFF",
-                            border: `1.2px solid ${currentTheme.border}`,
+                            background: selectedGuestToSeat === guest.id ? currentTheme.badgeBg : "#FFF",
+                            border: selectedGuestToSeat === guest.id ? `2px solid ${currentTheme.primary}` : `1.2px solid ${currentTheme.border}`,
                             borderRadius: "0.5rem",
                             padding: "0.45rem 0.6rem",
                             fontSize: "0.75rem",
                             fontWeight: 800,
                             color: currentTheme.text,
-                            cursor: "grab",
+                            cursor: "pointer",
                             display: "flex",
                             alignItems: "center",
                             gap: "0.3rem",
-                            boxShadow: "0 2px 4px rgba(0,0,0,0.03)"
+                            boxShadow: "0 2px 4px rgba(0,0,0,0.03)",
+                            transition: "all 0.2s"
                           }}
-                          title="Arraste para uma mesa"
+                          title={selectedGuestToSeat === guest.id ? "Selected - Tap an empty seat to place" : "Tap to select or Drag to a seat"}
                         >
                           <span>{guest.side === "noiva" ? "🌸" : "🪵"}</span>
                           <span style={{ textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>
@@ -2218,7 +2226,7 @@ export default function PlannerNoivas() {
             {/* Espaço das mesas físicas */}
             <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span style={{ fontSize: "0.72rem", fontWeight: 800, color: "#8C8C8C" }}>MAPA DO SALÃO</span>
+                <span style={{ fontSize: "0.72rem", fontWeight: 800, color: "#8C8C8C" }}>SEATING CHART MAP</span>
                 <button
                   className="no-print"
                   onClick={() => window.print()}
@@ -2234,7 +2242,7 @@ export default function PlannerNoivas() {
                     gap: "0.2rem"
                   }}
                 >
-                  Imprimir Mapa de Seats 🖨️
+                  Print Seating Chart Map 🖨️
                 </button>
               </div>
 
@@ -2351,6 +2359,12 @@ export default function PlannerNoivas() {
                                 const guestId = e.dataTransfer.getData("guestId");
                                 handleSeatGuest(guestId, table.id, seatIdx);
                               }}
+                              onClick={() => {
+                                if (!seatedGuest && selectedGuestToSeat) {
+                                  handleSeatGuest(selectedGuestToSeat, table.id, seatIdx);
+                                  setSelectedGuestToSeat(null);
+                                }
+                              }}
                               style={{
                                 position: "absolute",
                                 left: x,
@@ -2358,18 +2372,20 @@ export default function PlannerNoivas() {
                                 width: 28,
                                 height: 28,
                                 borderRadius: "50%",
-                                border: `1.5px dashed ${seatedGuest ? currentTheme.primary : "#8C8C8C"}`,
-                                background: seatedGuest ? (seatedGuest.side === "noiva" ? "#FCE4E6" : "#EFE6DD") : "#FFF",
-                                cursor: seatedGuest ? "default" : "grab",
+                                border: `1.5px dashed ${seatedGuest ? currentTheme.primary : (selectedGuestToSeat ? currentTheme.primary : "#8C8C8C")}`,
+                                background: seatedGuest ? (seatedGuest.side === "noiva" ? "#FCE4E6" : "#EFE6DD") : (selectedGuestToSeat ? currentTheme.badgeBg : "#FFF"),
+                                cursor: seatedGuest ? "default" : "pointer",
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",
                                 fontSize: "0.6rem",
                                 fontWeight: 800,
                                 color: currentTheme.text,
-                                boxShadow: "0 2px 4px rgba(0,0,0,0.03)"
+                                boxShadow: "0 2px 4px rgba(0,0,0,0.03)",
+                                transform: (!seatedGuest && selectedGuestToSeat) ? "scale(1.12)" : "none",
+                                transition: "all 0.2s"
                               }}
-                              title={seatedGuest ? seatedGuest.name : "Vazio. Arraste um convidado para sentar."}
+                              title={seatedGuest ? seatedGuest.name : (selectedGuestToSeat ? "Tap to seat selected guest" : "Empty. Drag a guest or tap one in the list first.")}
                             >
                               {seatedGuest ? (
                                 <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>

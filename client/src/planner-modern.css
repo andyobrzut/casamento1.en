@@ -274,7 +274,11 @@ body { font-size: 16px; }
   .planner-page [style*="grid-template-columns: 1fr 1.5fr"],
   .planner-page [style*="grid-template-columns: 1fr 1fr"],
   .planner-page [style*="grid-template-columns: 120px 1fr 1fr"],
-  .planner-page [style*="grid-template-columns: 1fr 120px 100px 100px"] {
+  .planner-page [style*="grid-template-columns: 1fr 120px 100px 100px"],
+  .planner-page [style*="grid-template-columns: 1fr 2fr"],
+  .planner-page [style*="grid-template-columns: 1fr 3.5fr"],
+  .planner-page [style*="grid-template-columns: 100px 1fr 1fr 1fr auto"],
+  .planner-page [style*="grid-template-columns: 1fr 1fr auto"] {
     grid-template-columns: 1fr !important;
   }
 
@@ -297,6 +301,33 @@ body { font-size: 16px; }
 
   .planner-page [style*="max-width: 1000"][style*="display: flex"][style*="gap: 1.25rem"] {
     flex-direction: column !important;
+  }
+
+  /* Make header stack vertically on mobile */
+  header.no-print {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.8rem !important;
+    padding: 1rem !important;
+  }
+  header.no-print > div {
+    justify-content: center !important;
+    text-align: center !important;
+  }
+  header.no-print > div:last-child {
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+  }
+
+  /* Scale down countdown timer on mobile */
+  .planner-page [style*="margin: 1.5rem 0"][style*="display: flex"][style*="justify-content: center"] {
+    gap: 0.6rem !important;
+    margin: 1rem 0 !important;
+  }
+  .planner-page [style*="min-width: 75px"] {
+    min-width: 55px !important;
+    font-size: 1.35rem !important;
+    padding: 0.4rem 0.8rem !important;
   }
 }
 
