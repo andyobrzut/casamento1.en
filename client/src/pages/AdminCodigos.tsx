@@ -107,8 +107,25 @@ export default function AdminCodigos() {
             />
           </label>
           <label>
-            Product
-            <input value={productSlug} onChange={event => setProductSlug(event.target.value)} />
+            Product Version
+            <select
+              value={productSlug}
+              onChange={event => setProductSlug(event.target.value)}
+              style={{
+                width: "100%",
+                border: "2px solid #ead1c2",
+                borderRadius: "14px",
+                background: "#fff5f8",
+                color: "#653a32",
+                padding: "0.85rem 0.95rem",
+                font: "900 1rem Nunito, sans-serif",
+                outline: "none",
+                cursor: "pointer"
+              }}
+            >
+              <option value="planner-app-cherry-en">English (planner-app-cherry-en)</option>
+              <option value="planner-app-cherry">Portuguese (planner-app-cherry)</option>
+            </select>
           </label>
           <label>
             Customer Access Code
