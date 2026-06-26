@@ -11,17 +11,13 @@ const messages: Record<string, string> = {
 };
 
 export default function ActivationGate({ children }: { children: ReactNode }) {
-  const [status, setStatus] = useState<"checking" | "locked" | "unlocked">("unlocked");
+  const [status, setStatus] = useState<"checking" | "locked" | "unlocked">("checking");
   const [code, setCode] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const isAdminPage = ["/painel-codigos", "/admin-codigos"].includes(window.location.pathname);
 
   useEffect(() => {
-    // TEMPORARY BYPASS FOR VISUAL TESTING
-    setStatus("unlocked");
-    return;
-
     if (isAdminPage) {
       setStatus("unlocked");
       return;
