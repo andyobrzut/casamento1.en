@@ -11,7 +11,7 @@ const messages: Record<string, string> = {
 };
 
 export default function ActivationGate({ children }: { children: ReactNode }) {
-  const [status, setStatus] = useState<"checking" | "locked" | "unlocked">("checking");
+  const [status, setStatus] = useState<"checking" | "locked" | "unlocked">("unlocked");
   const [code, setCode] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);

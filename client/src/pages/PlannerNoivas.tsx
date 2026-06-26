@@ -906,21 +906,27 @@ export default function PlannerNoivas() {
         
         {/* ABAS DO APP */}
         <div
-          className="no-print"
+          className="planner-tab-header-row no-print"
           style={{
             display: "flex",
             justifyContent: "space-between",
             marginBottom: "1.2rem",
-            alignItems: "center"
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "0.8rem"
           }}
         >
           <div
+            className="planner-tabs-container"
             style={{
               display: "flex",
               gap: "0.25rem",
               background: "rgba(0,0,0,0.03)",
               padding: "0.25rem",
-              borderRadius: "0.8rem"
+              borderRadius: "0.8rem",
+              overflowX: "auto",
+              maxWidth: "100%",
+              scrollbarWidth: "thin"
             }}
           >
             {[
@@ -951,7 +957,8 @@ export default function PlannerNoivas() {
                   borderRadius: "0.6rem",
                   cursor: "pointer",
                   boxShadow: activeTab === tab.id ? "0 2px 6px rgba(0,0,0,0.05)" : "none",
-                  transition: "all 0.2s"
+                  transition: "all 0.2s",
+                  flexShrink: 0
                 }}
               >
                 {tab.label}

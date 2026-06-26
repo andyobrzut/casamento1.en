@@ -367,3 +367,19 @@ body { font-size: 16px; }
   border-radius: 0.3rem !important;
   padding: 0.2rem 0.4rem !important;
 }
+
+/* Scrollable tabs container styling */
+.planner-tabs-container::-webkit-scrollbar {
+  height: 6px !important;
+}
+.planner-tabs-container::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.02) !important;
+  border-radius: 10px !important;
+}
+.planner-tabs-container::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.15) !important;
+  border-radius: 10px !important;
+}
+.planner-tabs-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.25) !important;
+}
