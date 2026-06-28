@@ -75,7 +75,7 @@
   --secondary: #C3F0CA;
   --secondary-foreground: #4A6D4C;
   --muted: #FFE5EC;
-  --muted-foreground: #A08088;
+  --muted-foreground: #6B5344;
   --accent: #FFC2D1;
   --accent-foreground: #7A4A55;
   --destructive: oklch(0.577 0.245 27.325);
@@ -376,7 +376,7 @@
 .activation-content,.admin-card{padding:2.25rem!important;}
 .activation-badge{display:inline-flex!important;border-radius:999px!important;background:#f8dde4!important;color:#653a32!important;padding:.3rem .9rem!important;font:900 .75rem Nunito,sans-serif!important;letter-spacing:.08em!important;}
 .activation-content h1,.admin-page h1{margin:.85rem 0 .55rem!important;color:#653a32!important;font:900 clamp(1.8rem,4vw,2.45rem) Nunito,sans-serif!important;line-height:1.05!important;}
-.activation-content p,.activation-content small,.admin-page p{color:#916052!important;font-weight:700!important;line-height:1.55!important;}
+.activation-content p,.activation-content small,.admin-page p{color:#5C4638!important;font-weight:700!important;line-height:1.55!important;}
 .activation-content form,.admin-card,.admin-form{display:grid!important;gap:.9rem!important;margin-top:1rem!important;}
 .activation-content label,.admin-card label{display:grid!important;gap:.35rem!important;color:#653a32!important;font-weight:900!important;}
 .activation-content input,.admin-card input{width:100%!important;border:2px solid #ead1c2!important;border-radius:14px!important;background:#fff5f8!important;color:#653a32!important;padding:.85rem .95rem!important;font:900 1rem Nunito,sans-serif!important;}

@@ -350,7 +350,7 @@ body { font-size: 16px; }
 .activation-content,.admin-card{padding:2.25rem!important;}
 .activation-badge{display:inline-flex!important;border-radius:999px!important;background:#f8dde4!important;color:#653a32!important;padding:.3rem .9rem!important;font:900 .75rem Nunito,sans-serif!important;letter-spacing:.08em!important;}
 .activation-content h1,.admin-page h1{margin:.85rem 0 .55rem!important;color:#653a32!important;font:900 clamp(1.8rem,4vw,2.45rem) Nunito,sans-serif!important;line-height:1.05!important;}
-.activation-content p,.activation-content small,.admin-page p{color:#916052!important;font-weight:700!important;line-height:1.55!important;}
+.activation-content p,.activation-content small,.admin-page p{color:#5C4638!important;font-weight:700!important;line-height:1.55!important;}
 .activation-content form,.admin-card,.admin-form{display:grid!important;gap:.9rem!important;margin-top:1rem!important;}
 .activation-content label,.admin-card label{display:grid!important;gap:.35rem!important;color:#653a32!important;font-weight:900!important;}
 .activation-content input,.admin-card input{width:100%!important;border:2px solid #ead1c2!important;border-radius:14px!important;background:#fff5f8!important;color:#653a32!important;padding:.85rem .95rem!important;font:900 1rem Nunito,sans-serif!important;}
@@ -382,4 +382,96 @@ body { font-size: 16px; }
 }
 .planner-tabs-container::-webkit-scrollbar-thumb:hover {
   background: rgba(0,0,0,0.25) !important;
+}
+
+/* Wedding planner: no sidebar offset, slightly larger type */
+.planner-page.wedding-planner {
+  padding-left: 0 !important;
+  font-size: 1.02rem;
+}
+.planner-page.wedding-planner [style*="font-size: 0.65rem"] { font-size: .8rem !important; }
+.planner-page.wedding-planner [style*="font-size: 0.68rem"] { font-size: .84rem !important; }
+.planner-page.wedding-planner [style*="font-size: 0.7rem"] { font-size: .86rem !important; }
+.planner-page.wedding-planner [style*="font-size: 0.72rem"] { font-size: .88rem !important; }
+.planner-page.wedding-planner [style*="font-size: 0.75rem"] { font-size: .92rem !important; }
+.planner-page.wedding-planner [style*="font-size: 0.78rem"] { font-size: .94rem !important; }
+.planner-page.wedding-planner [style*="font-size: 0.8rem"] { font-size: .96rem !important; }
+.planner-page.wedding-planner h1[style*="font-size: 1.1rem"] { font-size: 1.25rem !important; }
+.planner-page.wedding-planner table { font-size: .94rem !important; }
+.planner-page.wedding-planner .planner-tabs-container button {
+  min-height: 42px;
+  font-size: .88rem !important;
+}
+
+@media (max-width: 720px) {
+  .planner-page.wedding-planner {
+    padding-bottom: 1.25rem !important;
+  }
+  .planner-page.wedding-planner .main-print-container {
+    margin: 1rem auto !important;
+    padding: 0 0.75rem !important;
+  }
+  .planner-page.wedding-planner .planner-tab-header-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.65rem !important;
+  }
+  .planner-page.wedding-planner .planner-tabs-container {
+    width: 100% !important;
+    padding: 0.35rem !important;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
+  .planner-page.wedding-planner .planner-tabs-container button {
+    min-height: 46px !important;
+    padding: 0.55rem 0.85rem !important;
+    font-size: .82rem !important;
+    scroll-snap-align: start;
+    flex-shrink: 0;
+  }
+  .planner-page.wedding-planner div:has(> table) {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+    margin: 0 -0.25rem;
+    padding-bottom: 0.35rem;
+  }
+  .planner-page.wedding-planner table {
+    min-width: 680px;
+  }
+  .planner-page.wedding-planner [style*="gap: 1.5rem"][style*="justify-content: center"] {
+    flex-wrap: wrap !important;
+    gap: 0.65rem !important;
+    justify-content: center !important;
+  }
+  .planner-page.wedding-planner [style*="min-width: 75px"] {
+    min-width: 62px !important;
+    font-size: 1.5rem !important;
+    padding: 0.45rem 0.65rem !important;
+  }
+  .planner-page.wedding-planner [style*="grid-template-columns: 100px 1fr 1fr 1fr auto"],
+  .planner-page.wedding-planner [style*="grid-template-columns: 1fr 1fr auto"],
+  .planner-page.wedding-planner [style*="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))"] {
+    grid-template-columns: 1fr !important;
+  }
+  .planner-page.wedding-planner [style*="width: 85px"],
+  .planner-page.wedding-planner [style*="width: 120px"],
+  .planner-page.wedding-planner [style*="width: 70px"] {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .planner-page.wedding-planner [style*="flex: 1 1 180px"] {
+    flex: 1 1 100% !important;
+    min-width: 0 !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .planner-page.wedding-planner .planner-tabs-container button {
+    font-size: .78rem !important;
+    padding: 0.5rem 0.7rem !important;
+  }
+  .planner-page.wedding-planner [style*="clamp(1.1rem, 4.5vw, 2rem)"] {
+    font-size: clamp(1.15rem, 5.5vw, 1.75rem) !important;
+  }
 }

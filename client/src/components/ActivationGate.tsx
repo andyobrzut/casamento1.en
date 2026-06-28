@@ -61,8 +61,8 @@ export default function ActivationGate({ children }: { children: ReactNode }) {
       <section className="activation-panel">
         <div className="activation-art" aria-hidden="true" />
         <div className="activation-content">
-          <span className="activation-badge">KAWAII PLANNER</span>
-          <h1>{status === "checking" ? "Checking access..." : "Activate your planner"}</h1>
+          <span className="activation-badge">WEDDING PLANNER</span>
+          <h1>{status === "checking" ? "Checking access..." : "Activate your wedding planner"}</h1>
           <p>Enter the code sent by the shop after purchase to unlock this device.</p>
           {status === "locked" && (
             <form onSubmit={submit}>
@@ -71,7 +71,7 @@ export default function ActivationGate({ children }: { children: ReactNode }) {
                 id="activation-code"
                 value={code}
                 onChange={event => setCode(event.target.value.toUpperCase())}
-                placeholder="KAWAII-XXXX-XXXX"
+                placeholder="WEDDING-XXXX-XXXX"
                 autoComplete="one-time-code"
                 maxLength={40}
               />

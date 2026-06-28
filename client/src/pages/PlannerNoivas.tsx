@@ -16,6 +16,7 @@ const WEDDING_THEMES = [
     bg: "linear-gradient(135deg, #FCFBF7 0%, #FAF8F2 50%, #F5F1E5 100%)",
     cardBg: "#FFF",
     text: "#4A3E1B",
+    textMuted: "#6B5A32",
     border: "#EADFB4",
     badgeBg: "#F5ECD7",
     badgeText: "#9B7E1A"
@@ -28,6 +29,7 @@ const WEDDING_THEMES = [
     bg: "linear-gradient(135deg, #FFF6F6 0%, #FFF0F1 50%, #FFE3E5 100%)",
     cardBg: "#FFF",
     text: "#5C3E43",
+    textMuted: "#6B5344",
     border: "#F7D6D9",
     badgeBg: "#FCE4E6",
     badgeText: "#A85361"
@@ -40,6 +42,7 @@ const WEDDING_THEMES = [
     bg: "linear-gradient(135deg, #F8F5F2 0%, #F1ECE6 50%, #E2D7C5 100%)",
     cardBg: "#FFF",
     text: "#4E3629",
+    textMuted: "#6B5344",
     border: "#DECBB7",
     badgeBg: "#EFE6DD",
     badgeText: "#6A452C"
@@ -52,6 +55,7 @@ const WEDDING_THEMES = [
     bg: "linear-gradient(135deg, #FAF2EE 0%, #F7E7DF 50%, #ECD0C2 100%)",
     cardBg: "#FFF",
     text: "#5E3A31",
+    textMuted: "#6B5344",
     border: "#F3D1C1",
     badgeBg: "#FBE6DC",
     badgeText: "#C44C32"
@@ -804,7 +808,7 @@ export default function PlannerNoivas() {
 
   return (
     <div
-      className={`planner-page ${activeTab === "tables" ? "modal-open-print" : ""}`}
+      className={`planner-page wedding-planner ${activeTab === "tables" ? "modal-open-print" : ""}`}
       style={{
         minHeight: "100vh",
         background: currentTheme.bg,
@@ -836,7 +840,7 @@ export default function PlannerNoivas() {
             <h1 style={{ fontWeight: 900, color: currentTheme.text, fontSize: "1.1rem", margin: 0 }}>
               Premium Wedding Planner
             </h1>
-            <span style={{ fontSize: "0.68rem", fontWeight: 700, color: currentTheme.accent, textTransform: "uppercase" }}>
+            <span style={{ fontSize: "0.68rem", fontWeight: 700, color: currentTheme.badgeText, textTransform: "uppercase" }}>
               Wedding Organizer & Seating Planner
             </span>
           </div>
@@ -859,7 +863,7 @@ export default function PlannerNoivas() {
               gap: "0.3rem"
             }}
           >
-            <Upload size={12} /> Importar .JSON
+            <Upload size={12} /> Import .JSON
             <input type="file" accept=".json" onChange={handleImportData} style={{ display: "none" }} />
           </label>
           <button
@@ -878,7 +882,7 @@ export default function PlannerNoivas() {
               gap: "0.3rem"
             }}
           >
-            <Download size={12} /> Exportar Projeto
+            <Download size={12} /> Export Project
           </button>
           <button
             onClick={handleResetData}
@@ -896,7 +900,7 @@ export default function PlannerNoivas() {
               gap: "0.3rem"
             }}
           >
-            <Trash2 size={12} /> Limpar
+            <Trash2 size={12} /> Reset
           </button>
         </div>
       </header>
@@ -951,7 +955,7 @@ export default function PlannerNoivas() {
                   background: activeTab === tab.id ? currentTheme.cardBg : "transparent",
                   border: "none",
                   fontWeight: 800,
-                  color: activeTab === tab.id ? currentTheme.primary : currentTheme.text,
+                  color: activeTab === tab.id ? currentTheme.badgeText : currentTheme.text,
                   fontSize: "0.78rem",
                   padding: "0.5rem 0.85rem",
                   borderRadius: "0.6rem",
@@ -968,7 +972,7 @@ export default function PlannerNoivas() {
 
           {/* Seletor Rápido de Temas */}
           <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-            <span style={{ fontSize: "0.7rem", fontWeight: 800, color: currentTheme.text }}>Estilo do Planner:</span>
+            <span style={{ fontSize: "0.7rem", fontWeight: 800, color: currentTheme.text }}>Planner Style:</span>
             <select
               value={plannerData.theme}
               onChange={e => updateField("theme", e.target.value)}
@@ -1005,7 +1009,7 @@ export default function PlannerNoivas() {
                 boxShadow: "0 4px 20px rgba(0,0,0,0.03)"
               }}
             >
-              <span style={{ fontSize: "0.72rem", fontWeight: 800, color: currentTheme.accent, textTransform: "uppercase", letterSpacing: "1.5px" }}>
+              <span style={{ fontSize: "0.72rem", fontWeight: 800, color: currentTheme.textMuted, textTransform: "uppercase", letterSpacing: "1.5px" }}>
                 Countdown to the Big Day
               </span>
               
@@ -1023,13 +1027,13 @@ export default function PlannerNoivas() {
                     fontSize: "clamp(1.1rem, 4.5vw, 2rem)",
                     fontWeight: 900,
                     textAlign: "right",
-                    color: currentTheme.primary,
+                    color: currentTheme.text,
                     width: "45%",
                     outline: "none",
                     fontFamily: "'Playfair Display', serif"
                   }}
                 />
-                <span style={{ fontSize: "clamp(1.1rem, 4.5vw, 2rem)", fontWeight: 900, color: currentTheme.primary, fontFamily: "'Playfair Display', serif" }}>&</span>
+                <span style={{ fontSize: "clamp(1.1rem, 4.5vw, 2rem)", fontWeight: 900, color: currentTheme.text, fontFamily: "'Playfair Display', serif" }}>&</span>
                 <input
                   value={plannerData.coupleNames.split("&")[1]?.trim() || ""}
                   onChange={e => {
@@ -1043,7 +1047,7 @@ export default function PlannerNoivas() {
                     fontSize: "clamp(1.1rem, 4.5vw, 2rem)",
                     fontWeight: 900,
                     textAlign: "left",
-                    color: currentTheme.primary,
+                    color: currentTheme.text,
                     width: "45%",
                     outline: "none",
                     fontFamily: "'Playfair Display', serif"
@@ -1073,7 +1077,7 @@ export default function PlannerNoivas() {
                     >
                       {item.value.toString().padStart(2, "0")}
                     </div>
-                    <span style={{ fontSize: "0.7rem", fontWeight: 800, marginTop: "0.4rem", textTransform: "uppercase", color: "#8C8C8C" }}>
+                    <span style={{ fontSize: "0.7rem", fontWeight: 800, marginTop: "0.4rem", textTransform: "uppercase", color: currentTheme.textMuted }}>
                       {item.label}
                     </span>
                   </div>
@@ -1149,14 +1153,14 @@ export default function PlannerNoivas() {
                   <DollarSign size={24} />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <span style={{ fontSize: "0.72rem", fontWeight: 800, color: "#8C8C8C", display: "block" }}>
+                  <span style={{ fontSize: "0.72rem", fontWeight: 800, color: currentTheme.textMuted, display: "block" }}>
                     ACTUAL / ESTIMATED BUDGET
                   </span>
                   <div style={{ display: "flex", alignItems: "baseline", gap: "0.3rem" }}>
                     <span style={{ fontSize: "1.3rem", fontWeight: 900, color: currentTheme.text }}>
                       $ {totalActual.toLocaleString("en-US")}
                     </span>
-                    <span style={{ fontSize: "0.75rem", fontWeight: 800, color: "#8C8C8C" }}>
+                    <span style={{ fontSize: "0.75rem", fontWeight: 800, color: currentTheme.textMuted }}>
                       / $ {totalEstimated.toLocaleString("en-US")}
                     </span>
                   </div>
@@ -1171,7 +1175,7 @@ export default function PlannerNoivas() {
                       }} 
                     />
                   </div>
-                  <span style={{ fontSize: "0.65rem", fontWeight: 700, color: "#8C8C8C", marginTop: "0.2rem", display: "block" }}>
+                  <span style={{ fontSize: "0.65rem", fontWeight: 700, color: currentTheme.textMuted, marginTop: "0.2rem", display: "block" }}>
                     Budget Limit: $ {plannerData.totalBudgetLimit.toLocaleString("en-US")}
                   </span>
                 </div>
@@ -1205,14 +1209,14 @@ export default function PlannerNoivas() {
                   <Users size={24} />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <span style={{ fontSize: "0.72rem", fontWeight: 800, color: "#8C8C8C", display: "block" }}>
+                  <span style={{ fontSize: "0.72rem", fontWeight: 800, color: currentTheme.textMuted, display: "block" }}>
                     RSVPS / TOTAL GUESTS
                   </span>
                   <div style={{ display: "flex", alignItems: "baseline", gap: "0.3rem" }}>
                     <span style={{ fontSize: "1.3rem", fontWeight: 900, color: currentTheme.text }}>
                       {plannerData.guests.filter(g => g.rsvp === "confirmado").length} CONFIRMED
                     </span>
-                    <span style={{ fontSize: "0.75rem", fontWeight: 800, color: "#8C8C8C" }}>
+                    <span style={{ fontSize: "0.75rem", fontWeight: 800, color: currentTheme.textMuted }}>
                       / {plannerData.guests.length} total
                     </span>
                   </div>
@@ -1226,7 +1230,7 @@ export default function PlannerNoivas() {
                       }} 
                     />
                   </div>
-                  <span style={{ fontSize: "0.65rem", fontWeight: 700, color: "#8C8C8C", marginTop: "0.2rem", display: "block" }}>
+                  <span style={{ fontSize: "0.65rem", fontWeight: 700, color: currentTheme.textMuted, marginTop: "0.2rem", display: "block" }}>
                     Pendings: {plannerData.guests.filter(g => g.rsvp === "pendente").length} guests
                   </span>
                 </div>
@@ -1260,14 +1264,14 @@ export default function PlannerNoivas() {
                   <CheckCircle size={24} />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <span style={{ fontSize: "0.72rem", fontWeight: 800, color: "#8C8C8C", display: "block" }}>
+                  <span style={{ fontSize: "0.72rem", fontWeight: 800, color: currentTheme.textMuted, display: "block" }}>
                     COMPLETED TASKS
                   </span>
                   <div style={{ display: "flex", alignItems: "baseline", gap: "0.3rem" }}>
                     <span style={{ fontSize: "1.3rem", fontWeight: 900, color: currentTheme.text }}>
                       {plannerData.tasks.filter(t => t.completed).length} COMPLETED
                     </span>
-                    <span style={{ fontSize: "0.75rem", fontWeight: 800, color: "#8C8C8C" }}>
+                    <span style={{ fontSize: "0.75rem", fontWeight: 800, color: currentTheme.textMuted }}>
                       / {plannerData.tasks.length} tasks
                     </span>
                   </div>
@@ -1281,7 +1285,7 @@ export default function PlannerNoivas() {
                       }} 
                     />
                   </div>
-                  <span style={{ fontSize: "0.65rem", fontWeight: 700, color: "#8C8C8C", marginTop: "0.2rem", display: "block" }}>
+                  <span style={{ fontSize: "0.65rem", fontWeight: 700, color: currentTheme.textMuted, marginTop: "0.2rem", display: "block" }}>
                     Remaining: {plannerData.tasks.filter(t => !t.completed).length} pending tasks
                   </span>
                 </div>
@@ -1327,7 +1331,7 @@ export default function PlannerNoivas() {
                     style={{
                       background: checklistFilter === phase.id ? currentTheme.badgeBg : "#FFF",
                       border: `1.5px solid ${checklistFilter === phase.id ? currentTheme.primary : currentTheme.border}`,
-                      color: checklistFilter === phase.id ? currentTheme.primary : currentTheme.text,
+                      color: checklistFilter === phase.id ? currentTheme.badgeText : currentTheme.text,
                       borderRadius: "0.85rem",
                       padding: "0.6rem 1rem",
                       fontSize: "0.78rem",
@@ -1393,7 +1397,7 @@ export default function PlannerNoivas() {
               {/* Lista */}
               <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", maxHeight: "300px", overflowY: "auto" }}>
                 {plannerData.tasks.filter(t => t.category === checklistFilter).length === 0 ? (
-                  <div style={{ textAlign: "center", color: "#8C8C8C", padding: "2rem", fontSize: "0.8rem" }}>
+                  <div style={{ textAlign: "center", color: currentTheme.textMuted, padding: "2rem", fontSize: "0.8rem" }}>
                     Nenhuma tarefa cadastrada nesta fase. Adicione uma acima! ✨
                   </div>
                 ) : (
@@ -1421,7 +1425,7 @@ export default function PlannerNoivas() {
                           gap: "0.5rem",
                           fontWeight: 700,
                           fontSize: "0.8rem",
-                          color: task.completed ? "#8C8C8C" : currentTheme.text,
+                          color: task.completed ? currentTheme.textMuted : currentTheme.text,
                           textDecoration: task.completed ? "line-through" : "none"
                         }}
                       >
@@ -1430,7 +1434,7 @@ export default function PlannerNoivas() {
                             width: 18,
                             height: 18,
                             borderRadius: "50%",
-                            border: `1.5px solid ${task.completed ? currentTheme.accent : "#8C8C8C"}`,
+                            border: `1.5px solid ${task.completed ? currentTheme.accent : currentTheme.textMuted}`,
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
@@ -1487,19 +1491,19 @@ export default function PlannerNoivas() {
             {/* Barra de Totais em Destaque */}
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "1rem", background: "#FAF8F2", padding: "1.2rem", borderRadius: "1.2rem", border: `1px solid ${currentTheme.border}` }}>
               <div>
-                <span style={{ fontSize: "0.65rem", fontWeight: 800, color: "#8C8C8C" }}>TOTAL ESTIMATED</span>
+                <span style={{ fontSize: "0.65rem", fontWeight: 800, color: currentTheme.textMuted }}>TOTAL ESTIMATED</span>
                 <div style={{ fontSize: "1.1rem", fontWeight: 900, color: currentTheme.text }}>$ {totalEstimated.toLocaleString("en-US")}</div>
               </div>
               <div>
-                <span style={{ fontSize: "0.65rem", fontWeight: 800, color: "#8C8C8C" }}>CONTRACTED VALUE</span>
+                <span style={{ fontSize: "0.65rem", fontWeight: 800, color: currentTheme.textMuted }}>CONTRACTED VALUE</span>
                 <div style={{ fontSize: "1.1rem", fontWeight: 900, color: currentTheme.text }}>$ {totalActual.toLocaleString("en-US")}</div>
               </div>
               <div>
-                <span style={{ fontSize: "0.65rem", fontWeight: 800, color: "#8C8C8C" }}>PAID AMOUNT</span>
+                <span style={{ fontSize: "0.65rem", fontWeight: 800, color: currentTheme.textMuted }}>PAID AMOUNT</span>
                 <div style={{ fontSize: "1.1rem", fontWeight: 900, color: "#9B7E1A" }}>$ {totalPaid.toLocaleString("en-US")}</div>
               </div>
               <div>
-                <span style={{ fontSize: "0.65rem", fontWeight: 800, color: "#8C8C8C" }}>REMAINING BALANCE</span>
+                <span style={{ fontSize: "0.65rem", fontWeight: 800, color: currentTheme.textMuted }}>REMAINING BALANCE</span>
                 <div style={{ fontSize: "1.1rem", fontWeight: 900, color: "#A85361" }}>$ {totalRemaining.toLocaleString("en-US")}</div>
               </div>
             </div>
@@ -1557,7 +1561,7 @@ export default function PlannerNoivas() {
             <div style={{ overflowX: "auto" }}>
               <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.78rem", textAlign: "left" }}>
                 <thead>
-                  <tr style={{ borderBottom: `2px solid ${currentTheme.border}`, color: "#8C8C8C" }}>
+                  <tr style={{ borderBottom: `2px solid ${currentTheme.border}`, color: currentTheme.textMuted }}>
                     <th style={{ padding: "0.5rem" }}>Category</th>
                     <th style={{ padding: "0.5rem" }}>Vendor</th>
                     <th style={{ padding: "0.5rem" }}>Estimated</th>
@@ -1570,7 +1574,7 @@ export default function PlannerNoivas() {
                 <tbody>
                   {plannerData.expenses.length === 0 ? (
                     <tr>
-                      <td colSpan={7} style={{ textAlign: "center", padding: "2rem", color: "#8C8C8C" }}>
+                      <td colSpan={7} style={{ textAlign: "center", padding: "2rem", color: currentTheme.textMuted }}>
                         No expenses added. Add an expense above! ✨
                       </td>
                     </tr>
@@ -1638,7 +1642,7 @@ export default function PlannerNoivas() {
                             {/* Estimado */}
                             <td style={{ padding: "0.4rem 0.5rem" }}>
                               <div style={{ display: "flex", alignItems: "center" }}>
-                                <span style={{ color: "#8C8C8C", marginRight: "0.15rem" }}>R$</span>
+                                <span style={{ color: currentTheme.textMuted, marginRight: "0.15rem" }}>$</span>
                                 <input
                                   type="number"
                                   className="budget-table-input"
@@ -1669,7 +1673,7 @@ export default function PlannerNoivas() {
                             {/* Valor Real */}
                             <td style={{ padding: "0.4rem 0.5rem" }}>
                               <div style={{ display: "flex", alignItems: "center" }}>
-                                <span style={{ color: "#8C8C8C", marginRight: "0.15rem" }}>R$</span>
+                                <span style={{ color: currentTheme.textMuted, marginRight: "0.15rem" }}>$</span>
                                 <input
                                   type="number"
                                   className="budget-table-input"
@@ -1700,7 +1704,7 @@ export default function PlannerNoivas() {
                             {/* Valor Pago */}
                             <td style={{ padding: "0.4rem 0.5rem" }}>
                               <div style={{ display: "flex", alignItems: "center" }}>
-                                <span style={{ color: "#8C8C8C", marginRight: "0.15rem" }}>R$</span>
+                                <span style={{ color: currentTheme.textMuted, marginRight: "0.15rem" }}>$</span>
                                 {hasPayments ? (
                                   <span
                                     style={{
@@ -1807,11 +1811,11 @@ export default function PlannerNoivas() {
                               <td colSpan={7} style={{ padding: "0.8rem 1.2rem" }}>
                                 <div style={{ borderLeft: `3px solid ${currentTheme.accent}`, paddingLeft: "1rem" }}>
                                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.6rem" }}>
-                                    <h4 style={{ fontSize: "0.75rem", fontWeight: 900, color: currentTheme.primary, margin: 0 }}>
+                                    <h4 style={{ fontSize: "0.75rem", fontWeight: 900, color: currentTheme.text, margin: 0 }}>
                                       💵 Installment / Payment History for: {exp.vendor || "This Vendor"}
                                     </h4>
                                     {hasPayments && (
-                                      <span style={{ fontSize: "0.68rem", fontWeight: 800, color: "#8C8C8C" }}>
+                                      <span style={{ fontSize: "0.68rem", fontWeight: 800, color: currentTheme.textMuted }}>
                                         Remaining Balance: $ {Math.max(0, exp.actual - exp.paid).toLocaleString("en-US")}
                                       </span>
                                     )}
@@ -1820,7 +1824,7 @@ export default function PlannerNoivas() {
                                   {/* Form para adicionar nova parcela */}
                                   <div className="no-print" style={{ display: "flex", gap: "0.4rem", alignItems: "center", marginBottom: "0.6rem", flexWrap: "wrap" }}>
                                     <div style={{ display: "flex", alignItems: "center" }}>
-                                      <span style={{ fontSize: "0.72rem", color: "#8C8C8C", marginRight: "0.15rem" }}>$</span>
+                                      <span style={{ fontSize: "0.72rem", color: currentTheme.textMuted, marginRight: "0.15rem" }}>$</span>
                                       <input
                                         type="number"
                                         id={`pay-amount-${exp.id}`}
@@ -1896,7 +1900,7 @@ export default function PlannerNoivas() {
                                   {/* Lista de Installments */}
                                   <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
                                     {(exp.payments || []).length === 0 ? (
-                                      <div style={{ fontSize: "0.72rem", color: "#8C8C8C", padding: "0.3rem 0" }}>
+                                      <div style={{ fontSize: "0.72rem", color: currentTheme.textMuted, padding: "0.3rem 0" }}>
                                         No payments registered. Use the form above to register installments or payments.
                                       </div>
                                     ) : (
@@ -1916,7 +1920,7 @@ export default function PlannerNoivas() {
                                         >
                                           <div>
                                             <span style={{ fontWeight: 800, color: currentTheme.text }}>{pay.description}</span>
-                                            <span style={{ color: "#8C8C8C", marginLeft: "0.8rem" }}>
+                                            <span style={{ color: currentTheme.textMuted, marginLeft: "0.8rem" }}>
                                               Paid on: {new Date(pay.date + "T00:00:00").toLocaleDateString("en-US")}
                                             </span>
                                           </div>
@@ -2061,7 +2065,7 @@ export default function PlannerNoivas() {
             <div style={{ overflowX: "auto" }}>
               <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.78rem", textAlign: "left" }}>
                 <thead>
-                  <tr style={{ borderBottom: `2px solid ${currentTheme.border}`, color: "#8C8C8C" }}>
+                  <tr style={{ borderBottom: `2px solid ${currentTheme.border}`, color: currentTheme.textMuted }}>
                     <th style={{ padding: "0.5rem" }}>Name</th>
                     <th style={{ padding: "0.5rem" }}>Side</th>
                     <th style={{ padding: "0.5rem" }}>Dietary Restrictions</th>
@@ -2072,7 +2076,7 @@ export default function PlannerNoivas() {
                 <tbody>
                   {filteredGuests.length === 0 ? (
                     <tr>
-                      <td colSpan={5} style={{ textAlign: "center", padding: "2rem", color: "#8C8C8C" }}>
+                      <td colSpan={5} style={{ textAlign: "center", padding: "2rem", color: currentTheme.textMuted }}>
                         No guests found.
                       </td>
                     </tr>
@@ -2141,18 +2145,18 @@ export default function PlannerNoivas() {
               <h2 style={{ fontSize: "1.2rem", fontWeight: 900, color: currentTheme.text, margin: "0 0 1rem" }}>
                 Guest List 🍽️
               </h2>
-              <p style={{ fontSize: "0.75rem", color: "#8C8C8C", margin: "0 0 1rem", lineHeight: 1.4 }}>
+              <p style={{ fontSize: "0.75rem", color: currentTheme.textMuted, margin: "0 0 1rem", lineHeight: 1.4 }}>
                 Drag the confirmed guests below and drop them onto a seat of any table!
               </p>
 
               {/* Listagem lateral */}
               <div style={{ background: "#FAF8F2", padding: "1rem", borderRadius: "1rem", border: `1.5px solid ${currentTheme.border}` }}>
-                <span style={{ fontSize: "0.7rem", fontWeight: 800, color: currentTheme.primary, display: "block", marginBottom: "0.5rem" }}>
+                <span style={{ fontSize: "0.7rem", fontWeight: 800, color: currentTheme.text, display: "block", marginBottom: "0.5rem" }}>
                   Confirmed Unseated Guests ({plannerData.guests.filter(g => g.rsvp === "confirmado" && !g.tableId).length})
                 </span>
                 <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem", maxHeight: "250px", overflowY: "auto", padding: "0.2rem" }}>
                   {plannerData.guests.filter(g => g.rsvp === "confirmado" && !g.tableId).length === 0 ? (
-                    <div style={{ fontSize: "0.7rem", color: "#8C8C8C", textAlign: "center", padding: "1.5rem" }}>
+                    <div style={{ fontSize: "0.7rem", color: currentTheme.textMuted, textAlign: "center", padding: "1.5rem" }}>
                       No guests pending a seat! 🎉
                     </div>
                   ) : (
@@ -2233,14 +2237,14 @@ export default function PlannerNoivas() {
             {/* Espaço das mesas físicas */}
             <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span style={{ fontSize: "0.72rem", fontWeight: 800, color: "#8C8C8C" }}>SEATING CHART MAP</span>
+                <span style={{ fontSize: "0.72rem", fontWeight: 800, color: currentTheme.textMuted }}>SEATING CHART MAP</span>
                 <button
                   className="no-print"
                   onClick={() => window.print()}
                   style={{
                     background: "none",
                     border: "none",
-                    color: currentTheme.primary,
+                    color: currentTheme.text,
                     fontSize: "0.75rem",
                     fontWeight: 800,
                     cursor: "pointer",
@@ -2379,7 +2383,7 @@ export default function PlannerNoivas() {
                                 width: 28,
                                 height: 28,
                                 borderRadius: "50%",
-                                border: `1.5px dashed ${seatedGuest ? currentTheme.primary : (selectedGuestToSeat ? currentTheme.primary : "#8C8C8C")}`,
+                                border: `1.5px dashed ${seatedGuest ? currentTheme.primary : (selectedGuestToSeat ? currentTheme.primary : currentTheme.textMuted)}`,
                                 background: seatedGuest ? (seatedGuest.side === "noiva" ? "#FCE4E6" : "#EFE6DD") : (selectedGuestToSeat ? currentTheme.badgeBg : "#FFF"),
                                 cursor: seatedGuest ? "default" : "pointer",
                                 display: "flex",
@@ -2486,7 +2490,7 @@ export default function PlannerNoivas() {
             <div style={{ display: "grid", gridTemplateColumns: "1fr 3.5fr", gap: "1.5rem" }}>
               {/* Painel de Adesivos */}
               <div style={{ background: "#FAF8F2", padding: "1rem", borderRadius: "1rem", border: `1.5px solid ${currentTheme.border}` }}>
-                <span style={{ fontSize: "0.7rem", fontWeight: 800, color: currentTheme.primary, display: "block", marginBottom: "0.5rem" }}>
+                <span style={{ fontSize: "0.7rem", fontWeight: 800, color: currentTheme.text, display: "block", marginBottom: "0.5rem" }}>
                   Wedding Stickers
                 </span>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
@@ -2532,7 +2536,7 @@ export default function PlannerNoivas() {
                 }}
               >
                 {plannerData.moodboard.length === 0 ? (
-                  <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", color: "#8C8C8C", fontSize: "0.8rem", textAlign: "center" }}>
+                  <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", color: currentTheme.textMuted, fontSize: "0.8rem", textAlign: "center" }}>
                     Quadro vazio. Clique em "Carregar Foto" ou escolha um adesivo lateral para começar a colar! 🌸
                   </div>
                 ) : (
@@ -2642,7 +2646,7 @@ export default function PlannerNoivas() {
                 boxShadow: "0 4px 20px rgba(0,0,0,0.02)"
               }}
             >
-              <h2 style={{ fontSize: "1.3rem", fontWeight: 900, color: currentTheme.primary, fontFamily: "'Playfair Display', serif", marginBottom: "0.5rem" }}>
+              <h2 style={{ fontSize: "1.3rem", fontWeight: 900, color: currentTheme.text, fontFamily: "'Playfair Display', serif", marginBottom: "0.5rem" }}>
                 🤝 Vendor Registry
               </h2>
               <p style={{ fontSize: "0.82rem", color: "#6A6A6A", marginBottom: "1.5rem" }}>
@@ -2716,7 +2720,7 @@ export default function PlannerNoivas() {
                   <tbody>
                     {(plannerData.vendors || []).length === 0 ? (
                       <tr>
-                        <td colSpan={9} style={{ padding: "1.5rem", textAlign: "center", color: "#8C8C8C" }}>
+                        <td colSpan={9} style={{ padding: "1.5rem", textAlign: "center", color: currentTheme.textMuted }}>
                           Nenhum fornecedor cadastrado.
                         </td>
                       </tr>
@@ -2779,7 +2783,7 @@ export default function PlannerNoivas() {
                 boxShadow: "0 4px 20px rgba(0,0,0,0.02)"
               }}
             >
-              <h2 style={{ fontSize: "1.3rem", fontWeight: 900, color: currentTheme.primary, fontFamily: "'Playfair Display', serif", marginBottom: "0.5rem" }}>
+              <h2 style={{ fontSize: "1.3rem", fontWeight: 900, color: currentTheme.text, fontFamily: "'Playfair Display', serif", marginBottom: "0.5rem" }}>
                 ⏱️ Wedding Timeline
               </h2>
               <p style={{ fontSize: "0.82rem", color: "#6A6A6A", marginBottom: "1.5rem" }}>
@@ -2812,7 +2816,7 @@ export default function PlannerNoivas() {
               {/* Lista Vertical da Timeline */}
               <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem", position: "relative" }}>
                 {(plannerData.timeline || []).length === 0 ? (
-                  <div style={{ padding: "1.5rem", textAlign: "center", color: "#8C8C8C" }}>
+                  <div style={{ padding: "1.5rem", textAlign: "center", color: currentTheme.textMuted }}>
                     Nenhuma atividade agendada.
                   </div>
                 ) : (
@@ -2856,7 +2860,7 @@ export default function PlannerNoivas() {
                             fontWeight: 800,
                             fontSize: "0.9rem",
                             textDecoration: e.completed ? "line-through" : "none",
-                            color: e.completed ? "#8C8C8C" : currentTheme.text,
+                            color: e.completed ? currentTheme.textMuted : currentTheme.text,
                             display: "block"
                           }}
                         >
@@ -2882,7 +2886,7 @@ export default function PlannerNoivas() {
                             alignItems: "center",
                             justifyContent: "center",
                             cursor: "pointer",
-                            color: e.completed ? "#33691E" : "#8C8C8C"
+                            color: e.completed ? "#33691E" : currentTheme.textMuted
                           }}
                         >
                           <Check size={14} />
@@ -2924,7 +2928,7 @@ export default function PlannerNoivas() {
                 boxShadow: "0 4px 20px rgba(0,0,0,0.02)"
               }}
             >
-              <h2 style={{ fontSize: "1.3rem", fontWeight: 900, color: currentTheme.primary, fontFamily: "'Playfair Display', serif", marginBottom: "0.5rem" }}>
+              <h2 style={{ fontSize: "1.3rem", fontWeight: 900, color: currentTheme.text, fontFamily: "'Playfair Display', serif", marginBottom: "0.5rem" }}>
                 🎁 Gift Registry & Thank You Tracker
               </h2>
               <p style={{ fontSize: "0.82rem", color: "#6A6A6A", marginBottom: "1.5rem" }}>
@@ -2961,7 +2965,7 @@ export default function PlannerNoivas() {
                   <tbody>
                     {(plannerData.gifts || []).length === 0 ? (
                       <tr>
-                        <td colSpan={5} style={{ padding: "1.5rem", textAlign: "center", color: "#8C8C8C" }}>
+                        <td colSpan={5} style={{ padding: "1.5rem", textAlign: "center", color: currentTheme.textMuted }}>
                           Nenhum presente registrado ainda.
                         </td>
                       </tr>
@@ -3067,7 +3071,7 @@ export default function PlannerNoivas() {
                 fontFamily: "'Nunito', sans-serif"
               }}
             />
-            <span style={{ fontSize: "0.65rem", color: "#8C8C8C", marginTop: "0.3rem", display: "block" }}>
+            <span style={{ fontSize: "0.65rem", color: currentTheme.textMuted, marginTop: "0.3rem", display: "block" }}>
               * Suas anotações são salvas automaticamente no navegador.
             </span>
           </div>
@@ -3097,7 +3101,7 @@ export default function PlannerNoivas() {
               <div style={{ marginBottom: "1rem" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.72rem", fontWeight: 800, color: "#777", marginBottom: "0.2rem" }}>
                   <span>Nível de Vibe/Ansiedade:</span>
-                  <span style={{ color: currentTheme.primary }}>{plannerData.loveScore || 80}%</span>
+                  <span style={{ color: currentTheme.badgeText }}>{plannerData.loveScore || 80}%</span>
                 </div>
                 <input
                   type="range"
@@ -3122,7 +3126,7 @@ export default function PlannerNoivas() {
             {/* Cupid Advice */}
             <div style={{ borderTop: `1px dashed ${currentTheme.border}`, paddingTop: "0.8rem", marginTop: "0.2rem" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.4rem" }}>
-                <span style={{ fontSize: "0.68rem", fontWeight: 800, color: "#8C8C8C", textTransform: "uppercase" }}>
+                <span style={{ fontSize: "0.68rem", fontWeight: 800, color: currentTheme.textMuted, textTransform: "uppercase" }}>
                   Cupid's Advice of the Day
                 </span>
                 <button
