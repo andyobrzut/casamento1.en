@@ -5,11 +5,13 @@ const messages: Record<string, string> = {
   invalid_code: "Invalid code for Wedding Planner. Create it in the admin panel or Supabase under wedding-planner-en.",
   expired_code: "This code has expired. Please contact the shop.",
   disabled_code: "This code has been disabled. Please contact the shop.",
-  device_limit: "This code has already reached the device limit.",
+  device_limit: "This code reached the device limit. Create a new code in the panel or increase allowed devices.",
   connection_error: "We could not validate the code right now. Check your connection and try again.",
   missing_configuration: "Activation is not configured for this app yet.",
   not_activated: "This device is not activated yet.",
 };
+
+const APP_BUILD = "2026-06-29-wedding-fix";
 
 export default function ActivationGate({ children }: { children: ReactNode }) {
   const [status, setStatus] = useState<"checking" | "locked" | "unlocked">("checking");
@@ -64,9 +66,8 @@ export default function ActivationGate({ children }: { children: ReactNode }) {
         return;
       }
       setMessage(
-        result.reason === "invalid_code"
-          ? `${messages.invalid_code} Product: ${ACTIVE_PRODUCT_SLUG}. Try WEDDING-TEST-2026 if this is a test.`
-          : messages[result.reason || ""] || `We could not activate this code (${result.reason || "unknown"}).`
+        messages[result.reason || ""] ||
+          `We could not activate this code (${result.reason || "unknown"}).`
       );
     } catch {
       setMessage(messages.connection_error);
@@ -103,7 +104,11 @@ export default function ActivationGate({ children }: { children: ReactNode }) {
             </form>
           )}
           {message && <p className="activation-message">{message}</p>}
-          <small>Enter your code once per device. After activation, this browser opens the planner automatically.</small>
+          <small>
+            Product: <strong>{ACTIVE_PRODUCT_SLUG}</strong> · Build: {APP_BUILD}
+            <br />
+            Enter your code once per device. After activation, this browser opens the planner automatically.
+          </small>
         </div>
       </section>
     </main>
