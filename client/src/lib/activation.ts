@@ -31,11 +31,22 @@ function removeStoredValue(key: string) {
   window.sessionStorage.removeItem(key);
 }
 
+function normalizeActivationCode(code: string) {
+  return code
+    .trim()
+    .toUpperCase()
+    .replace(/[\u2010-\u2015\u2212\uFE58\uFE63\uFF0D]/g, "-")
+    .replace(/\s+/g, "")
+    .replace(/[^A-Z0-9-]/g, "");
+}
+
 export type ActivationResult = {
   ok: boolean;
   reason?: string;
   activation_id?: string;
 };
+
+export const ACTIVE_PRODUCT_SLUG = PRODUCT_SLUG;
 
 export function activationIsConfigured() {
   return Boolean(SUPABASE_URL && PUBLISHABLE_KEY);
@@ -71,8 +82,9 @@ async function callActivationRpc(name: string, body: Record<string, string>): Pr
 }
 
 export async function activateLicense(code: string) {
+  const normalizedCode = normalizeActivationCode(code);
   const result = await callActivationRpc("activate_license", {
-    p_code: code.trim().toUpperCase(),
+    p_code: normalizedCode,
     p_device_id: getDeviceId(),
     p_product_slug: PRODUCT_SLUG,
   });

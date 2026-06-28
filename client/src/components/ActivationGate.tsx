@@ -1,5 +1,5 @@
 import { FormEvent, ReactNode, useEffect, useState } from "react";
-import { activateLicense, activationIsConfigured, verifyActivation } from "@/lib/activation";
+import { activateLicense, activationIsConfigured, ACTIVE_PRODUCT_SLUG, verifyActivation } from "@/lib/activation";
 
 const messages: Record<string, string> = {
   invalid_code: "Invalid code for Wedding Planner. Create it in the admin panel or Supabase under wedding-planner-en.",
@@ -8,6 +8,7 @@ const messages: Record<string, string> = {
   device_limit: "This code has already reached the device limit.",
   connection_error: "We could not validate the code right now. Check your connection and try again.",
   missing_configuration: "Activation is not configured for this app yet.",
+  not_activated: "This device is not activated yet.",
 };
 
 export default function ActivationGate({ children }: { children: ReactNode }) {
@@ -62,7 +63,11 @@ export default function ActivationGate({ children }: { children: ReactNode }) {
         setStatus("unlocked");
         return;
       }
-      setMessage(messages[result.reason || ""] || "We could not activate this code.");
+      setMessage(
+        result.reason === "invalid_code"
+          ? `${messages.invalid_code} Product: ${ACTIVE_PRODUCT_SLUG}. Try WEDDING-TEST-2026 if this is a test.`
+          : messages[result.reason || ""] || `We could not activate this code (${result.reason || "unknown"}).`
+      );
     } catch {
       setMessage(messages.connection_error);
     } finally {
