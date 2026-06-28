@@ -1,6 +1,22 @@
-﻿-- Wedding Planner EN — product + test license
--- Run once in Supabase SQL Editor (same project as painel.codigos)
+﻿-- Wedding Planner EN — minimal license setup (no products table required)
+-- Run in Supabase SQL Editor: https://supabase.com/dashboard/project/drjdiowgxihjddptyjsa/sql
 
+create extension if not exists pgcrypto with schema extensions;
+
+insert into public.product_licenses (product_slug, code_hash, customer_note, max_devices, active)
+values (
+  'wedding-planner-en',
+  encode(digest(upper(trim('WEDDING-GKAS-N7CH')), 'sha256'), 'hex'),
+  'Wedding planner code',
+  3,
+  true
+)
+on conflict (code_hash) do update set
+  product_slug = excluded.product_slug,
+  active = true,
+  max_devices = excluded.max_devices;
+
+-- Optional: only if products table already exists
 insert into public.products (slug, label, prefix, language, max_devices, download_url)
 values (
   'wedding-planner-en',
@@ -10,18 +26,9 @@ values (
   3,
   'https://casamento1en-two.vercel.app'
 )
-on conflict (slug) do update set
-  label = excluded.label,
-  prefix = excluded.prefix,
-  language = excluded.language,
-  download_url = excluded.download_url;
+on conflict (slug) do nothing;
 
--- Test code: WEDDING-TEST-2026
-insert into public.product_licenses (product_slug, code_hash, customer_note, max_devices)
-values (
-  'wedding-planner-en',
-  encode(digest('WEDDING-TEST-2026', 'sha256'), 'hex'),
-  'Wedding planner test code',
-  3
-)
-on conflict (code_hash) do nothing;
+-- Verify the code is registered
+select product_slug, customer_note, active, max_devices
+from public.product_licenses
+where code_hash = encode(digest(upper(trim('WEDDING-GKAS-N7CH')), 'sha256'), 'hex');

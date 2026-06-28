@@ -2,7 +2,7 @@ import { FormEvent, ReactNode, useEffect, useState } from "react";
 import { activateLicense, activationIsConfigured, verifyActivation } from "@/lib/activation";
 
 const messages: Record<string, string> = {
-  invalid_code: "Invalid code. Please check the code you received after purchase.",
+  invalid_code: "Invalid code for Wedding Planner. Create it in the admin panel or Supabase under wedding-planner-en.",
   expired_code: "This code has expired. Please contact the shop.",
   disabled_code: "This code has been disabled. Please contact the shop.",
   device_limit: "This code has already reached the device limit.",

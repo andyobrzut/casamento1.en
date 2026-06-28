@@ -5,6 +5,32 @@ const PRODUCT_SLUG = (import.meta.env.VITE_PRODUCT_SLUG as string | undefined) |
 const DEVICE_KEY = "wedding_planner_en_device_id";
 const ACTIVATION_KEY = "wedding_planner_en_activation_id";
 
+function readStoredValue(key: string) {
+  try {
+    return window.localStorage.getItem(key) || window.sessionStorage.getItem(key);
+  } catch {
+    return window.sessionStorage.getItem(key);
+  }
+}
+
+function writeStoredValue(key: string, value: string) {
+  try {
+    window.localStorage.setItem(key, value);
+  } catch {
+    // Safari private mode and some mobile browsers block localStorage.
+  }
+  window.sessionStorage.setItem(key, value);
+}
+
+function removeStoredValue(key: string) {
+  try {
+    window.localStorage.removeItem(key);
+  } catch {
+    // Ignore storage cleanup errors.
+  }
+  window.sessionStorage.removeItem(key);
+}
+
 export type ActivationResult = {
   ok: boolean;
   reason?: string;
@@ -16,10 +42,10 @@ export function activationIsConfigured() {
 }
 
 export function getDeviceId() {
-  let deviceId = window.localStorage.getItem(DEVICE_KEY);
+  let deviceId = readStoredValue(DEVICE_KEY);
   if (!deviceId) {
     deviceId = crypto.randomUUID();
-    window.localStorage.setItem(DEVICE_KEY, deviceId);
+    writeStoredValue(DEVICE_KEY, deviceId);
   }
   return deviceId;
 }
@@ -40,7 +66,8 @@ async function callActivationRpc(name: string, body: Record<string, string>): Pr
   });
 
   if (!response.ok) return { ok: false, reason: "connection_error" };
-  return response.json();
+  const data = (await response.json()) as ActivationResult;
+  return { ...data, ok: Boolean(data.ok) };
 }
 
 export async function activateLicense(code: string) {
@@ -50,14 +77,16 @@ export async function activateLicense(code: string) {
     p_product_slug: PRODUCT_SLUG,
   });
 
-  if (result.ok && result.activation_id) {
-    window.localStorage.setItem(ACTIVATION_KEY, result.activation_id);
+  if (result.ok) {
+    if (result.activation_id) {
+      writeStoredValue(ACTIVATION_KEY, result.activation_id);
+    }
   }
   return result;
 }
 
 export async function verifyActivation() {
-  const activationId = window.localStorage.getItem(ACTIVATION_KEY);
+  const activationId = readStoredValue(ACTIVATION_KEY);
   if (!activationId) return { ok: false, reason: "not_activated" };
 
   const result = await callActivationRpc("verify_activation", {
@@ -66,7 +95,7 @@ export async function verifyActivation() {
     p_product_slug: PRODUCT_SLUG,
   });
 
-  if (!result.ok) window.localStorage.removeItem(ACTIVATION_KEY);
+  if (!result.ok) removeStoredValue(ACTIVATION_KEY);
   return result;
 }
 
