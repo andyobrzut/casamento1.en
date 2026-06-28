@@ -1,6 +1,12 @@
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string | undefined;
 const PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string | undefined;
-const PRODUCT_SLUG = (import.meta.env.VITE_PRODUCT_SLUG as string | undefined) || "wedding-planner-en";
+const WEDDING_PRODUCT_SLUG = "wedding-planner-en";
+const configuredSlug = (import.meta.env.VITE_PRODUCT_SLUG as string | undefined)?.trim();
+// Vercel had planner-wedding-en — codes in painel use wedding-planner-en
+const PRODUCT_SLUG =
+  !configuredSlug || configuredSlug === "planner-wedding-en"
+    ? WEDDING_PRODUCT_SLUG
+    : configuredSlug;
 
 const DEVICE_KEY = "wedding_planner_en_device_id";
 const ACTIVATION_KEY = "wedding_planner_en_activation_id";

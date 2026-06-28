@@ -11,7 +11,7 @@ const messages: Record<string, string> = {
   not_activated: "This device is not activated yet.",
 };
 
-const APP_BUILD = "2026-06-29-wedding-fix";
+const APP_BUILD = "2026-06-29-slug-fix";
 
 export default function ActivationGate({ children }: { children: ReactNode }) {
   const [status, setStatus] = useState<"checking" | "locked" | "unlocked">("checking");

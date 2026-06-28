@@ -1,6 +1,6 @@
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string | undefined;
 const PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string | undefined;
-export const DEFAULT_PRODUCT_SLUG = (import.meta.env.VITE_PRODUCT_SLUG as string | undefined) || "wedding-planner-en";
+export const DEFAULT_PRODUCT_SLUG = WEDDING_PRODUCT_SLUG;
 
 export type AdminLicense = {
   id: string;
