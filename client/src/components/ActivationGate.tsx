@@ -27,12 +27,28 @@ export default function ActivationGate({ children }: { children: ReactNode }) {
       setMessage(messages.missing_configuration);
       return;
     }
+
+    let cancelled = false;
+    const timeout = window.setTimeout(() => {
+      if (!cancelled) setStatus(current => (current === "checking" ? "locked" : current));
+    }, 2500);
+
     verifyActivation()
-      .then(result => setStatus(result.ok ? "unlocked" : "locked"))
+      .then(result => {
+        if (cancelled) return;
+        setStatus(result.ok ? "unlocked" : "locked");
+      })
       .catch(() => {
+        if (cancelled) return;
         setStatus("locked");
         setMessage(messages.connection_error);
-      });
+      })
+      .finally(() => window.clearTimeout(timeout));
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timeout);
+    };
   }, [isAdminPage]);
 
   const submit = async (event: FormEvent) => {
@@ -64,7 +80,7 @@ export default function ActivationGate({ children }: { children: ReactNode }) {
           <span className="activation-badge">WEDDING PLANNER</span>
           <h1>{status === "checking" ? "Checking access..." : "Activate your wedding planner"}</h1>
           <p>Enter the code sent by the shop after purchase to unlock this device.</p>
-          {status === "locked" && (
+          {status !== "unlocked" && (
             <form onSubmit={submit}>
               <label htmlFor="activation-code">Access code</label>
               <input
@@ -74,12 +90,15 @@ export default function ActivationGate({ children }: { children: ReactNode }) {
                 placeholder="WEDDING-XXXX-XXXX"
                 autoComplete="one-time-code"
                 maxLength={40}
+                disabled={status === "checking" || loading}
               />
-              <button type="submit" disabled={loading}>{loading ? "Validating..." : "Activate planner"}</button>
+              <button type="submit" disabled={status === "checking" || loading || !code.trim()}>
+                {loading ? "Validating..." : status === "checking" ? "Checking..." : "Activate planner"}
+              </button>
             </form>
           )}
           {message && <p className="activation-message">{message}</p>}
-          <small>The code is requested only on the first activation of this device.</small>
+          <small>Enter your code once per device. After activation, this browser opens the planner automatically.</small>
         </div>
       </section>
     </main>
