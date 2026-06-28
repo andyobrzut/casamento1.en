@@ -159,7 +159,7 @@ export default function AdminCodigos() {
           </button>
           {createdCode && (
             <div className="admin-success">
-              Key created:
+              Key created for <strong>{productSlug}</strong>:
               <strong>{createdCode}</strong>
               <button type="button" onClick={() => navigator.clipboard.writeText(createdCode)}>Copy</button>
             </div>
