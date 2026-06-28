@@ -1,9 +1,9 @@
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string | undefined;
 const PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string | undefined;
-const PRODUCT_SLUG = (import.meta.env.VITE_PRODUCT_SLUG as string | undefined) || "planner-app-cherry-en";
+const PRODUCT_SLUG = (import.meta.env.VITE_PRODUCT_SLUG as string | undefined) || "wedding-planner-en";
 
-const DEVICE_KEY = "planner_app_cherry_en_device_id";
-const ACTIVATION_KEY = "planner_app_cherry_en_activation_id";
+const DEVICE_KEY = "wedding_planner_en_device_id";
+const ACTIVATION_KEY = "wedding_planner_en_activation_id";
 
 export type ActivationResult = {
   ok: boolean;

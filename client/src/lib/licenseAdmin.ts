@@ -1,6 +1,6 @@
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string | undefined;
 const PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string | undefined;
-export const DEFAULT_PRODUCT_SLUG = (import.meta.env.VITE_PRODUCT_SLUG as string | undefined) || "planner-app-cherry-en";
+export const DEFAULT_PRODUCT_SLUG = (import.meta.env.VITE_PRODUCT_SLUG as string | undefined) || "wedding-planner-en";
 
 export type AdminLicense = {
   id: string;
@@ -40,7 +40,7 @@ async function callAdminRpc<T>(name: string, body: Record<string, unknown>): Pro
   return response.json();
 }
 
-export function generateLicenseCode(prefix = "KAWAII") {
+export function generateLicenseCode(prefix = "WEDDING") {
   const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   const part = (size: number) =>
     Array.from({ length: size }, () => alphabet[Math.floor(Math.random() * alphabet.length)]).join("");

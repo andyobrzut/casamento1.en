@@ -89,7 +89,7 @@ export default function AdminCodigos() {
   return (
     <main className="admin-page">
       <section className="admin-hero">
-        <span>KAWAII PLANNER</span>
+        <span>WEDDING PLANNER</span>
         <h1>License Key Panel</h1>
         <p>Create and track customer access codes without opening Supabase SQL.</p>
       </section>
@@ -123,8 +123,7 @@ export default function AdminCodigos() {
                 cursor: "pointer"
               }}
             >
-              <option value="planner-app-cherry-en">English (planner-app-cherry-en)</option>
-              <option value="planner-app-cherry">Portuguese (planner-app-cherry)</option>
+              <option value="wedding-planner-en">English Wedding (wedding-planner-en)</option>
             </select>
           </label>
           <label>
